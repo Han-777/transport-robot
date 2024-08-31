@@ -1,0 +1,267 @@
+ARM GAS  C:\Users\blue\AppData\Local\Temp\cc0lG29j.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.arch armv7e-m
+   3              		.fpu fpv5-d16
+   4              		.eabi_attribute 28, 1
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 1
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.file	"robot_cmd.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.section	.text.RobotCMDInit,"ax",%progbits
+  19              		.align	1
+  20              		.global	RobotCMDInit
+  21              		.syntax unified
+  22              		.thumb
+  23              		.thumb_func
+  25              	RobotCMDInit:
+  26              	.LFB156:
+  27              		.file 1 "application/cmd/robot_cmd.c"
+   1:application/cmd/robot_cmd.c **** #include "robot_def.h"
+   2:application/cmd/robot_cmd.c **** #include "robot_cmd.h"
+   3:application/cmd/robot_cmd.c **** // module
+   4:application/cmd/robot_cmd.c **** #include "message_center.h"
+   5:application/cmd/robot_cmd.c **** #include "bluetooth.h"
+   6:application/cmd/robot_cmd.c **** #include "general_def.h"
+   7:application/cmd/robot_cmd.c **** #include "cmsis_os.h"
+   8:application/cmd/robot_cmd.c **** #include "mp3.h"
+   9:application/cmd/robot_cmd.c **** #include "lcd_test.h"
+  10:application/cmd/robot_cmd.c **** #include "lcd_rgb.h"
+  11:application/cmd/robot_cmd.c **** // bsp
+  12:application/cmd/robot_cmd.c **** #include "bsp_dwt.h"
+  13:application/cmd/robot_cmd.c **** #include "usart.h"
+  14:application/cmd/robot_cmd.c **** #include <string.h>
+  15:application/cmd/robot_cmd.c **** #include "usart.h"
+  16:application/cmd/robot_cmd.c **** /*------------------------water message----------------------------*/
+  17:application/cmd/robot_cmd.c **** // static Water_Ctrl_Cmd_s water_cmd_send;
+  18:application/cmd/robot_cmd.c **** // static Water_Upload_Data_s water_feedback_data;
+  19:application/cmd/robot_cmd.c **** /*==============data======================*/
+  20:application/cmd/robot_cmd.c **** #ifdef CHASSIS_BOARD
+  21:application/cmd/robot_cmd.c **** #include "can_comm.h"
+  22:application/cmd/robot_cmd.c **** static CANCommInstance *CANComm_ins;
+  23:application/cmd/robot_cmd.c **** static Comm_Send_Data_s *comm_send_data;
+  24:application/cmd/robot_cmd.c **** static Comm_Recv_Data_s *comm_recv_data;
+  25:application/cmd/robot_cmd.c **** #endif
+  26:application/cmd/robot_cmd.c **** #ifdef ONE_BOARD
+  27:application/cmd/robot_cmd.c **** static Publisher_t *chassis_cmd_pub;   // 底盘控制消息发布者
+  28:application/cmd/robot_cmd.c **** static Subscriber_t *chassis_feed_sub; // 底盘反馈信息订阅者
+  29:application/cmd/robot_cmd.c **** static Publisher_t *arm_cmd_pub;       // 浇水控制消息发布者
+  30:application/cmd/robot_cmd.c **** static Subscriber_t *arm_feed_sub;     // 浇水反馈信息订阅者
+  31:application/cmd/robot_cmd.c **** #endif
+ARM GAS  C:\Users\blue\AppData\Local\Temp\cc0lG29j.s 			page 2
+
+
+  32:application/cmd/robot_cmd.c **** 
+  33:application/cmd/robot_cmd.c **** static Chassis_Ctrl_Cmd_s chassis_cmd_send;         // 发送给底盘应用的信息,包括控制�
+  34:application/cmd/robot_cmd.c **** static Chassis_Upload_Data_s chassis_feedback_data; // 从底盘应用接收的反馈信息信息,�
+  35:application/cmd/robot_cmd.c **** // static Vision_Recv_s *vision_recv_data;             // 视觉接收数据指针,初始化时返�
+  36:application/cmd/robot_cmd.c **** // static Vision_Send_s vision_send_data;              // 视觉发送数据
+  37:application/cmd/robot_cmd.c **** 
+  38:application/cmd/robot_cmd.c **** static int (*operation_sequence[])(void);
+  39:application/cmd/robot_cmd.c **** #define max_run_itr 2
+  40:application/cmd/robot_cmd.c **** static uint8_t cmd_run_idx = 0;
+  41:application/cmd/robot_cmd.c **** 
+  42:application/cmd/robot_cmd.c **** /*--------------Coordinate Input------------------*/
+  43:application/cmd/robot_cmd.c **** static void SetCoordinate(float x, float y, float heading)
+  44:application/cmd/robot_cmd.c **** {
+  45:application/cmd/robot_cmd.c ****     chassis_cmd_send.x = x;
+  46:application/cmd/robot_cmd.c ****     chassis_cmd_send.y = y;
+  47:application/cmd/robot_cmd.c ****     chassis_cmd_send.heading = heading;
+  48:application/cmd/robot_cmd.c **** }
+  49:application/cmd/robot_cmd.c **** /*--------------QR Code-------------*/
+  50:application/cmd/robot_cmd.c **** static int qr1_1(void)
+  51:application/cmd/robot_cmd.c **** {
+  52:application/cmd/robot_cmd.c ****     SetCoordinate(-0.18, 0.6, 0);
+  53:application/cmd/robot_cmd.c ****     if (chassis_feedback_data.chassis_vague_arrive)
+  54:application/cmd/robot_cmd.c ****         return 1;
+  55:application/cmd/robot_cmd.c ****     return 0;
+  56:application/cmd/robot_cmd.c **** }
+  57:application/cmd/robot_cmd.c **** 
+  58:application/cmd/robot_cmd.c **** static int qr1_2(void)
+  59:application/cmd/robot_cmd.c **** {
+  60:application/cmd/robot_cmd.c **** 
+  61:application/cmd/robot_cmd.c ****     return 0;
+  62:application/cmd/robot_cmd.c **** }
+  63:application/cmd/robot_cmd.c **** 
+  64:application/cmd/robot_cmd.c **** /*------------Get Object--------------*/
+  65:application/cmd/robot_cmd.c **** static int obj1_1(void)
+  66:application/cmd/robot_cmd.c **** {
+  67:application/cmd/robot_cmd.c ****     SetCoordinate(-0.20, 1.25, 0);
+  68:application/cmd/robot_cmd.c ****     if (chassis_feedback_data.chassis_vague_arrive)
+  69:application/cmd/robot_cmd.c ****         return 1;
+  70:application/cmd/robot_cmd.c ****     return 0;
+  71:application/cmd/robot_cmd.c **** }
+  72:application/cmd/robot_cmd.c **** 
+  73:application/cmd/robot_cmd.c **** void RobotCMDInit()
+  74:application/cmd/robot_cmd.c **** {
+  28              		.loc 1 74 1 view -0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              		@ link register save eliminated.
+  75:application/cmd/robot_cmd.c ****     /*------------------------Can communication Init---------------------
+  76:application/cmd/robot_cmd.c ****     send:  CANCommSend(CANComm_ins, comm_send_data);
+  77:application/cmd/robot_cmd.c ****     recv:  (Comm_Recv_Data_s *) comm_recv_data = CANCommGet(&CANComm_ins);
+  78:application/cmd/robot_cmd.c ****     */
+  79:application/cmd/robot_cmd.c ****     // CANComm_Init_Config_s can_comm_config =
+  80:application/cmd/robot_cmd.c ****     //     {
+  81:application/cmd/robot_cmd.c ****     //         .can_config =
+  82:application/cmd/robot_cmd.c ****     //             {
+  83:application/cmd/robot_cmd.c ****     //                 .can_handle = &hfdcan1,
+ARM GAS  C:\Users\blue\AppData\Local\Temp\cc0lG29j.s 			page 3
+
+
+  84:application/cmd/robot_cmd.c ****     //                 .tx_id = 0x02,
+  85:application/cmd/robot_cmd.c ****     //                 .rx_id = 0x01},
+  86:application/cmd/robot_cmd.c ****     //         .send_data_len = sizeof(Comm_Send_Data_s),
+  87:application/cmd/robot_cmd.c ****     //         .recv_data_len = sizeof(Comm_Recv_Data_s)};
+  88:application/cmd/robot_cmd.c ****     // CANComm_ins = CANCommInit(&can_comm_config);
+  89:application/cmd/robot_cmd.c ****     /*-----------------------message center-------------------------*/
+  90:application/cmd/robot_cmd.c ****     // water_cmd_pub = PubRegister("water_cmd", sizeof(Water_Ctrl_Cmd_s));
+  91:application/cmd/robot_cmd.c ****     // water_feed_sub = SubRegister("water_feed", sizeof(Water_Upload_Data_s));
+  92:application/cmd/robot_cmd.c **** }
+  33              		.loc 1 92 1 view .LVU1
+  34 0000 7047     		bx	lr
+  35              		.cfi_endproc
+  36              	.LFE156:
+  38              		.section	.text.RobotCMDTask,"ax",%progbits
+  39              		.align	1
+  40              		.global	RobotCMDTask
+  41              		.syntax unified
+  42              		.thumb
+  43              		.thumb_func
+  45              	RobotCMDTask:
+  46              	.LFB157:
+  93:application/cmd/robot_cmd.c **** 
+  94:application/cmd/robot_cmd.c **** // static int drought_info_ready(void)
+  95:application/cmd/robot_cmd.c **** // {
+  96:application/cmd/robot_cmd.c **** //     // static uint8_t checkCnt = 0;
+  97:application/cmd/robot_cmd.c **** //     // if (bluetooth_data->drought_buff[17] == 0)
+  98:application/cmd/robot_cmd.c **** //     // {
+  99:application/cmd/robot_cmd.c **** //     //     osDelay(2000);
+ 100:application/cmd/robot_cmd.c **** //     //     checkCnt++;
+ 101:application/cmd/robot_cmd.c **** //     //     if (checkCnt > 10) // 10s没看到就默认值
+ 102:application/cmd/robot_cmd.c **** //     //     {
+ 103:application/cmd/robot_cmd.c **** //     //         memcpy(drought_info, test, sizeof(drought_info));
+ 104:application/cmd/robot_cmd.c **** //     //         HAL_UART_Abort_IT(&huart6);
+ 105:application/cmd/robot_cmd.c **** //     //         return 1;
+ 106:application/cmd/robot_cmd.c **** //     //     }
+ 107:application/cmd/robot_cmd.c **** //     // }
+ 108:application/cmd/robot_cmd.c **** //     // else
+ 109:application/cmd/robot_cmd.c **** //     // {
+ 110:application/cmd/robot_cmd.c **** //     //     LCD_Display_All(bluetooth_data->drought_buff);
+ 111:application/cmd/robot_cmd.c **** //     //     memcpy(drought_info, bluetooth_data->drought_buff, sizeof(bluetooth_data->drought_buf
+ 112:application/cmd/robot_cmd.c **** //     //     HAL_UART_Abort_IT(&huart6);
+ 113:application/cmd/robot_cmd.c **** //     //     return 1;
+ 114:application/cmd/robot_cmd.c **** //     // }
+ 115:application/cmd/robot_cmd.c **** //     // return 0;
+ 116:application/cmd/robot_cmd.c **** //     if (bluetooth_data->drought_buff[17] != 0)
+ 117:application/cmd/robot_cmd.c **** //     {
+ 118:application/cmd/robot_cmd.c **** //         HAL_UART_Abort_IT(&huart6);
+ 119:application/cmd/robot_cmd.c **** //         LCD_Display_All(bluetooth_data->drought_buff);
+ 120:application/cmd/robot_cmd.c **** //         memcpy(comm_send_data->drought_info, bluetooth_data->drought_buff, sizeof(bluetooth_data
+ 121:application/cmd/robot_cmd.c **** //         return 1;
+ 122:application/cmd/robot_cmd.c **** //     }
+ 123:application/cmd/robot_cmd.c **** 
+ 124:application/cmd/robot_cmd.c **** //     if (comm_recv_data->recv_feedback_flag == 1)
+ 125:application/cmd/robot_cmd.c **** //     {
+ 126:application/cmd/robot_cmd.c **** //         if (bluetooth_data->drought_buff[17] == 0)
+ 127:application/cmd/robot_cmd.c **** //         {
+ 128:application/cmd/robot_cmd.c **** //             HAL_UART_Abort_IT(&huart6);
+ARM GAS  C:\Users\blue\AppData\Local\Temp\cc0lG29j.s 			page 4
+
+
+ 129:application/cmd/robot_cmd.c **** //             memcpy(drought_info, test, sizeof(drought_info));
+ 130:application/cmd/robot_cmd.c **** //         }
+ 131:application/cmd/robot_cmd.c **** //         comm_send_data->recv_feedback_flag = 1;
+ 132:application/cmd/robot_cmd.c **** //         return 1;
+ 133:application/cmd/robot_cmd.c **** //     }
+ 134:application/cmd/robot_cmd.c **** //     return 0;
+ 135:application/cmd/robot_cmd.c **** // }
+ 136:application/cmd/robot_cmd.c **** 
+ 137:application/cmd/robot_cmd.c **** // static int Display_task(void)
+ 138:application/cmd/robot_cmd.c **** // {
+ 139:application/cmd/robot_cmd.c **** //     static uint8_t display_Cnt = 0;
+ 140:application/cmd/robot_cmd.c **** 
+ 141:application/cmd/robot_cmd.c **** //     if (comm_recv_data->plant_Cnt > display_Cnt)
+ 142:application/cmd/robot_cmd.c **** //     {
+ 143:application/cmd/robot_cmd.c **** //         if (comm_recv_data->plant_Cnt == 1)
+ 144:application/cmd/robot_cmd.c **** //         {
+ 145:application/cmd/robot_cmd.c **** //             LCD_Clear();
+ 146:application/cmd/robot_cmd.c **** //         }
+ 147:application/cmd/robot_cmd.c **** //         // comm_send_data->recv_feedback_flag = 1;
+ 148:application/cmd/robot_cmd.c **** //         if (comm_recv_data <= 18)
+ 149:application/cmd/robot_cmd.c **** //         {
+ 150:application/cmd/robot_cmd.c **** //             MP3_broadcast(drought_info[display_Cnt]);
+ 151:application/cmd/robot_cmd.c **** //             LCD_Display_One(drought_info[display_Cnt], display_Cnt);
+ 152:application/cmd/robot_cmd.c **** //             display_Cnt = comm_recv_data->plant_Cnt;
+ 153:application/cmd/robot_cmd.c **** //         }
+ 154:application/cmd/robot_cmd.c **** //         else
+ 155:application/cmd/robot_cmd.c **** //         {
+ 156:application/cmd/robot_cmd.c **** //             MP3_broadcast(comm_recv_data->D_Drougnt_info);
+ 157:application/cmd/robot_cmd.c **** //             LCD_Display_One(comm_recv_data->D_Drougnt_info, display_Cnt);
+ 158:application/cmd/robot_cmd.c **** //             display_Cnt++;
+ 159:application/cmd/robot_cmd.c **** //         }
+ 160:application/cmd/robot_cmd.c **** //         memset(comm_recv_data, 0, sizeof(Comm_Recv_Data_s));
+ 161:application/cmd/robot_cmd.c **** //         return 1;
+ 162:application/cmd/robot_cmd.c **** //     }
+ 163:application/cmd/robot_cmd.c **** //     return 0;
+ 164:application/cmd/robot_cmd.c **** // }
+ 165:application/cmd/robot_cmd.c **** 
+ 166:application/cmd/robot_cmd.c **** // static int (*operation_sequence[])(void) = {
+ 167:application/cmd/robot_cmd.c **** //     drought_info_ready,
+ 168:application/cmd/robot_cmd.c **** //     Display_task};
+ 169:application/cmd/robot_cmd.c **** // /* 机器人核心控制任务,200Hz频率运行(后续可调) */
+ 170:application/cmd/robot_cmd.c **** 
+ 171:application/cmd/robot_cmd.c **** // }
+ 172:application/cmd/robot_cmd.c **** 
+ 173:application/cmd/robot_cmd.c **** void RobotCMDTask(void)
+ 174:application/cmd/robot_cmd.c **** {
+  47              		.loc 1 174 1 view -0
+  48              		.cfi_startproc
+  49              		@ args = 0, pretend = 0, frame = 0
+  50              		@ frame_needed = 0, uses_anonymous_args = 0
+  51              		@ link register save eliminated.
+ 175:application/cmd/robot_cmd.c ****     // comm_recv_data = (Comm_Recv_Data_s *)CANCommGet(CANComm_ins);
+ 176:application/cmd/robot_cmd.c ****     // if (operation_sequence[cmd_run_idx]())
+ 177:application/cmd/robot_cmd.c ****     //     cmd_run_idx++;
+ 178:application/cmd/robot_cmd.c ****     // if (cmd_run_idx >= max_run_itr)
+ 179:application/cmd/robot_cmd.c ****     // {
+ 180:application/cmd/robot_cmd.c ****     //     return;
+ARM GAS  C:\Users\blue\AppData\Local\Temp\cc0lG29j.s 			page 5
+
+
+ 181:application/cmd/robot_cmd.c ****     // }
+ 182:application/cmd/robot_cmd.c ****     // CANCommSend(CANComm_ins, (uint8_t *)comm_send_data);
+ 183:application/cmd/robot_cmd.c **** }...
+  52              		.loc 1 183 1 view .LVU3
+  53 0000 7047     		bx	lr
+  54              		.cfi_endproc
+  55              	.LFE157:
+  57              		.text
+  58              	.Letext0:
+  59              		.file 2 "d:\\rm\\arm-gnu-toolchian\\arm-none-eabi\\include\\machine\\_default_types.h"
+  60              		.file 3 "d:\\rm\\arm-gnu-toolchian\\arm-none-eabi\\include\\sys\\_stdint.h"
+  61              		.file 4 "application/robot_def.h"
+  62              		.file 5 "modules/message_center/message_center.h"
+ARM GAS  C:\Users\blue\AppData\Local\Temp\cc0lG29j.s 			page 6
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 robot_cmd.c
+C:\Users\blue\AppData\Local\Temp\cc0lG29j.s:19     .text.RobotCMDInit:00000000 $t
+C:\Users\blue\AppData\Local\Temp\cc0lG29j.s:25     .text.RobotCMDInit:00000000 RobotCMDInit
+C:\Users\blue\AppData\Local\Temp\cc0lG29j.s:39     .text.RobotCMDTask:00000000 $t
+C:\Users\blue\AppData\Local\Temp\cc0lG29j.s:45     .text.RobotCMDTask:00000000 RobotCMDTask
+
+NO UNDEFINED SYMBOLS

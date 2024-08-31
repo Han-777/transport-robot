@@ -1,0 +1,939 @@
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccSLPXna.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.arch armv7e-m
+   3              		.fpu fpv5-d16
+   4              		.eabi_attribute 28, 1
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 1
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.file	"sdram.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.section	.text.SDRAM_Initialization_Sequence,"ax",%progbits
+  19              		.align	1
+  20              		.global	SDRAM_Initialization_Sequence
+  21              		.syntax unified
+  22              		.thumb
+  23              		.thumb_func
+  25              	SDRAM_Initialization_Sequence:
+  26              	.LVL0:
+  27              	.LFB144:
+  28              		.file 1 "modules/ltdc/sdram.c"
+   1:modules/ltdc/sdram.c **** /***
+   2:modules/ltdc/sdram.c **** 	************************************************************************************************
+   3:modules/ltdc/sdram.c **** 	*************************************************************************************************
+   4:modules/ltdc/sdram.c **** 	*	@version V1.1
+   5:modules/ltdc/sdram.c **** 	*  @date    2024-6-19
+   6:modules/ltdc/sdram.c **** 	*	@author  反客科技	
+   7:modules/ltdc/sdram.c ****    ************************************************************************************************
+   8:modules/ltdc/sdram.c ****    *  @description
+   9:modules/ltdc/sdram.c **** 	*
+  10:modules/ltdc/sdram.c **** 	*	实验平台：反客STM32H743XIH6核心板 （型号：FK743M5-XIH6）
+  11:modules/ltdc/sdram.c **** 	*	淘宝地址：https://shop212360197.taobao.com
+  12:modules/ltdc/sdram.c **** 	*	QQ交流群：536665479
+  13:modules/ltdc/sdram.c **** 	*
+  14:modules/ltdc/sdram.c **** >>>>> V1.1 版本变更说明（2024-6-19）：
+  15:modules/ltdc/sdram.c **** 	*
+  16:modules/ltdc/sdram.c **** 	*	删除驱动文件的初始化配置，保留原本cubeMX的配置，方便客户移植和使用
+  17:modules/ltdc/sdram.c **** 	*	
+  18:modules/ltdc/sdram.c **** >>>>> 文件说明：
+  19:modules/ltdc/sdram.c **** 	*
+  20:modules/ltdc/sdram.c **** 	*  SDRAM相关初始化函数
+  21:modules/ltdc/sdram.c **** 	*
+  22:modules/ltdc/sdram.c **** 	************************************************************************************************
+  23:modules/ltdc/sdram.c **** ***/
+  24:modules/ltdc/sdram.c **** 
+  25:modules/ltdc/sdram.c **** #include "sdram.h"   
+  26:modules/ltdc/sdram.c **** 
+  27:modules/ltdc/sdram.c **** FMC_SDRAM_CommandTypeDef *Command;	// 控制指令
+  28:modules/ltdc/sdram.c **** 
+  29:modules/ltdc/sdram.c **** 
+  30:modules/ltdc/sdram.c **** /**************************************************************************************************
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccSLPXna.s 			page 2
+
+
+  31:modules/ltdc/sdram.c **** *	函 数 名: SDRAM_Initialization_Sequence
+  32:modules/ltdc/sdram.c **** *	入口参数: hsdram - SDRAM_HandleTypeDef定义的变量，即表示定义的sdram	 
+  33:modules/ltdc/sdram.c **** *	返 回 值: 无
+  34:modules/ltdc/sdram.c **** *	函数功能: SDRAM 参数配置
+  35:modules/ltdc/sdram.c **** *	说    明: 配置SDRAM相关时序和控制方式
+  36:modules/ltdc/sdram.c **** ***************************************************************************************************
+  37:modules/ltdc/sdram.c **** 
+  38:modules/ltdc/sdram.c **** void SDRAM_Initialization_Sequence(SDRAM_HandleTypeDef *hsdram)
+  39:modules/ltdc/sdram.c **** {
+  29              		.loc 1 39 1 view -0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 8
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33              		.loc 1 39 1 is_stmt 0 view .LVU1
+  34 0000 2DE9F041 		push	{r4, r5, r6, r7, r8, lr}
+  35              	.LCFI0:
+  36              		.cfi_def_cfa_offset 24
+  37              		.cfi_offset 4, -24
+  38              		.cfi_offset 5, -20
+  39              		.cfi_offset 6, -16
+  40              		.cfi_offset 7, -12
+  41              		.cfi_offset 8, -8
+  42              		.cfi_offset 14, -4
+  43 0004 82B0     		sub	sp, sp, #8
+  44              	.LCFI1:
+  45              		.cfi_def_cfa_offset 32
+  46 0006 0546     		mov	r5, r0
+  40:modules/ltdc/sdram.c **** 	__IO uint32_t tmpmrd = 0;
+  47              		.loc 1 40 2 is_stmt 1 view .LVU2
+  48              		.loc 1 40 16 is_stmt 0 view .LVU3
+  49 0008 4FF00008 		mov	r8, #0
+  50 000c CDF80480 		str	r8, [sp, #4]
+  41:modules/ltdc/sdram.c **** 
+  42:modules/ltdc/sdram.c **** 	/* Configure a clock configuration enable command */
+  43:modules/ltdc/sdram.c **** 	Command->CommandMode 				= FMC_SDRAM_CMD_CLK_ENABLE;	// 开启SDRAM时钟 
+  51              		.loc 1 43 2 is_stmt 1 view .LVU4
+  52              		.loc 1 43 9 is_stmt 0 view .LVU5
+  53 0010 214C     		ldr	r4, .L3
+  54 0012 2368     		ldr	r3, [r4]
+  55              		.loc 1 43 27 view .LVU6
+  56 0014 0126     		movs	r6, #1
+  57 0016 1E60     		str	r6, [r3]
+  44:modules/ltdc/sdram.c **** 	Command->CommandTarget 				= FMC_COMMAND_TARGET_BANK; 	// 选择要控制的区域
+  58              		.loc 1 44 2 is_stmt 1 view .LVU7
+  59              		.loc 1 44 9 is_stmt 0 view .LVU8
+  60 0018 2168     		ldr	r1, [r4]
+  61              		.loc 1 44 29 view .LVU9
+  62 001a 1027     		movs	r7, #16
+  63 001c 4F60     		str	r7, [r1, #4]
+  45:modules/ltdc/sdram.c **** 	Command->AutoRefreshNumber 		= 1;
+  64              		.loc 1 45 2 is_stmt 1 view .LVU10
+  65              		.loc 1 45 31 is_stmt 0 view .LVU11
+  66 001e 8E60     		str	r6, [r1, #8]
+  46:modules/ltdc/sdram.c **** 	Command->ModeRegisterDefinition 	= 0;
+  67              		.loc 1 46 2 is_stmt 1 view .LVU12
+  68              		.loc 1 46 35 is_stmt 0 view .LVU13
+  69 0020 C1F80C80 		str	r8, [r1, #12]
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccSLPXna.s 			page 3
+
+
+  47:modules/ltdc/sdram.c **** 
+  48:modules/ltdc/sdram.c **** 	HAL_SDRAM_SendCommand(hsdram, Command, SDRAM_TIMEOUT);	// 发送控制指令
+  70              		.loc 1 48 2 is_stmt 1 view .LVU14
+  71 0024 4FF48052 		mov	r2, #4096
+  72 0028 FFF7FEFF 		bl	HAL_SDRAM_SendCommand
+  73              	.LVL1:
+  49:modules/ltdc/sdram.c **** 	HAL_Delay(1);		// 延时等待
+  74              		.loc 1 49 2 view .LVU15
+  75 002c 3046     		mov	r0, r6
+  76 002e FFF7FEFF 		bl	HAL_Delay
+  77              	.LVL2:
+  50:modules/ltdc/sdram.c **** 
+  51:modules/ltdc/sdram.c **** 	/* Configure a PALL (precharge all) command */ 
+  52:modules/ltdc/sdram.c **** 	Command->CommandMode 				= FMC_SDRAM_CMD_PALL;		// 预充电命令
+  78              		.loc 1 52 2 view .LVU16
+  79              		.loc 1 52 9 is_stmt 0 view .LVU17
+  80 0032 2368     		ldr	r3, [r4]
+  81              		.loc 1 52 27 view .LVU18
+  82 0034 0222     		movs	r2, #2
+  83 0036 1A60     		str	r2, [r3]
+  53:modules/ltdc/sdram.c **** 	Command->CommandTarget 				= FMC_COMMAND_TARGET_BANK;	// 选择要控制的区域
+  84              		.loc 1 53 2 is_stmt 1 view .LVU19
+  85              		.loc 1 53 9 is_stmt 0 view .LVU20
+  86 0038 2168     		ldr	r1, [r4]
+  87              		.loc 1 53 29 view .LVU21
+  88 003a 4F60     		str	r7, [r1, #4]
+  54:modules/ltdc/sdram.c **** 	Command->AutoRefreshNumber 		= 1;
+  89              		.loc 1 54 2 is_stmt 1 view .LVU22
+  90              		.loc 1 54 31 is_stmt 0 view .LVU23
+  91 003c 8E60     		str	r6, [r1, #8]
+  55:modules/ltdc/sdram.c **** 	Command->ModeRegisterDefinition 	= 0;
+  92              		.loc 1 55 2 is_stmt 1 view .LVU24
+  93              		.loc 1 55 35 is_stmt 0 view .LVU25
+  94 003e C1F80C80 		str	r8, [r1, #12]
+  56:modules/ltdc/sdram.c **** 
+  57:modules/ltdc/sdram.c **** 	HAL_SDRAM_SendCommand(hsdram, Command, SDRAM_TIMEOUT);  // 发送控制指令
+  95              		.loc 1 57 2 is_stmt 1 view .LVU26
+  96 0042 4FF48052 		mov	r2, #4096
+  97 0046 2846     		mov	r0, r5
+  98 0048 FFF7FEFF 		bl	HAL_SDRAM_SendCommand
+  99              	.LVL3:
+  58:modules/ltdc/sdram.c **** 
+  59:modules/ltdc/sdram.c **** 	/* Configure a Auto-Refresh command */ 
+  60:modules/ltdc/sdram.c **** 	Command->CommandMode 				= FMC_SDRAM_CMD_AUTOREFRESH_MODE;	// 使用自动刷新
+ 100              		.loc 1 60 2 view .LVU27
+ 101              		.loc 1 60 9 is_stmt 0 view .LVU28
+ 102 004c 2368     		ldr	r3, [r4]
+ 103              		.loc 1 60 27 view .LVU29
+ 104 004e 0322     		movs	r2, #3
+ 105 0050 1A60     		str	r2, [r3]
+  61:modules/ltdc/sdram.c **** 	Command->CommandTarget 				= FMC_COMMAND_TARGET_BANK;          // 选择要控制的区域
+ 106              		.loc 1 61 2 is_stmt 1 view .LVU30
+ 107              		.loc 1 61 9 is_stmt 0 view .LVU31
+ 108 0052 2168     		ldr	r1, [r4]
+ 109              		.loc 1 61 29 view .LVU32
+ 110 0054 4F60     		str	r7, [r1, #4]
+  62:modules/ltdc/sdram.c **** 	Command->AutoRefreshNumber			= 8;                                // 自动刷新次数
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccSLPXna.s 			page 4
+
+
+ 111              		.loc 1 62 2 is_stmt 1 view .LVU33
+ 112              		.loc 1 62 31 is_stmt 0 view .LVU34
+ 113 0056 0823     		movs	r3, #8
+ 114 0058 8B60     		str	r3, [r1, #8]
+  63:modules/ltdc/sdram.c **** 	Command->ModeRegisterDefinition 	= 0;
+ 115              		.loc 1 63 2 is_stmt 1 view .LVU35
+ 116              		.loc 1 63 35 is_stmt 0 view .LVU36
+ 117 005a C1F80C80 		str	r8, [r1, #12]
+  64:modules/ltdc/sdram.c **** 
+  65:modules/ltdc/sdram.c **** 	HAL_SDRAM_SendCommand(hsdram, Command, SDRAM_TIMEOUT);	// 发送控制指令
+ 118              		.loc 1 65 2 is_stmt 1 view .LVU37
+ 119 005e 4FF48052 		mov	r2, #4096
+ 120 0062 2846     		mov	r0, r5
+ 121 0064 FFF7FEFF 		bl	HAL_SDRAM_SendCommand
+ 122              	.LVL4:
+  66:modules/ltdc/sdram.c **** 
+  67:modules/ltdc/sdram.c **** 	/* Program the external memory mode register */
+  68:modules/ltdc/sdram.c **** 	tmpmrd = (uint32_t)SDRAM_MODEREG_BURST_LENGTH_2         |
+ 123              		.loc 1 68 2 view .LVU38
+ 124              		.loc 1 68 9 is_stmt 0 view .LVU39
+ 125 0068 40F23123 		movw	r3, #561
+ 126 006c 0193     		str	r3, [sp, #4]
+  69:modules/ltdc/sdram.c **** 							SDRAM_MODEREG_BURST_TYPE_SEQUENTIAL   |
+  70:modules/ltdc/sdram.c **** 							SDRAM_MODEREG_CAS_LATENCY_3           |
+  71:modules/ltdc/sdram.c **** 							SDRAM_MODEREG_OPERATING_MODE_STANDARD |
+  72:modules/ltdc/sdram.c **** 							SDRAM_MODEREG_WRITEBURST_MODE_SINGLE;
+  73:modules/ltdc/sdram.c **** 
+  74:modules/ltdc/sdram.c **** 	Command->CommandMode					= FMC_SDRAM_CMD_LOAD_MODE;	// 加载模式寄存器命令
+ 127              		.loc 1 74 2 is_stmt 1 view .LVU40
+ 128              		.loc 1 74 9 is_stmt 0 view .LVU41
+ 129 006e 2368     		ldr	r3, [r4]
+ 130              		.loc 1 74 27 view .LVU42
+ 131 0070 0422     		movs	r2, #4
+ 132 0072 1A60     		str	r2, [r3]
+  75:modules/ltdc/sdram.c **** 	Command->CommandTarget 				= FMC_COMMAND_TARGET_BANK;	// 选择要控制的区域
+ 133              		.loc 1 75 2 is_stmt 1 view .LVU43
+ 134              		.loc 1 75 9 is_stmt 0 view .LVU44
+ 135 0074 2168     		ldr	r1, [r4]
+ 136              		.loc 1 75 29 view .LVU45
+ 137 0076 4F60     		str	r7, [r1, #4]
+  76:modules/ltdc/sdram.c **** 	Command->AutoRefreshNumber 		= 1;
+ 138              		.loc 1 76 2 is_stmt 1 view .LVU46
+ 139              		.loc 1 76 31 is_stmt 0 view .LVU47
+ 140 0078 8E60     		str	r6, [r1, #8]
+  77:modules/ltdc/sdram.c **** 	Command->ModeRegisterDefinition 	= tmpmrd;
+ 141              		.loc 1 77 2 is_stmt 1 view .LVU48
+ 142              		.loc 1 77 35 is_stmt 0 view .LVU49
+ 143 007a 019B     		ldr	r3, [sp, #4]
+ 144 007c CB60     		str	r3, [r1, #12]
+  78:modules/ltdc/sdram.c **** 
+  79:modules/ltdc/sdram.c **** 	HAL_SDRAM_SendCommand(hsdram, Command, SDRAM_TIMEOUT);	// 发送控制指令
+ 145              		.loc 1 79 2 is_stmt 1 view .LVU50
+ 146 007e 4FF48052 		mov	r2, #4096
+ 147 0082 2846     		mov	r0, r5
+ 148 0084 FFF7FEFF 		bl	HAL_SDRAM_SendCommand
+ 149              	.LVL5:
+  80:modules/ltdc/sdram.c **** 	
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccSLPXna.s 			page 5
+
+
+  81:modules/ltdc/sdram.c **** 	HAL_SDRAM_ProgramRefreshRate(hsdram, 918);  // 配置刷新率
+ 150              		.loc 1 81 2 view .LVU51
+ 151 0088 40F29631 		movw	r1, #918
+ 152 008c 2846     		mov	r0, r5
+ 153 008e FFF7FEFF 		bl	HAL_SDRAM_ProgramRefreshRate
+ 154              	.LVL6:
+  82:modules/ltdc/sdram.c **** 
+  83:modules/ltdc/sdram.c **** }
+ 155              		.loc 1 83 1 is_stmt 0 view .LVU52
+ 156 0092 02B0     		add	sp, sp, #8
+ 157              	.LCFI2:
+ 158              		.cfi_def_cfa_offset 24
+ 159              		@ sp needed
+ 160 0094 BDE8F081 		pop	{r4, r5, r6, r7, r8, pc}
+ 161              	.LVL7:
+ 162              	.L4:
+ 163              		.loc 1 83 1 view .LVU53
+ 164              		.align	2
+ 165              	.L3:
+ 166 0098 00000000 		.word	.LANCHOR0
+ 167              		.cfi_endproc
+ 168              	.LFE144:
+ 170              		.section	.rodata.SDRAM_Test.str1.4,"aMS",%progbits,1
+ 171              		.align	2
+ 172              	.LC0:
+ 173 0000 0D0A2A2A 		.ascii	"\015\012*******************************************"
+ 173      2A2A2A2A 
+ 173      2A2A2A2A 
+ 173      2A2A2A2A 
+ 173      2A2A2A2A 
+ 174 002d 2A2A2A2A 		.ascii	"***************************************************"
+ 174      2A2A2A2A 
+ 174      2A2A2A2A 
+ 174      2A2A2A2A 
+ 174      2A2A2A2A 
+ 175 0060 2A2A2A2A 		.ascii	"*******\015\000"
+ 175      2A2A2A0D 
+ 175      00
+ 176 0069 000000   		.align	2
+ 177              	.LC1:
+ 178 006c 0D0ABDF8 		.ascii	"\015\012\275\370\320\320\313\331\266\310\262\342\312"
+ 178      D0D0CBD9 
+ 178      B6C8B2E2 
+ 178      CA
+ 179 0079 D43E3E3E 		.ascii	"\324>>>\015\000"
+ 179      0D00
+ 180 007f 00       		.align	2
+ 181              	.LC2:
+ 182 0080 0D0AD2D4 		.ascii	"\015\012\322\32416\316\273\312\375\276\335\277\355\266"
+ 182      3136CEBB 
+ 182      CAFDBEDD 
+ 182      BFEDB6
+ 183 008f C8D0B4C8 		.ascii	"\310\320\264\310\353\312\375\276\335\243\254\264\363"
+ 183      EBCAFDBE 
+ 183      DDA3ACB4 
+ 183      F3
+ 184 009c D0A1A3BA 		.ascii	"\320\241\243\272%d MB\243\254\272\304\312\261: %d m"
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccSLPXna.s 			page 6
+
+
+ 184      2564204D 
+ 184      42A3ACBA 
+ 184      C4CAB13A 
+ 184      20256420 
+ 185 00b1 732C20D0 		.ascii	"s, \320\264\310\353\313\331\266\310\243\272%.2f MB/"
+ 185      B4C8EBCB 
+ 185      D9B6C8A3 
+ 185      BA252E32 
+ 185      66204D42 
+ 186 00c6 730D0A00 		.ascii	"s\015\012\000"
+ 187 00ca 0000     		.align	2
+ 188              	.LC3:
+ 189 00cc 0D0AB6C1 		.ascii	"\015\012\266\301\310\241\312\375\276\335\315\352\261"
+ 189      C8A1CAFD 
+ 189      BEDDCDEA 
+ 189      B1
+ 190 00d9 CFA3ACB4 		.ascii	"\317\243\254\264\363\320\241\243\272%d MB\243\254\272"
+ 190      F3D0A1A3 
+ 190      BA256420 
+ 190      4D42A3AC 
+ 190      BA
+ 191 00ea C4CAB13A 		.ascii	"\304\312\261: %d ms, \266\301\310\241\313\331\266\310"
+ 191      20256420 
+ 191      6D732C20 
+ 191      B6C1C8A1 
+ 191      CBD9B6C8 
+ 192 00fe A3BA252E 		.ascii	"\243\272%.2f MB/s\015\012\000"
+ 192      3266204D 
+ 192      422F730D 
+ 192      0A00
+ 193              		.align	2
+ 194              	.LC4:
+ 195 010c 0D0ABDF8 		.ascii	"\015\012\275\370\320\320\312\375\276\335\320\243\321"
+ 195      D0D0CAFD 
+ 195      BEDDD0A3 
+ 195      D1
+ 196 0119 E93E3E3E 		.ascii	"\351>>>\015\000"
+ 196      0D00
+ 197 011f 00       		.align	2
+ 198              	.LC5:
+ 199 0120 0D0A5344 		.ascii	"\015\012SDRAM\262\342\312\324\312\247\260\334\243\241"
+ 199      52414DB2 
+ 199      E2CAD4CA 
+ 199      A7B0DCA3 
+ 199      A1
+ 200 0131 A3A10D00 		.ascii	"\243\241\015\000"
+ 201 0135 000000   		.align	2
+ 202              	.LC6:
+ 203 0138 0D0A3136 		.ascii	"\015\01216\316\273\312\375\276\335\277\355\266\310\266"
+ 203      CEBBCAFD 
+ 203      BEDDBFED 
+ 203      B6C8B6
+ 204 0147 C1D0B4CD 		.ascii	"\301\320\264\315\250\271\375\243\254\322\3248\316\273"
+ 204      A8B9FDA3 
+ 204      ACD2D438 
+ 204      CEBB
+ 205 0155 CAFDBEDD 		.ascii	"\312\375\276\335\277\355\266\310\320\264\310\353\312"
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccSLPXna.s 			page 7
+
+
+ 205      BFEDB6C8 
+ 205      D0B4C8EB 
+ 205      CA
+ 206 0162 FDBEDD0D 		.ascii	"\375\276\335\015\000"
+ 206      00
+ 207 0167 00       		.align	2
+ 208              	.LC7:
+ 209 0168 D0B4C8EB 		.ascii	"\320\264\310\353\315\352\261\317\243\254\266\301\310"
+ 209      CDEAB1CF 
+ 209      A3ACB6C1 
+ 209      C8
+ 210 0175 A1CAFDBE 		.ascii	"\241\312\375\276\335\262\242\261\310\275\317...\015"
+ 210      DDB2A2B1 
+ 210      C8BDCF2E 
+ 210      2E2E0D
+ 211 0184 00       		.ascii	"\000"
+ 212 0185 000000   		.align	2
+ 213              	.LC8:
+ 214 0188 38CEBBCA 		.ascii	"8\316\273\312\375\276\335\277\355\266\310\266\301\320"
+ 214      FDBEDDBF 
+ 214      EDB6C8B6 
+ 214      C1D0
+ 215 0196 B4B2E2CA 		.ascii	"\264\262\342\312\324\312\247\260\334\243\241\243\241"
+ 215      D4CAA7B0 
+ 215      DCA3A1A3 
+ 215      A1
+ 216 01a3 0D00     		.ascii	"\015\000"
+ 217 01a5 000000   		.align	2
+ 218              	.LC9:
+ 219 01a8 C7EBBCEC 		.ascii	"\307\353\274\354\262\351NBL0\272\315NBL1\265\304\301"
+ 219      B2E94E42 
+ 219      4C30BACD 
+ 219      4E424C31 
+ 219      B5C4C1
+ 220 01bb ACBDD30D 		.ascii	"\254\275\323\015\000"
+ 220      00
+ 221              		.align	2
+ 222              	.LC10:
+ 223 01c0 38CEBBCA 		.ascii	"8\316\273\312\375\276\335\277\355\266\310\266\301\320"
+ 223      FDBEDDBF 
+ 223      EDB6C8B6 
+ 223      C1D0
+ 224 01ce B4CDA8B9 		.ascii	"\264\315\250\271\375\015\000"
+ 224      FD0D00
+ 225 01d5 000000   		.align	2
+ 226              	.LC11:
+ 227 01d8 53445241 		.ascii	"SDRAM\266\301\320\264\262\342\312\324\315\250\271\375"
+ 227      4DB6C1D0 
+ 227      B4B2E2CA 
+ 227      D4CDA8B9 
+ 227      FD
+ 228 01e9 A3ACCFB5 		.ascii	"\243\254\317\265\315\263\325\375\263\243\015\000"
+ 228      CDB3D5FD 
+ 228      B3A30D00 
+ 229              		.section	.text.SDRAM_Test,"ax",%progbits
+ 230              		.align	1
+ 231              		.global	SDRAM_Test
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccSLPXna.s 			page 8
+
+
+ 232              		.syntax unified
+ 233              		.thumb
+ 234              		.thumb_func
+ 236              	SDRAM_Test:
+ 237              	.LFB145:
+  84:modules/ltdc/sdram.c **** 
+  85:modules/ltdc/sdram.c **** 
+  86:modules/ltdc/sdram.c **** // 不同批次，SDRAM容量可能不一样
+  87:modules/ltdc/sdram.c **** // W9825G6 为32M字节 
+  88:modules/ltdc/sdram.c **** //	W9812G6 为16M字节
+  89:modules/ltdc/sdram.c **** //
+  90:modules/ltdc/sdram.c **** //#define SDRAM_Size 16*1024*1024  //16M字节
+  91:modules/ltdc/sdram.c **** #define SDRAM_Size 32*1024*1024  //32M字节
+  92:modules/ltdc/sdram.c **** 
+  93:modules/ltdc/sdram.c **** /**************************************************************************************************
+  94:modules/ltdc/sdram.c **** *	函 数 名: SDRAM_Test
+  95:modules/ltdc/sdram.c **** *	入口参数: 无
+  96:modules/ltdc/sdram.c **** *	返 回 值: SUCCESS - 成功，ERROR - 失败
+  97:modules/ltdc/sdram.c **** *	函数功能: SDRAM测试
+  98:modules/ltdc/sdram.c **** *	说    明: 先以16位的数据宽度写入数据，再读取出来一一进行比较，随后以8位的数据宽度写入，
+  99:modules/ltdc/sdram.c **** *				 用以验证NBL0和NBL1两个引脚的连接是否正常。          
+ 100:modules/ltdc/sdram.c **** ***************************************************************************************************
+ 101:modules/ltdc/sdram.c **** 
+ 102:modules/ltdc/sdram.c **** uint8_t SDRAM_Test(void)
+ 103:modules/ltdc/sdram.c **** {
+ 238              		.loc 1 103 1 is_stmt 1 view -0
+ 239              		.cfi_startproc
+ 240              		@ args = 0, pretend = 0, frame = 0
+ 241              		@ frame_needed = 0, uses_anonymous_args = 0
+ 242 0000 10B5     		push	{r4, lr}
+ 243              	.LCFI3:
+ 244              		.cfi_def_cfa_offset 8
+ 245              		.cfi_offset 4, -8
+ 246              		.cfi_offset 14, -4
+ 247 0002 82B0     		sub	sp, sp, #8
+ 248              	.LCFI4:
+ 249              		.cfi_def_cfa_offset 16
+ 104:modules/ltdc/sdram.c **** 	uint32_t i = 0;			// 计数变量
+ 250              		.loc 1 104 2 view .LVU55
+ 251              	.LVL8:
+ 105:modules/ltdc/sdram.c **** 	uint16_t ReadData = 0; 	// 读取到的数据
+ 252              		.loc 1 105 2 view .LVU56
+ 106:modules/ltdc/sdram.c **** 	uint8_t  ReadData_8b;
+ 253              		.loc 1 106 2 view .LVU57
+ 107:modules/ltdc/sdram.c **** 
+ 108:modules/ltdc/sdram.c **** 	uint32_t ExecutionTime_Begin;		// 开始时间
+ 254              		.loc 1 108 2 view .LVU58
+ 109:modules/ltdc/sdram.c **** 	uint32_t ExecutionTime_End;		// 结束时间
+ 255              		.loc 1 109 2 view .LVU59
+ 110:modules/ltdc/sdram.c **** 	uint32_t ExecutionTime;				// 执行时间	
+ 256              		.loc 1 110 2 view .LVU60
+ 111:modules/ltdc/sdram.c **** 	float    ExecutionSpeed;			// 执行速度
+ 257              		.loc 1 111 2 view .LVU61
+ 112:modules/ltdc/sdram.c **** 	
+ 113:modules/ltdc/sdram.c **** 	printf("\r\n**************************************************************************************
+ 258              		.loc 1 113 2 view .LVU62
+ 259 0004 4A48     		ldr	r0, .L24
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccSLPXna.s 			page 9
+
+
+ 260 0006 FFF7FEFF 		bl	puts
+ 261              	.LVL9:
+ 114:modules/ltdc/sdram.c **** 	printf("\r\n进行速度测试>>>\r\n");
+ 262              		.loc 1 114 2 view .LVU63
+ 263 000a 4A48     		ldr	r0, .L24+4
+ 264 000c FFF7FEFF 		bl	puts
+ 265              	.LVL10:
+ 115:modules/ltdc/sdram.c **** 
+ 116:modules/ltdc/sdram.c **** // 写入 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+ 117:modules/ltdc/sdram.c **** 
+ 118:modules/ltdc/sdram.c **** 	ExecutionTime_Begin 	= HAL_GetTick();	// 获取 systick 当前时间，单位ms
+ 266              		.loc 1 118 2 view .LVU64
+ 267              		.loc 1 118 25 is_stmt 0 view .LVU65
+ 268 0010 FFF7FEFF 		bl	HAL_GetTick
+ 269              	.LVL11:
+ 270 0014 0446     		mov	r4, r0
+ 271              	.LVL12:
+ 119:modules/ltdc/sdram.c **** 	
+ 120:modules/ltdc/sdram.c **** 	for (i = 0; i < SDRAM_Size/2; i++)
+ 272              		.loc 1 120 2 is_stmt 1 view .LVU66
+ 273              		.loc 1 120 9 is_stmt 0 view .LVU67
+ 274 0016 0023     		movs	r3, #0
+ 275              		.loc 1 120 2 view .LVU68
+ 276 0018 07E0     		b	.L6
+ 277              	.LVL13:
+ 278              	.L7:
+ 121:modules/ltdc/sdram.c **** 	{
+ 122:modules/ltdc/sdram.c ****  		*(__IO uint16_t*) (SDRAM_BANK_ADDR + 2*i) = (uint16_t)i;		// 写入数据
+ 279              		.loc 1 122 4 is_stmt 1 discriminator 3 view .LVU69
+ 280              		.loc 1 122 39 is_stmt 0 discriminator 3 view .LVU70
+ 281 001a 03F1C041 		add	r1, r3, #1610612736
+ 282 001e 4900     		lsls	r1, r1, #1
+ 283              		.loc 1 122 48 discriminator 3 view .LVU71
+ 284 0020 1FFA83FC 		uxth	ip, r3
+ 285              		.loc 1 122 46 discriminator 3 view .LVU72
+ 286 0024 A1F800C0 		strh	ip, [r1]	@ movhi
+ 120:modules/ltdc/sdram.c **** 	{
+ 287              		.loc 1 120 32 is_stmt 1 discriminator 3 view .LVU73
+ 120:modules/ltdc/sdram.c **** 	{
+ 288              		.loc 1 120 33 is_stmt 0 discriminator 3 view .LVU74
+ 289 0028 0133     		adds	r3, r3, #1
+ 290              	.LVL14:
+ 291              	.L6:
+ 120:modules/ltdc/sdram.c **** 	{
+ 292              		.loc 1 120 14 is_stmt 1 discriminator 1 view .LVU75
+ 120:modules/ltdc/sdram.c **** 	{
+ 293              		.loc 1 120 2 is_stmt 0 discriminator 1 view .LVU76
+ 294 002a B3F1807F 		cmp	r3, #16777216
+ 295 002e F4D3     		bcc	.L7
+ 123:modules/ltdc/sdram.c **** 	}
+ 124:modules/ltdc/sdram.c **** 	ExecutionTime_End		= HAL_GetTick();											// 获取 systick 当前时间，单位ms
+ 296              		.loc 1 124 2 is_stmt 1 view .LVU77
+ 297              		.loc 1 124 23 is_stmt 0 view .LVU78
+ 298 0030 FFF7FEFF 		bl	HAL_GetTick
+ 299              	.LVL15:
+ 125:modules/ltdc/sdram.c **** 	ExecutionTime  = ExecutionTime_End - ExecutionTime_Begin; 				// 计算擦除时间，单位ms
+ 300              		.loc 1 125 2 is_stmt 1 view .LVU79
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccSLPXna.s 			page 10
+
+
+ 301              		.loc 1 125 17 is_stmt 0 view .LVU80
+ 302 0034 021B     		subs	r2, r0, r4
+ 303              	.LVL16:
+ 126:modules/ltdc/sdram.c **** 	ExecutionSpeed = (float)SDRAM_Size /1024/1024 /ExecutionTime*1000 ; 	// 计算速度，单位 MB/S	
+ 304              		.loc 1 126 2 is_stmt 1 view .LVU81
+ 305              		.loc 1 126 48 is_stmt 0 view .LVU82
+ 306 0036 07EE902A 		vmov	s15, r2	@ int
+ 307 003a F8EE677A 		vcvt.f32.u32	s15, s15
+ 308 003e DFED3E6A 		vldr.32	s13, .L24+8
+ 309 0042 86EEA77A 		vdiv.f32	s14, s13, s15
+ 310              		.loc 1 126 17 view .LVU83
+ 311 0046 DFED3D7A 		vldr.32	s15, .L24+12
+ 312 004a 27EE277A 		vmul.f32	s14, s14, s15
+ 313              	.LVL17:
+ 127:modules/ltdc/sdram.c **** 	
+ 128:modules/ltdc/sdram.c **** 	printf("\r\n以16位数据宽度写入数据，大小：%d MB，耗时: %d ms, 写入速度：%.2f MB/s\r\n",SDRAM_Size/
+ 314              		.loc 1 128 2 is_stmt 1 view .LVU84
+ 315 004e B7EEC77A 		vcvt.f64.f32	d7, s14
+ 316              	.LVL18:
+ 317              		.loc 1 128 2 is_stmt 0 view .LVU85
+ 318 0052 8DED007B 		vstr.64	d7, [sp]
+ 319 0056 2021     		movs	r1, #32
+ 320 0058 3948     		ldr	r0, .L24+16
+ 321              	.LVL19:
+ 322              		.loc 1 128 2 view .LVU86
+ 323 005a FFF7FEFF 		bl	printf
+ 324              	.LVL20:
+ 129:modules/ltdc/sdram.c **** 
+ 130:modules/ltdc/sdram.c **** // 读取	>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> 
+ 131:modules/ltdc/sdram.c **** 
+ 132:modules/ltdc/sdram.c **** 	ExecutionTime_Begin 	= HAL_GetTick();	// 获取 systick 当前时间，单位ms
+ 325              		.loc 1 132 2 is_stmt 1 view .LVU87
+ 326              		.loc 1 132 25 is_stmt 0 view .LVU88
+ 327 005e FFF7FEFF 		bl	HAL_GetTick
+ 328              	.LVL21:
+ 329 0062 0446     		mov	r4, r0
+ 330              	.LVL22:
+ 133:modules/ltdc/sdram.c **** 	
+ 134:modules/ltdc/sdram.c **** 	for(i = 0; i < SDRAM_Size/2;i++ )
+ 331              		.loc 1 134 2 is_stmt 1 view .LVU89
+ 332              		.loc 1 134 8 is_stmt 0 view .LVU90
+ 333 0064 0023     		movs	r3, #0
+ 334              		.loc 1 134 2 view .LVU91
+ 335 0066 04E0     		b	.L8
+ 336              	.LVL23:
+ 337              	.L9:
+ 135:modules/ltdc/sdram.c **** 	{
+ 136:modules/ltdc/sdram.c **** 		ReadData = *(__IO uint16_t*)(SDRAM_BANK_ADDR + 2 * i );  // 从SDRAM读出数据	
+ 338              		.loc 1 136 3 is_stmt 1 discriminator 3 view .LVU92
+ 339              		.loc 1 136 48 is_stmt 0 discriminator 3 view .LVU93
+ 340 0068 03F1C041 		add	r1, r3, #1610612736
+ 341 006c 4900     		lsls	r1, r1, #1
+ 342              		.loc 1 136 12 discriminator 3 view .LVU94
+ 343 006e 0988     		ldrh	r1, [r1]
+ 134:modules/ltdc/sdram.c **** 	{
+ 344              		.loc 1 134 30 is_stmt 1 discriminator 3 view .LVU95
+ 134:modules/ltdc/sdram.c **** 	{
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccSLPXna.s 			page 11
+
+
+ 345              		.loc 1 134 31 is_stmt 0 discriminator 3 view .LVU96
+ 346 0070 0133     		adds	r3, r3, #1
+ 347              	.LVL24:
+ 348              	.L8:
+ 134:modules/ltdc/sdram.c **** 	{
+ 349              		.loc 1 134 13 is_stmt 1 discriminator 1 view .LVU97
+ 134:modules/ltdc/sdram.c **** 	{
+ 350              		.loc 1 134 2 is_stmt 0 discriminator 1 view .LVU98
+ 351 0072 B3F1807F 		cmp	r3, #16777216
+ 352 0076 F7D3     		bcc	.L9
+ 137:modules/ltdc/sdram.c **** 	}
+ 138:modules/ltdc/sdram.c **** 	ExecutionTime_End		= HAL_GetTick();											// 获取 systick 当前时间，单位ms
+ 353              		.loc 1 138 2 is_stmt 1 view .LVU99
+ 354              		.loc 1 138 23 is_stmt 0 view .LVU100
+ 355 0078 FFF7FEFF 		bl	HAL_GetTick
+ 356              	.LVL25:
+ 139:modules/ltdc/sdram.c **** 	ExecutionTime  = ExecutionTime_End - ExecutionTime_Begin; 				// 计算擦除时间，单位ms
+ 357              		.loc 1 139 2 is_stmt 1 view .LVU101
+ 358              		.loc 1 139 17 is_stmt 0 view .LVU102
+ 359 007c 021B     		subs	r2, r0, r4
+ 360              	.LVL26:
+ 140:modules/ltdc/sdram.c **** 	ExecutionSpeed = (float)SDRAM_Size /1024/1024 /ExecutionTime*1000 ; 	// 计算速度，单位 MB/S	
+ 361              		.loc 1 140 2 is_stmt 1 view .LVU103
+ 362              		.loc 1 140 48 is_stmt 0 view .LVU104
+ 363 007e 07EE902A 		vmov	s15, r2	@ int
+ 364 0082 F8EE677A 		vcvt.f32.u32	s15, s15
+ 365 0086 DFED2C6A 		vldr.32	s13, .L24+8
+ 366              		.loc 1 140 48 view .LVU105
+ 367 008a 86EEA77A 		vdiv.f32	s14, s13, s15
+ 368              		.loc 1 140 17 view .LVU106
+ 369 008e DFED2B7A 		vldr.32	s15, .L24+12
+ 370 0092 27EE277A 		vmul.f32	s14, s14, s15
+ 371              	.LVL27:
+ 141:modules/ltdc/sdram.c **** 	
+ 142:modules/ltdc/sdram.c **** 	printf("\r\n读取数据完毕，大小：%d MB，耗时: %d ms, 读取速度：%.2f MB/s\r\n",SDRAM_Size/1024/1024,
+ 372              		.loc 1 142 2 is_stmt 1 view .LVU107
+ 373 0096 B7EEC77A 		vcvt.f64.f32	d7, s14
+ 374              	.LVL28:
+ 375              		.loc 1 142 2 is_stmt 0 view .LVU108
+ 376 009a 8DED007B 		vstr.64	d7, [sp]
+ 377 009e 2021     		movs	r1, #32
+ 378 00a0 2848     		ldr	r0, .L24+20
+ 379              	.LVL29:
+ 380              		.loc 1 142 2 view .LVU109
+ 381 00a2 FFF7FEFF 		bl	printf
+ 382              	.LVL30:
+ 143:modules/ltdc/sdram.c **** 	
+ 144:modules/ltdc/sdram.c **** // 数据校验 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> 
+ 145:modules/ltdc/sdram.c **** 		
+ 146:modules/ltdc/sdram.c **** 	printf("\r\n**************************************************************************************
+ 383              		.loc 1 146 2 is_stmt 1 view .LVU110
+ 384 00a6 2248     		ldr	r0, .L24
+ 385 00a8 FFF7FEFF 		bl	puts
+ 386              	.LVL31:
+ 147:modules/ltdc/sdram.c **** 	printf("\r\n进行数据校验>>>\r\n");
+ 387              		.loc 1 147 2 view .LVU111
+ 388 00ac 2648     		ldr	r0, .L24+24
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccSLPXna.s 			page 12
+
+
+ 389 00ae FFF7FEFF 		bl	puts
+ 390              	.LVL32:
+ 148:modules/ltdc/sdram.c **** 	
+ 149:modules/ltdc/sdram.c **** 	for(i = 0; i < SDRAM_Size/2;i++ )
+ 391              		.loc 1 149 2 view .LVU112
+ 392              		.loc 1 149 8 is_stmt 0 view .LVU113
+ 393 00b2 0023     		movs	r3, #0
+ 394              	.LVL33:
+ 395              	.L10:
+ 396              		.loc 1 149 13 is_stmt 1 discriminator 1 view .LVU114
+ 397              		.loc 1 149 2 is_stmt 0 discriminator 1 view .LVU115
+ 398 00b4 B3F1807F 		cmp	r3, #16777216
+ 399 00b8 0FD2     		bcs	.L20
+ 150:modules/ltdc/sdram.c **** 	{
+ 151:modules/ltdc/sdram.c **** 		ReadData = *(__IO uint16_t*)(SDRAM_BANK_ADDR + 2 * i );  // 从SDRAM读出数据	
+ 400              		.loc 1 151 3 is_stmt 1 view .LVU116
+ 401              		.loc 1 151 48 is_stmt 0 view .LVU117
+ 402 00ba 03F1C042 		add	r2, r3, #1610612736
+ 403 00be 5200     		lsls	r2, r2, #1
+ 404              		.loc 1 151 12 view .LVU118
+ 405 00c0 1288     		ldrh	r2, [r2]
+ 406 00c2 92B2     		uxth	r2, r2
+ 407              	.LVL34:
+ 152:modules/ltdc/sdram.c **** 		if( ReadData != (uint16_t)i )      //检测数据，若不相等，跳出函数,返回检测失败结果。
+ 408              		.loc 1 152 3 is_stmt 1 view .LVU119
+ 409              		.loc 1 152 19 is_stmt 0 view .LVU120
+ 410 00c4 99B2     		uxth	r1, r3
+ 411              		.loc 1 152 5 view .LVU121
+ 412 00c6 9142     		cmp	r1, r2
+ 413 00c8 01D1     		bne	.L21
+ 149:modules/ltdc/sdram.c **** 	{
+ 414              		.loc 1 149 30 is_stmt 1 discriminator 2 view .LVU122
+ 149:modules/ltdc/sdram.c **** 	{
+ 415              		.loc 1 149 31 is_stmt 0 discriminator 2 view .LVU123
+ 416 00ca 0133     		adds	r3, r3, #1
+ 417              	.LVL35:
+ 149:modules/ltdc/sdram.c **** 	{
+ 418              		.loc 1 149 31 discriminator 2 view .LVU124
+ 419 00cc F2E7     		b	.L10
+ 420              	.L21:
+ 153:modules/ltdc/sdram.c **** 		{
+ 154:modules/ltdc/sdram.c **** 			printf("\r\nSDRAM测试失败！！\r\n");
+ 421              		.loc 1 154 4 is_stmt 1 view .LVU125
+ 422 00ce 1F48     		ldr	r0, .L24+28
+ 423 00d0 FFF7FEFF 		bl	puts
+ 424              	.LVL36:
+ 155:modules/ltdc/sdram.c **** 			return ERROR;	 // 返回失败标志
+ 425              		.loc 1 155 4 view .LVU126
+ 426              		.loc 1 155 11 is_stmt 0 view .LVU127
+ 427 00d4 0120     		movs	r0, #1
+ 428              	.L12:
+ 156:modules/ltdc/sdram.c **** 		}
+ 157:modules/ltdc/sdram.c **** 	}
+ 158:modules/ltdc/sdram.c **** 	
+ 159:modules/ltdc/sdram.c **** 	printf("\r\n16位数据宽度读写通过，以8位数据宽度写入数据\r\n");
+ 160:modules/ltdc/sdram.c **** 	for (i = 0; i < 255; i++)
+ 161:modules/ltdc/sdram.c **** 	{
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccSLPXna.s 			page 13
+
+
+ 162:modules/ltdc/sdram.c ****  		*(__IO uint8_t*) (SDRAM_BANK_ADDR + i) =  (uint8_t)i;
+ 163:modules/ltdc/sdram.c **** 	}	
+ 164:modules/ltdc/sdram.c **** 	printf("写入完毕，读取数据并比较...\r\n");
+ 165:modules/ltdc/sdram.c **** 	for (i = 0; i < 255; i++)
+ 166:modules/ltdc/sdram.c **** 	{
+ 167:modules/ltdc/sdram.c **** 		ReadData_8b = *(__IO uint8_t*) (SDRAM_BANK_ADDR + i);
+ 168:modules/ltdc/sdram.c **** 		if( ReadData_8b != (uint8_t)i )      //检测数据，若不相等，跳出函数,返回检测失败结果。
+ 169:modules/ltdc/sdram.c **** 		{
+ 170:modules/ltdc/sdram.c **** 			printf("8位数据宽度读写测试失败！！\r\n");
+ 171:modules/ltdc/sdram.c **** 			printf("请检查NBL0和NBL1的连接\r\n");	
+ 172:modules/ltdc/sdram.c **** 			return ERROR;	 // 返回失败标志
+ 173:modules/ltdc/sdram.c **** 		}
+ 174:modules/ltdc/sdram.c **** 	}		
+ 175:modules/ltdc/sdram.c **** 	printf("8位数据宽度读写通过\r\n");
+ 176:modules/ltdc/sdram.c **** 	printf("SDRAM读写测试通过，系统正常\r\n");
+ 177:modules/ltdc/sdram.c **** 	return SUCCESS;	 // 返回成功标志
+ 178:modules/ltdc/sdram.c **** }
+ 429              		.loc 1 178 1 view .LVU128
+ 430 00d6 02B0     		add	sp, sp, #8
+ 431              	.LCFI5:
+ 432              		.cfi_remember_state
+ 433              		.cfi_def_cfa_offset 8
+ 434              		@ sp needed
+ 435 00d8 10BD     		pop	{r4, pc}
+ 436              	.LVL37:
+ 437              	.L20:
+ 438              	.LCFI6:
+ 439              		.cfi_restore_state
+ 159:modules/ltdc/sdram.c **** 	for (i = 0; i < 255; i++)
+ 440              		.loc 1 159 2 is_stmt 1 view .LVU129
+ 441 00da 1D48     		ldr	r0, .L24+32
+ 442 00dc FFF7FEFF 		bl	puts
+ 443              	.LVL38:
+ 160:modules/ltdc/sdram.c **** 	{
+ 444              		.loc 1 160 2 view .LVU130
+ 160:modules/ltdc/sdram.c **** 	{
+ 445              		.loc 1 160 9 is_stmt 0 view .LVU131
+ 446 00e0 0023     		movs	r3, #0
+ 160:modules/ltdc/sdram.c **** 	{
+ 447              		.loc 1 160 2 view .LVU132
+ 448 00e2 04E0     		b	.L14
+ 449              	.LVL39:
+ 450              	.L15:
+ 162:modules/ltdc/sdram.c **** 	}	
+ 451              		.loc 1 162 4 is_stmt 1 discriminator 3 view .LVU133
+ 162:modules/ltdc/sdram.c **** 	}	
+ 452              		.loc 1 162 38 is_stmt 0 discriminator 3 view .LVU134
+ 453 00e4 03F14042 		add	r2, r3, #-1073741824
+ 162:modules/ltdc/sdram.c **** 	}	
+ 454              		.loc 1 162 46 discriminator 3 view .LVU135
+ 455 00e8 D9B2     		uxtb	r1, r3
+ 162:modules/ltdc/sdram.c **** 	}	
+ 456              		.loc 1 162 43 discriminator 3 view .LVU136
+ 457 00ea 1170     		strb	r1, [r2]
+ 160:modules/ltdc/sdram.c **** 	{
+ 458              		.loc 1 160 23 is_stmt 1 discriminator 3 view .LVU137
+ 160:modules/ltdc/sdram.c **** 	{
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccSLPXna.s 			page 14
+
+
+ 459              		.loc 1 160 24 is_stmt 0 discriminator 3 view .LVU138
+ 460 00ec 0133     		adds	r3, r3, #1
+ 461              	.LVL40:
+ 462              	.L14:
+ 160:modules/ltdc/sdram.c **** 	{
+ 463              		.loc 1 160 14 is_stmt 1 discriminator 1 view .LVU139
+ 160:modules/ltdc/sdram.c **** 	{
+ 464              		.loc 1 160 2 is_stmt 0 discriminator 1 view .LVU140
+ 465 00ee FE2B     		cmp	r3, #254
+ 466 00f0 F8D9     		bls	.L15
+ 164:modules/ltdc/sdram.c **** 	for (i = 0; i < 255; i++)
+ 467              		.loc 1 164 2 is_stmt 1 view .LVU141
+ 468 00f2 1848     		ldr	r0, .L24+36
+ 469 00f4 FFF7FEFF 		bl	puts
+ 470              	.LVL41:
+ 165:modules/ltdc/sdram.c **** 	{
+ 471              		.loc 1 165 2 view .LVU142
+ 165:modules/ltdc/sdram.c **** 	{
+ 472              		.loc 1 165 9 is_stmt 0 view .LVU143
+ 473 00f8 0023     		movs	r3, #0
+ 474              	.LVL42:
+ 475              	.L16:
+ 165:modules/ltdc/sdram.c **** 	{
+ 476              		.loc 1 165 14 is_stmt 1 discriminator 1 view .LVU144
+ 165:modules/ltdc/sdram.c **** 	{
+ 477              		.loc 1 165 2 is_stmt 0 discriminator 1 view .LVU145
+ 478 00fa FE2B     		cmp	r3, #254
+ 479 00fc 10D8     		bhi	.L22
+ 167:modules/ltdc/sdram.c **** 		if( ReadData_8b != (uint8_t)i )      //检测数据，若不相等，跳出函数,返回检测失败结果。
+ 480              		.loc 1 167 3 is_stmt 1 view .LVU146
+ 167:modules/ltdc/sdram.c **** 		if( ReadData_8b != (uint8_t)i )      //检测数据，若不相等，跳出函数,返回检测失败结果。
+ 481              		.loc 1 167 51 is_stmt 0 view .LVU147
+ 482 00fe 03F14042 		add	r2, r3, #-1073741824
+ 167:modules/ltdc/sdram.c **** 		if( ReadData_8b != (uint8_t)i )      //检测数据，若不相等，跳出函数,返回检测失败结果。
+ 483              		.loc 1 167 15 view .LVU148
+ 484 0102 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
+ 485 0104 D2B2     		uxtb	r2, r2
+ 486              	.LVL43:
+ 168:modules/ltdc/sdram.c **** 		{
+ 487              		.loc 1 168 3 is_stmt 1 view .LVU149
+ 168:modules/ltdc/sdram.c **** 		{
+ 488              		.loc 1 168 22 is_stmt 0 view .LVU150
+ 489 0106 D9B2     		uxtb	r1, r3
+ 168:modules/ltdc/sdram.c **** 		{
+ 490              		.loc 1 168 5 view .LVU151
+ 491 0108 9142     		cmp	r1, r2
+ 492 010a 01D1     		bne	.L23
+ 165:modules/ltdc/sdram.c **** 	{
+ 493              		.loc 1 165 23 is_stmt 1 discriminator 2 view .LVU152
+ 165:modules/ltdc/sdram.c **** 	{
+ 494              		.loc 1 165 24 is_stmt 0 discriminator 2 view .LVU153
+ 495 010c 0133     		adds	r3, r3, #1
+ 496              	.LVL44:
+ 165:modules/ltdc/sdram.c **** 	{
+ 497              		.loc 1 165 24 discriminator 2 view .LVU154
+ 498 010e F4E7     		b	.L16
+ 499              	.L23:
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccSLPXna.s 			page 15
+
+
+ 170:modules/ltdc/sdram.c **** 			printf("请检查NBL0和NBL1的连接\r\n");	
+ 500              		.loc 1 170 4 is_stmt 1 view .LVU155
+ 501 0110 1148     		ldr	r0, .L24+40
+ 502 0112 FFF7FEFF 		bl	puts
+ 503              	.LVL45:
+ 171:modules/ltdc/sdram.c **** 			return ERROR;	 // 返回失败标志
+ 504              		.loc 1 171 4 view .LVU156
+ 505 0116 1148     		ldr	r0, .L24+44
+ 506 0118 FFF7FEFF 		bl	puts
+ 507              	.LVL46:
+ 172:modules/ltdc/sdram.c **** 		}
+ 508              		.loc 1 172 4 view .LVU157
+ 172:modules/ltdc/sdram.c **** 		}
+ 509              		.loc 1 172 11 is_stmt 0 view .LVU158
+ 510 011c 0120     		movs	r0, #1
+ 511 011e DAE7     		b	.L12
+ 512              	.LVL47:
+ 513              	.L22:
+ 175:modules/ltdc/sdram.c **** 	printf("SDRAM读写测试通过，系统正常\r\n");
+ 514              		.loc 1 175 2 is_stmt 1 view .LVU159
+ 515 0120 0F48     		ldr	r0, .L24+48
+ 516 0122 FFF7FEFF 		bl	puts
+ 517              	.LVL48:
+ 176:modules/ltdc/sdram.c **** 	return SUCCESS;	 // 返回成功标志
+ 518              		.loc 1 176 2 view .LVU160
+ 519 0126 0F48     		ldr	r0, .L24+52
+ 520 0128 FFF7FEFF 		bl	puts
+ 521              	.LVL49:
+ 177:modules/ltdc/sdram.c **** }
+ 522              		.loc 1 177 2 view .LVU161
+ 177:modules/ltdc/sdram.c **** }
+ 523              		.loc 1 177 9 is_stmt 0 view .LVU162
+ 524 012c 0020     		movs	r0, #0
+ 525 012e D2E7     		b	.L12
+ 526              	.L25:
+ 527              		.align	2
+ 528              	.L24:
+ 529 0130 00000000 		.word	.LC0
+ 530 0134 6C000000 		.word	.LC1
+ 531 0138 00000042 		.word	1107296256
+ 532 013c 00007A44 		.word	1148846080
+ 533 0140 80000000 		.word	.LC2
+ 534 0144 CC000000 		.word	.LC3
+ 535 0148 0C010000 		.word	.LC4
+ 536 014c 20010000 		.word	.LC5
+ 537 0150 38010000 		.word	.LC6
+ 538 0154 68010000 		.word	.LC7
+ 539 0158 88010000 		.word	.LC8
+ 540 015c A8010000 		.word	.LC9
+ 541 0160 C0010000 		.word	.LC10
+ 542 0164 D8010000 		.word	.LC11
+ 543              		.cfi_endproc
+ 544              	.LFE145:
+ 546              		.global	Command
+ 547              		.section	.bss.Command,"aw",%nobits
+ 548              		.align	2
+ 549              		.set	.LANCHOR0,. + 0
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccSLPXna.s 			page 16
+
+
+ 552              	Command:
+ 553 0000 00000000 		.space	4
+ 554              		.text
+ 555              	.Letext0:
+ 556              		.file 2 "d:\\rm\\arm-gnu-toolchian\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 557              		.file 3 "d:\\rm\\arm-gnu-toolchian\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 558              		.file 4 "Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h743xx.h"
+ 559              		.file 5 "Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h7xx.h"
+ 560              		.file 6 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_def.h"
+ 561              		.file 7 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_mdma.h"
+ 562              		.file 8 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_ll_fmc.h"
+ 563              		.file 9 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_sdram.h"
+ 564              		.file 10 "<built-in>"
+ 565              		.file 11 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal.h"
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccSLPXna.s 			page 17
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 sdram.c
+C:\Users\blue\AppData\Local\Temp\ccSLPXna.s:19     .text.SDRAM_Initialization_Sequence:00000000 $t
+C:\Users\blue\AppData\Local\Temp\ccSLPXna.s:25     .text.SDRAM_Initialization_Sequence:00000000 SDRAM_Initialization_Sequence
+C:\Users\blue\AppData\Local\Temp\ccSLPXna.s:166    .text.SDRAM_Initialization_Sequence:00000098 $d
+C:\Users\blue\AppData\Local\Temp\ccSLPXna.s:171    .rodata.SDRAM_Test.str1.4:00000000 $d
+C:\Users\blue\AppData\Local\Temp\ccSLPXna.s:230    .text.SDRAM_Test:00000000 $t
+C:\Users\blue\AppData\Local\Temp\ccSLPXna.s:236    .text.SDRAM_Test:00000000 SDRAM_Test
+C:\Users\blue\AppData\Local\Temp\ccSLPXna.s:529    .text.SDRAM_Test:00000130 $d
+C:\Users\blue\AppData\Local\Temp\ccSLPXna.s:552    .bss.Command:00000000 Command
+C:\Users\blue\AppData\Local\Temp\ccSLPXna.s:548    .bss.Command:00000000 $d
+
+UNDEFINED SYMBOLS
+HAL_SDRAM_SendCommand
+HAL_Delay
+HAL_SDRAM_ProgramRefreshRate
+puts
+HAL_GetTick
+printf

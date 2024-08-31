@@ -1,0 +1,3 @@
+D:/Github/transport-robot/transport-robot/MAIN/build/CMakeFiles/Irrigating_framework.elf.dir
+D:/Github/transport-robot/transport-robot/MAIN/build/CMakeFiles/edit_cache.dir
+D:/Github/transport-robot/transport-robot/MAIN/build/CMakeFiles/rebuild_cache.dir

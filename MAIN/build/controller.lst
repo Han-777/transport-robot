@@ -1,0 +1,1138 @@
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccuXGTJg.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.arch armv7e-m
+   3              		.fpu fpv5-d16
+   4              		.eabi_attribute 28, 1
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 1
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.file	"controller.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.section	.text.f_Trapezoid_Intergral,"ax",%progbits
+  19              		.align	1
+  20              		.syntax unified
+  21              		.thumb
+  22              		.thumb_func
+  24              	f_Trapezoid_Intergral:
+  25              	.LVL0:
+  26              	.LFB144:
+  27              		.file 1 "modules/algorithm/controller.c"
+   1:modules/algorithm/controller.c **** #include "controller.h"
+   2:modules/algorithm/controller.c **** #include "memory.h"
+   3:modules/algorithm/controller.c **** 
+   4:modules/algorithm/controller.c **** /* ----------------------------下面是pid优化环节的实现---------------------------- */
+   5:modules/algorithm/controller.c **** 
+   6:modules/algorithm/controller.c **** // 梯形积分
+   7:modules/algorithm/controller.c **** static void f_Trapezoid_Intergral(PIDInstance *pid)
+   8:modules/algorithm/controller.c **** {
+  28              		.loc 1 8 1 view -0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              		@ link register save eliminated.
+   9:modules/algorithm/controller.c ****     // 计算梯形的面积,(上底+下底)*高/2
+  10:modules/algorithm/controller.c ****     pid->ITerm = pid->Ki * ((pid->Err + pid->Last_Err) / 2) * pid->dt;
+  33              		.loc 1 10 5 view .LVU1
+  34              		.loc 1 10 21 is_stmt 0 view .LVU2
+  35 0000 D0ED017A 		vldr.32	s15, [r0, #4]
+  36              		.loc 1 10 33 view .LVU3
+  37 0004 90ED0D7A 		vldr.32	s14, [r0, #52]
+  38              		.loc 1 10 44 view .LVU4
+  39 0008 D0ED0E6A 		vldr.32	s13, [r0, #56]
+  40              		.loc 1 10 39 view .LVU5
+  41 000c 37EE267A 		vadd.f32	s14, s14, s13
+  42              		.loc 1 10 56 view .LVU6
+  43 0010 F6EE006A 		vmov.f32	s13, #5.0e-1
+  44 0014 27EE267A 		vmul.f32	s14, s14, s13
+  45              		.loc 1 10 26 view .LVU7
+  46 0018 67EE877A 		vmul.f32	s15, s15, s14
+  47              		.loc 1 10 66 view .LVU8
+  48 001c 90ED197A 		vldr.32	s14, [r0, #100]
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccuXGTJg.s 			page 2
+
+
+  49              		.loc 1 10 61 view .LVU9
+  50 0020 67EE877A 		vmul.f32	s15, s15, s14
+  51              		.loc 1 10 16 view .LVU10
+  52 0024 C0ED137A 		vstr.32	s15, [r0, #76]
+  11:modules/algorithm/controller.c **** }
+  53              		.loc 1 11 1 view .LVU11
+  54 0028 7047     		bx	lr
+  55              		.cfi_endproc
+  56              	.LFE144:
+  58              		.section	.text.f_Changing_Integration_Rate,"ax",%progbits
+  59              		.align	1
+  60              		.syntax unified
+  61              		.thumb
+  62              		.thumb_func
+  64              	f_Changing_Integration_Rate:
+  65              	.LVL1:
+  66              	.LFB145:
+  12:modules/algorithm/controller.c **** 
+  13:modules/algorithm/controller.c **** // 变速积分(误差小时积分作用更强)
+  14:modules/algorithm/controller.c **** static void f_Changing_Integration_Rate(PIDInstance *pid)
+  15:modules/algorithm/controller.c **** {
+  67              		.loc 1 15 1 is_stmt 1 view -0
+  68              		.cfi_startproc
+  69              		@ args = 0, pretend = 0, frame = 0
+  70              		@ frame_needed = 0, uses_anonymous_args = 0
+  71              		@ link register save eliminated.
+  16:modules/algorithm/controller.c ****     if (pid->Err * pid->Iout > 0)
+  72              		.loc 1 16 5 view .LVU13
+  73              		.loc 1 16 12 is_stmt 0 view .LVU14
+  74 0000 D0ED0D7A 		vldr.32	s15, [r0, #52]
+  75              		.loc 1 16 23 view .LVU15
+  76 0004 90ED117A 		vldr.32	s14, [r0, #68]
+  77              		.loc 1 16 18 view .LVU16
+  78 0008 27EE877A 		vmul.f32	s14, s15, s14
+  79              		.loc 1 16 8 view .LVU17
+  80 000c B5EEC07A 		vcmpe.f32	s14, #0
+  81 0010 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+  82 0014 26DD     		ble	.L2
+  17:modules/algorithm/controller.c ****     {
+  18:modules/algorithm/controller.c ****         // 积分呈累积趋势
+  19:modules/algorithm/controller.c ****         if (abs(pid->Err) <= pid->CoefB)
+  83              		.loc 1 19 9 is_stmt 1 view .LVU18
+  84              		.loc 1 19 13 is_stmt 0 view .LVU19
+  85 0016 F5EEC07A 		vcmpe.f32	s15, #0
+  86 001a F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+  87 001e 1CDD     		ble	.L11
+  88              	.L5:
+  89              		.loc 1 19 33 discriminator 4 view .LVU20
+  90 0020 90ED087A 		vldr.32	s14, [r0, #32]
+  91              		.loc 1 19 12 discriminator 4 view .LVU21
+  92 0024 B4EEE77A 		vcmpe.f32	s14, s15
+  93 0028 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+  94 002c 1ADA     		bge	.L2
+  20:modules/algorithm/controller.c ****             return; // Full integral
+  21:modules/algorithm/controller.c ****         if (abs(pid->Err) <= (pid->CoefA + pid->CoefB))
+  95              		.loc 1 21 9 is_stmt 1 discriminator 4 view .LVU22
+  96              		.loc 1 21 34 is_stmt 0 discriminator 4 view .LVU23
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccuXGTJg.s 			page 3
+
+
+  97 002e D0ED076A 		vldr.32	s13, [r0, #28]
+  98              		.loc 1 21 42 discriminator 4 view .LVU24
+  99 0032 37EE266A 		vadd.f32	s12, s14, s13
+ 100              		.loc 1 21 12 discriminator 4 view .LVU25
+ 101 0036 B4EEE76A 		vcmpe.f32	s12, s15
+ 102 003a F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 103 003e 0FDB     		blt	.L10
+  22:modules/algorithm/controller.c ****             pid->ITerm *= (pid->CoefA - abs(pid->Err) + pid->CoefB) / pid->CoefA;
+ 104              		.loc 1 22 13 is_stmt 1 view .LVU26
+ 105              		.loc 1 22 39 is_stmt 0 view .LVU27
+ 106 0040 76EEE77A 		vsub.f32	s15, s13, s15
+ 107              		.loc 1 22 55 view .LVU28
+ 108 0044 77EE277A 		vadd.f32	s15, s14, s15
+ 109              		.loc 1 22 69 view .LVU29
+ 110 0048 87EEA67A 		vdiv.f32	s14, s15, s13
+ 111              		.loc 1 22 24 view .LVU30
+ 112 004c D0ED137A 		vldr.32	s15, [r0, #76]
+ 113 0050 67EE877A 		vmul.f32	s15, s15, s14
+ 114 0054 C0ED137A 		vstr.32	s15, [r0, #76]
+ 115 0058 7047     		bx	lr
+ 116              	.L11:
+  19:modules/algorithm/controller.c ****             return; // Full integral
+ 117              		.loc 1 19 13 discriminator 2 view .LVU31
+ 118 005a F1EE677A 		vneg.f32	s15, s15
+ 119 005e DFE7     		b	.L5
+ 120              	.L10:
+  23:modules/algorithm/controller.c ****         else // 最大阈值,不使用积分
+  24:modules/algorithm/controller.c ****             pid->ITerm = 0;
+ 121              		.loc 1 24 13 is_stmt 1 view .LVU32
+ 122              		.loc 1 24 24 is_stmt 0 view .LVU33
+ 123 0060 0023     		movs	r3, #0
+ 124 0062 C364     		str	r3, [r0, #76]	@ float
+ 125              	.L2:
+  25:modules/algorithm/controller.c ****     }
+  26:modules/algorithm/controller.c **** }
+ 126              		.loc 1 26 1 view .LVU34
+ 127 0064 7047     		bx	lr
+ 128              		.cfi_endproc
+ 129              	.LFE145:
+ 131              		.section	.text.f_Integral_Limit,"ax",%progbits
+ 132              		.align	1
+ 133              		.syntax unified
+ 134              		.thumb
+ 135              		.thumb_func
+ 137              	f_Integral_Limit:
+ 138              	.LVL2:
+ 139              	.LFB146:
+  27:modules/algorithm/controller.c **** 
+  28:modules/algorithm/controller.c **** static void f_Integral_Limit(PIDInstance *pid)
+  29:modules/algorithm/controller.c **** {
+ 140              		.loc 1 29 1 is_stmt 1 view -0
+ 141              		.cfi_startproc
+ 142              		@ args = 0, pretend = 0, frame = 0
+ 143              		@ frame_needed = 0, uses_anonymous_args = 0
+ 144              		@ link register save eliminated.
+  30:modules/algorithm/controller.c ****     static float temp_Output, temp_Iout;
+ 145              		.loc 1 30 5 view .LVU36
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccuXGTJg.s 			page 4
+
+
+  31:modules/algorithm/controller.c ****     temp_Iout = pid->Iout + pid->ITerm;
+ 146              		.loc 1 31 5 view .LVU37
+ 147              		.loc 1 31 20 is_stmt 0 view .LVU38
+ 148 0000 D0ED116A 		vldr.32	s13, [r0, #68]
+ 149              		.loc 1 31 32 view .LVU39
+ 150 0004 90ED137A 		vldr.32	s14, [r0, #76]
+ 151              		.loc 1 31 27 view .LVU40
+ 152 0008 36EE877A 		vadd.f32	s14, s13, s14
+ 153              		.loc 1 31 15 view .LVU41
+ 154 000c 1F4B     		ldr	r3, .L26
+ 155 000e 83ED007A 		vstr.32	s14, [r3]
+  32:modules/algorithm/controller.c ****     temp_Output = pid->Pout + pid->Iout + pid->Dout;
+ 156              		.loc 1 32 5 is_stmt 1 view .LVU42
+ 157              		.loc 1 32 22 is_stmt 0 view .LVU43
+ 158 0012 D0ED107A 		vldr.32	s15, [r0, #64]
+ 159              		.loc 1 32 29 view .LVU44
+ 160 0016 76EEA77A 		vadd.f32	s15, s13, s15
+ 161              		.loc 1 32 46 view .LVU45
+ 162 001a 90ED126A 		vldr.32	s12, [r0, #72]
+ 163              		.loc 1 32 41 view .LVU46
+ 164 001e 77EE867A 		vadd.f32	s15, s15, s12
+ 165              		.loc 1 32 17 view .LVU47
+ 166 0022 1B4B     		ldr	r3, .L26+4
+ 167 0024 C3ED007A 		vstr.32	s15, [r3]
+  33:modules/algorithm/controller.c ****     if (abs(temp_Output) > pid->MaxOut)
+ 168              		.loc 1 33 5 is_stmt 1 view .LVU48
+ 169              		.loc 1 33 9 is_stmt 0 view .LVU49
+ 170 0028 F5EEC07A 		vcmpe.f32	s15, #0
+ 171 002c F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 172 0030 28DD     		ble	.L25
+ 173              	.L13:
+ 174              		.loc 1 33 31 discriminator 4 view .LVU50
+ 175 0032 90ED036A 		vldr.32	s12, [r0, #12]
+ 176              		.loc 1 33 8 discriminator 4 view .LVU51
+ 177 0036 B4EEE76A 		vcmpe.f32	s12, s15
+ 178 003a F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 179 003e 0AD5     		bpl	.L14
+  34:modules/algorithm/controller.c ****     {
+  35:modules/algorithm/controller.c ****         if (pid->Err * pid->Iout > 0) // 积分却还在累积
+ 180              		.loc 1 35 9 is_stmt 1 view .LVU52
+ 181              		.loc 1 35 16 is_stmt 0 view .LVU53
+ 182 0040 D0ED0D7A 		vldr.32	s15, [r0, #52]
+ 183              		.loc 1 35 22 view .LVU54
+ 184 0044 66EEA76A 		vmul.f32	s13, s13, s15
+ 185              		.loc 1 35 12 view .LVU55
+ 186 0048 F5EEC06A 		vcmpe.f32	s13, #0
+ 187 004c F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 188 0050 01DD     		ble	.L14
+  36:modules/algorithm/controller.c ****         {
+  37:modules/algorithm/controller.c ****             pid->ITerm = 0; // 当前积分项置零
+ 189              		.loc 1 37 13 is_stmt 1 view .LVU56
+ 190              		.loc 1 37 24 is_stmt 0 view .LVU57
+ 191 0052 0023     		movs	r3, #0
+ 192 0054 C364     		str	r3, [r0, #76]	@ float
+ 193              	.L14:
+  38:modules/algorithm/controller.c ****         }
+  39:modules/algorithm/controller.c ****     }
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccuXGTJg.s 			page 5
+
+
+  40:modules/algorithm/controller.c **** 
+  41:modules/algorithm/controller.c ****     if (temp_Iout > pid->IntegralLimit)
+ 194              		.loc 1 41 5 is_stmt 1 view .LVU58
+ 195              		.loc 1 41 24 is_stmt 0 view .LVU59
+ 196 0056 D0ED067A 		vldr.32	s15, [r0, #24]
+ 197              		.loc 1 41 8 view .LVU60
+ 198 005a B4EEE77A 		vcmpe.f32	s14, s15
+ 199 005e F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 200 0062 03DD     		ble	.L17
+  42:modules/algorithm/controller.c ****     {
+  43:modules/algorithm/controller.c ****         pid->ITerm = 0;
+ 201              		.loc 1 43 9 is_stmt 1 view .LVU61
+ 202              		.loc 1 43 20 is_stmt 0 view .LVU62
+ 203 0064 0023     		movs	r3, #0
+ 204 0066 C364     		str	r3, [r0, #76]	@ float
+  44:modules/algorithm/controller.c ****         pid->Iout = pid->IntegralLimit;
+ 205              		.loc 1 44 9 is_stmt 1 view .LVU63
+ 206              		.loc 1 44 19 is_stmt 0 view .LVU64
+ 207 0068 C0ED117A 		vstr.32	s15, [r0, #68]
+ 208              	.L17:
+  45:modules/algorithm/controller.c ****     }
+  46:modules/algorithm/controller.c ****     if (temp_Iout < -pid->IntegralLimit)
+ 209              		.loc 1 46 5 is_stmt 1 view .LVU65
+ 210              		.loc 1 46 21 is_stmt 0 view .LVU66
+ 211 006c F1EE677A 		vneg.f32	s15, s15
+ 212              		.loc 1 46 8 view .LVU67
+ 213 0070 B4EEE77A 		vcmpe.f32	s14, s15
+ 214 0074 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 215 0078 03D5     		bpl	.L12
+  47:modules/algorithm/controller.c ****     {
+  48:modules/algorithm/controller.c ****         pid->ITerm = 0;
+ 216              		.loc 1 48 9 is_stmt 1 view .LVU68
+ 217              		.loc 1 48 20 is_stmt 0 view .LVU69
+ 218 007a 0023     		movs	r3, #0
+ 219 007c C364     		str	r3, [r0, #76]	@ float
+  49:modules/algorithm/controller.c ****         pid->Iout = -pid->IntegralLimit;
+ 220              		.loc 1 49 9 is_stmt 1 view .LVU70
+ 221              		.loc 1 49 19 is_stmt 0 view .LVU71
+ 222 007e C0ED117A 		vstr.32	s15, [r0, #68]
+ 223              	.L12:
+  50:modules/algorithm/controller.c ****     }
+  51:modules/algorithm/controller.c **** }
+ 224              		.loc 1 51 1 view .LVU72
+ 225 0082 7047     		bx	lr
+ 226              	.L25:
+  33:modules/algorithm/controller.c ****     {
+ 227              		.loc 1 33 9 discriminator 2 view .LVU73
+ 228 0084 F1EE677A 		vneg.f32	s15, s15
+ 229 0088 D3E7     		b	.L13
+ 230              	.L27:
+ 231 008a 00BF     		.align	2
+ 232              	.L26:
+ 233 008c 00000000 		.word	.LANCHOR0
+ 234 0090 00000000 		.word	.LANCHOR1
+ 235              		.cfi_endproc
+ 236              	.LFE146:
+ 238              		.section	.text.f_Derivative_On_Measurement,"ax",%progbits
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccuXGTJg.s 			page 6
+
+
+ 239              		.align	1
+ 240              		.syntax unified
+ 241              		.thumb
+ 242              		.thumb_func
+ 244              	f_Derivative_On_Measurement:
+ 245              	.LVL3:
+ 246              	.LFB147:
+  52:modules/algorithm/controller.c **** 
+  53:modules/algorithm/controller.c **** // 微分先行(仅使用反馈值而不计参考输入的微分)
+  54:modules/algorithm/controller.c **** static void f_Derivative_On_Measurement(PIDInstance *pid)
+  55:modules/algorithm/controller.c **** {
+ 247              		.loc 1 55 1 is_stmt 1 view -0
+ 248              		.cfi_startproc
+ 249              		@ args = 0, pretend = 0, frame = 0
+ 250              		@ frame_needed = 0, uses_anonymous_args = 0
+ 251              		@ link register save eliminated.
+  56:modules/algorithm/controller.c ****     pid->Dout = pid->Kd * (pid->Last_Measure - pid->Measure) / pid->dt;
+ 252              		.loc 1 56 5 view .LVU75
+ 253              		.loc 1 56 20 is_stmt 0 view .LVU76
+ 254 0000 D0ED027A 		vldr.32	s15, [r0, #8]
+ 255              		.loc 1 56 31 view .LVU77
+ 256 0004 90ED0C7A 		vldr.32	s14, [r0, #48]
+ 257              		.loc 1 56 51 view .LVU78
+ 258 0008 D0ED0B6A 		vldr.32	s13, [r0, #44]
+ 259              		.loc 1 56 46 view .LVU79
+ 260 000c 37EE667A 		vsub.f32	s14, s14, s13
+ 261              		.loc 1 56 25 view .LVU80
+ 262 0010 67EE877A 		vmul.f32	s15, s15, s14
+ 263              		.loc 1 56 67 view .LVU81
+ 264 0014 D0ED196A 		vldr.32	s13, [r0, #100]
+ 265              		.loc 1 56 62 view .LVU82
+ 266 0018 87EEA67A 		vdiv.f32	s14, s15, s13
+ 267              		.loc 1 56 15 view .LVU83
+ 268 001c 80ED127A 		vstr.32	s14, [r0, #72]
+  57:modules/algorithm/controller.c **** }
+ 269              		.loc 1 57 1 view .LVU84
+ 270 0020 7047     		bx	lr
+ 271              		.cfi_endproc
+ 272              	.LFE147:
+ 274              		.section	.text.f_Derivative_Filter,"ax",%progbits
+ 275              		.align	1
+ 276              		.syntax unified
+ 277              		.thumb
+ 278              		.thumb_func
+ 280              	f_Derivative_Filter:
+ 281              	.LVL4:
+ 282              	.LFB148:
+  58:modules/algorithm/controller.c **** 
+  59:modules/algorithm/controller.c **** // 微分滤波(采集微分时,滤除高频噪声)
+  60:modules/algorithm/controller.c **** static void f_Derivative_Filter(PIDInstance *pid)
+  61:modules/algorithm/controller.c **** {
+ 283              		.loc 1 61 1 is_stmt 1 view -0
+ 284              		.cfi_startproc
+ 285              		@ args = 0, pretend = 0, frame = 0
+ 286              		@ frame_needed = 0, uses_anonymous_args = 0
+ 287              		@ link register save eliminated.
+  62:modules/algorithm/controller.c ****     pid->Dout = pid->Dout * pid->dt / (pid->Derivative_LPF_RC + pid->dt) +
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccuXGTJg.s 			page 7
+
+
+ 288              		.loc 1 62 5 view .LVU86
+ 289              		.loc 1 62 20 is_stmt 0 view .LVU87
+ 290 0000 90ED126A 		vldr.32	s12, [r0, #72]
+ 291              		.loc 1 62 32 view .LVU88
+ 292 0004 D0ED197A 		vldr.32	s15, [r0, #100]
+ 293              		.loc 1 62 27 view .LVU89
+ 294 0008 26EE276A 		vmul.f32	s12, s12, s15
+ 295              		.loc 1 62 43 view .LVU90
+ 296 000c 90ED0A7A 		vldr.32	s14, [r0, #40]
+ 297              		.loc 1 62 63 view .LVU91
+ 298 0010 77EE877A 		vadd.f32	s15, s15, s14
+ 299              		.loc 1 62 37 view .LVU92
+ 300 0014 C6EE276A 		vdiv.f32	s13, s12, s15
+  63:modules/algorithm/controller.c ****                 pid->Last_Dout * pid->Derivative_LPF_RC / (pid->Derivative_LPF_RC + pid->dt);
+ 301              		.loc 1 63 20 view .LVU93
+ 302 0018 90ED166A 		vldr.32	s12, [r0, #88]
+ 303              		.loc 1 63 32 view .LVU94
+ 304 001c 27EE067A 		vmul.f32	s14, s14, s12
+ 305              		.loc 1 63 57 view .LVU95
+ 306 0020 87EE276A 		vdiv.f32	s12, s14, s15
+  62:modules/algorithm/controller.c ****     pid->Dout = pid->Dout * pid->dt / (pid->Derivative_LPF_RC + pid->dt) +
+ 307              		.loc 1 62 74 view .LVU96
+ 308 0024 76EE867A 		vadd.f32	s15, s13, s12
+  62:modules/algorithm/controller.c ****     pid->Dout = pid->Dout * pid->dt / (pid->Derivative_LPF_RC + pid->dt) +
+ 309              		.loc 1 62 15 view .LVU97
+ 310 0028 C0ED127A 		vstr.32	s15, [r0, #72]
+  64:modules/algorithm/controller.c **** }
+ 311              		.loc 1 64 1 view .LVU98
+ 312 002c 7047     		bx	lr
+ 313              		.cfi_endproc
+ 314              	.LFE148:
+ 316              		.section	.text.f_Output_Filter,"ax",%progbits
+ 317              		.align	1
+ 318              		.syntax unified
+ 319              		.thumb
+ 320              		.thumb_func
+ 322              	f_Output_Filter:
+ 323              	.LVL5:
+ 324              	.LFB149:
+  65:modules/algorithm/controller.c **** 
+  66:modules/algorithm/controller.c **** // 输出滤波
+  67:modules/algorithm/controller.c **** static void f_Output_Filter(PIDInstance *pid)
+  68:modules/algorithm/controller.c **** {
+ 325              		.loc 1 68 1 is_stmt 1 view -0
+ 326              		.cfi_startproc
+ 327              		@ args = 0, pretend = 0, frame = 0
+ 328              		@ frame_needed = 0, uses_anonymous_args = 0
+ 329              		@ link register save eliminated.
+  69:modules/algorithm/controller.c ****     pid->Output = pid->Output * pid->dt / (pid->Output_LPF_RC + pid->dt) +
+ 330              		.loc 1 69 5 view .LVU100
+ 331              		.loc 1 69 22 is_stmt 0 view .LVU101
+ 332 0000 90ED146A 		vldr.32	s12, [r0, #80]
+ 333              		.loc 1 69 36 view .LVU102
+ 334 0004 D0ED197A 		vldr.32	s15, [r0, #100]
+ 335              		.loc 1 69 31 view .LVU103
+ 336 0008 26EE276A 		vmul.f32	s12, s12, s15
+ 337              		.loc 1 69 47 view .LVU104
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccuXGTJg.s 			page 8
+
+
+ 338 000c 90ED097A 		vldr.32	s14, [r0, #36]
+ 339              		.loc 1 69 63 view .LVU105
+ 340 0010 77EE877A 		vadd.f32	s15, s15, s14
+ 341              		.loc 1 69 41 view .LVU106
+ 342 0014 C6EE276A 		vdiv.f32	s13, s12, s15
+  70:modules/algorithm/controller.c ****                   pid->Last_Output * pid->Output_LPF_RC / (pid->Output_LPF_RC + pid->dt);
+ 343              		.loc 1 70 22 view .LVU107
+ 344 0018 90ED156A 		vldr.32	s12, [r0, #84]
+ 345              		.loc 1 70 36 view .LVU108
+ 346 001c 27EE067A 		vmul.f32	s14, s14, s12
+ 347              		.loc 1 70 57 view .LVU109
+ 348 0020 87EE276A 		vdiv.f32	s12, s14, s15
+  69:modules/algorithm/controller.c ****     pid->Output = pid->Output * pid->dt / (pid->Output_LPF_RC + pid->dt) +
+ 349              		.loc 1 69 74 view .LVU110
+ 350 0024 76EE867A 		vadd.f32	s15, s13, s12
+  69:modules/algorithm/controller.c ****     pid->Output = pid->Output * pid->dt / (pid->Output_LPF_RC + pid->dt) +
+ 351              		.loc 1 69 17 view .LVU111
+ 352 0028 C0ED147A 		vstr.32	s15, [r0, #80]
+  71:modules/algorithm/controller.c **** }
+ 353              		.loc 1 71 1 view .LVU112
+ 354 002c 7047     		bx	lr
+ 355              		.cfi_endproc
+ 356              	.LFE149:
+ 358              		.section	.text.f_Output_Limit,"ax",%progbits
+ 359              		.align	1
+ 360              		.syntax unified
+ 361              		.thumb
+ 362              		.thumb_func
+ 364              	f_Output_Limit:
+ 365              	.LVL6:
+ 366              	.LFB150:
+  72:modules/algorithm/controller.c **** 
+  73:modules/algorithm/controller.c **** // 输出限幅
+  74:modules/algorithm/controller.c **** static void f_Output_Limit(PIDInstance *pid)
+  75:modules/algorithm/controller.c **** {
+ 367              		.loc 1 75 1 is_stmt 1 view -0
+ 368              		.cfi_startproc
+ 369              		@ args = 0, pretend = 0, frame = 0
+ 370              		@ frame_needed = 0, uses_anonymous_args = 0
+ 371              		@ link register save eliminated.
+  76:modules/algorithm/controller.c ****     if (abs(pid->Output) > pid->MaxOut) // 更改同义实现代码
+ 372              		.loc 1 76 5 view .LVU114
+ 373              		.loc 1 76 9 is_stmt 0 view .LVU115
+ 374 0000 D0ED147A 		vldr.32	s15, [r0, #80]
+ 375 0004 F5EEC07A 		vcmpe.f32	s15, #0
+ 376 0008 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 377 000c 10DD     		ble	.L38
+ 378 000e F0EE676A 		vmov.f32	s13, s15
+ 379              	.L32:
+ 380              		.loc 1 76 31 discriminator 4 view .LVU116
+ 381 0012 90ED037A 		vldr.32	s14, [r0, #12]
+ 382              		.loc 1 76 8 discriminator 4 view .LVU117
+ 383 0016 B4EEE67A 		vcmpe.f32	s14, s13
+ 384 001a F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 385 001e 06D5     		bpl	.L31
+  77:modules/algorithm/controller.c ****     {
+  78:modules/algorithm/controller.c ****         pid->Output = (pid->Output > 0) ? pid->MaxOut : -pid->MaxOut;
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccuXGTJg.s 			page 9
+
+
+ 386              		.loc 1 78 9 is_stmt 1 view .LVU118
+ 387              		.loc 1 78 55 is_stmt 0 view .LVU119
+ 388 0020 F5EEC07A 		vcmpe.f32	s15, #0
+ 389 0024 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 390 0028 05DD     		ble	.L39
+ 391              	.L35:
+ 392              		.loc 1 78 21 discriminator 4 view .LVU120
+ 393 002a 80ED147A 		vstr.32	s14, [r0, #80]
+ 394              	.L31:
+  79:modules/algorithm/controller.c ****     }
+  80:modules/algorithm/controller.c ****     // {
+  81:modules/algorithm/controller.c ****     //     pid->Output = pid->MaxOut;
+  82:modules/algorithm/controller.c ****     // }
+  83:modules/algorithm/controller.c ****     // if (pid->Output < -(pid->MaxOut))
+  84:modules/algorithm/controller.c ****     // {
+  85:modules/algorithm/controller.c ****     //     pid->Output = -(pid->MaxOut);
+  86:modules/algorithm/controller.c ****     // }
+  87:modules/algorithm/controller.c **** }
+ 395              		.loc 1 87 1 view .LVU121
+ 396 002e 7047     		bx	lr
+ 397              	.L38:
+  76:modules/algorithm/controller.c ****     {
+ 398              		.loc 1 76 9 discriminator 2 view .LVU122
+ 399 0030 F1EE676A 		vneg.f32	s13, s15
+ 400 0034 EDE7     		b	.L32
+ 401              	.L39:
+  78:modules/algorithm/controller.c ****     }
+ 402              		.loc 1 78 55 discriminator 2 view .LVU123
+ 403 0036 B1EE477A 		vneg.f32	s14, s14
+ 404 003a F6E7     		b	.L35
+ 405              		.cfi_endproc
+ 406              	.LFE150:
+ 408              		.section	.text.f_PID_ErrorHandle,"ax",%progbits
+ 409              		.align	1
+ 410              		.syntax unified
+ 411              		.thumb
+ 412              		.thumb_func
+ 414              	f_PID_ErrorHandle:
+ 415              	.LVL7:
+ 416              	.LFB151:
+  88:modules/algorithm/controller.c **** 
+  89:modules/algorithm/controller.c **** // 电机堵转检测
+  90:modules/algorithm/controller.c **** static void f_PID_ErrorHandle(PIDInstance *pid)
+  91:modules/algorithm/controller.c **** {
+ 417              		.loc 1 91 1 is_stmt 1 view -0
+ 418              		.cfi_startproc
+ 419              		@ args = 0, pretend = 0, frame = 0
+ 420              		@ frame_needed = 0, uses_anonymous_args = 0
+ 421              		@ link register save eliminated.
+  92:modules/algorithm/controller.c ****     /*Motor Blocked Handle*/
+  93:modules/algorithm/controller.c ****     if (fabsf(pid->Output) < pid->MaxOut * 0.001f || fabsf(pid->Ref) < 0.0001f)
+ 422              		.loc 1 93 5 view .LVU125
+ 423              		.loc 1 93 18 is_stmt 0 view .LVU126
+ 424 0000 90ED147A 		vldr.32	s14, [r0, #80]
+ 425              		.loc 1 93 9 view .LVU127
+ 426 0004 B0EEC77A 		vabs.f32	s14, s14
+ 427              		.loc 1 93 33 view .LVU128
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccuXGTJg.s 			page 10
+
+
+ 428 0008 D0ED037A 		vldr.32	s15, [r0, #12]
+ 429              		.loc 1 93 42 view .LVU129
+ 430 000c DFED1D6A 		vldr.32	s13, .L47
+ 431 0010 67EEA67A 		vmul.f32	s15, s15, s13
+ 432              		.loc 1 93 8 view .LVU130
+ 433 0014 B4EEE77A 		vcmpe.f32	s14, s15
+ 434 0018 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 435 001c 2BD4     		bmi	.L40
+ 436              		.loc 1 93 63 discriminator 1 view .LVU131
+ 437 001e D0ED177A 		vldr.32	s15, [r0, #92]
+ 438              		.loc 1 93 54 discriminator 1 view .LVU132
+ 439 0022 B0EEE77A 		vabs.f32	s14, s15
+ 440              		.loc 1 93 51 discriminator 1 view .LVU133
+ 441 0026 DFED186A 		vldr.32	s13, .L47+4
+ 442 002a B4EEE67A 		vcmpe.f32	s14, s13
+ 443 002e F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 444 0032 20D4     		bmi	.L40
+  94:modules/algorithm/controller.c ****         return;
+  95:modules/algorithm/controller.c **** 
+  96:modules/algorithm/controller.c ****     if ((fabsf(pid->Ref - pid->Measure) / fabsf(pid->Ref)) > 0.95f)
+ 445              		.loc 1 96 5 is_stmt 1 view .LVU134
+ 446              		.loc 1 96 30 is_stmt 0 view .LVU135
+ 447 0034 D0ED0B6A 		vldr.32	s13, [r0, #44]
+ 448              		.loc 1 96 25 view .LVU136
+ 449 0038 77EEE67A 		vsub.f32	s15, s15, s13
+ 450              		.loc 1 96 10 view .LVU137
+ 451 003c F0EEE77A 		vabs.f32	s15, s15
+ 452              		.loc 1 96 41 view .LVU138
+ 453 0040 C7EE876A 		vdiv.f32	s13, s15, s14
+ 454              		.loc 1 96 8 view .LVU139
+ 455 0044 DFED117A 		vldr.32	s15, .L47+8
+ 456 0048 F4EEE76A 		vcmpe.f32	s13, s15
+ 457 004c F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 458 0050 12DD     		ble	.L46
+  97:modules/algorithm/controller.c ****     {
+  98:modules/algorithm/controller.c ****         // Motor blocked counting
+  99:modules/algorithm/controller.c ****         pid->ERRORHandler.ERRORCount++;
+ 459              		.loc 1 99 9 is_stmt 1 view .LVU140
+ 460              		.loc 1 99 26 is_stmt 0 view .LVU141
+ 461 0052 836E     		ldr	r3, [r0, #104]
+ 462 0054 C26E     		ldr	r2, [r0, #108]
+ 463              		.loc 1 99 37 view .LVU142
+ 464 0056 0133     		adds	r3, r3, #1
+ 465 0058 42F10002 		adc	r2, r2, #0
+ 466 005c 8366     		str	r3, [r0, #104]
+ 467 005e C266     		str	r2, [r0, #108]
+ 468              	.L44:
+ 100:modules/algorithm/controller.c ****     }
+ 101:modules/algorithm/controller.c ****     else
+ 102:modules/algorithm/controller.c ****     {
+ 103:modules/algorithm/controller.c ****         pid->ERRORHandler.ERRORCount = 0;
+ 104:modules/algorithm/controller.c ****     }
+ 105:modules/algorithm/controller.c **** 
+ 106:modules/algorithm/controller.c ****     if (pid->ERRORHandler.ERRORCount > 500)
+ 469              		.loc 1 106 5 is_stmt 1 view .LVU143
+ 470              		.loc 1 106 26 is_stmt 0 view .LVU144
+ 471 0060 816E     		ldr	r1, [r0, #104]
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccuXGTJg.s 			page 11
+
+
+ 472 0062 C36E     		ldr	r3, [r0, #108]
+ 473              		.loc 1 106 8 view .LVU145
+ 474 0064 40F2F512 		movw	r2, #501
+ 475 0068 9142     		cmp	r1, r2
+ 476 006a 73F10003 		sbcs	r3, r3, #0
+ 477 006e 02D3     		bcc	.L40
+ 107:modules/algorithm/controller.c ****     {
+ 108:modules/algorithm/controller.c ****         // Motor blocked over 1000times
+ 109:modules/algorithm/controller.c ****         pid->ERRORHandler.ERRORType = PID_MOTOR_BLOCKED_ERROR;
+ 478              		.loc 1 109 9 is_stmt 1 view .LVU146
+ 479              		.loc 1 109 37 is_stmt 0 view .LVU147
+ 480 0070 0123     		movs	r3, #1
+ 481 0072 80F87030 		strb	r3, [r0, #112]
+ 482              	.L40:
+ 110:modules/algorithm/controller.c ****     }
+ 111:modules/algorithm/controller.c **** }
+ 483              		.loc 1 111 1 view .LVU148
+ 484 0076 7047     		bx	lr
+ 485              	.L46:
+ 103:modules/algorithm/controller.c ****     }
+ 486              		.loc 1 103 9 is_stmt 1 view .LVU149
+ 103:modules/algorithm/controller.c ****     }
+ 487              		.loc 1 103 38 is_stmt 0 view .LVU150
+ 488 0078 0022     		movs	r2, #0
+ 489 007a 0023     		movs	r3, #0
+ 490 007c C0E91A23 		strd	r2, [r0, #104]
+ 491 0080 EEE7     		b	.L44
+ 492              	.L48:
+ 493 0082 00BF     		.align	2
+ 494              	.L47:
+ 495 0084 6F12833A 		.word	981668463
+ 496 0088 17B7D138 		.word	953267991
+ 497 008c 3333733F 		.word	1064514355
+ 498              		.cfi_endproc
+ 499              	.LFE151:
+ 501              		.section	.text.PIDInit,"ax",%progbits
+ 502              		.align	1
+ 503              		.global	PIDInit
+ 504              		.syntax unified
+ 505              		.thumb
+ 506              		.thumb_func
+ 508              	PIDInit:
+ 509              	.LVL8:
+ 510              	.LFB152:
+ 112:modules/algorithm/controller.c **** 
+ 113:modules/algorithm/controller.c **** /* ---------------------------下面是PID的外部算法接口--------------------------- */
+ 114:modules/algorithm/controller.c **** 
+ 115:modules/algorithm/controller.c **** /**
+ 116:modules/algorithm/controller.c ****  * @brief 初始化PID,设置参数和启用的优化环节,将其他数据置零
+ 117:modules/algorithm/controller.c ****  *
+ 118:modules/algorithm/controller.c ****  * @param pid    PID实例
+ 119:modules/algorithm/controller.c ****  * @param config PID初始化设置
+ 120:modules/algorithm/controller.c ****  */
+ 121:modules/algorithm/controller.c **** void PIDInit(PIDInstance *pid, PID_Init_Config_s *config)
+ 122:modules/algorithm/controller.c **** {
+ 511              		.loc 1 122 1 is_stmt 1 view -0
+ 512              		.cfi_startproc
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccuXGTJg.s 			page 12
+
+
+ 513              		@ args = 0, pretend = 0, frame = 0
+ 514              		@ frame_needed = 0, uses_anonymous_args = 0
+ 515              		.loc 1 122 1 is_stmt 0 view .LVU152
+ 516 0000 38B5     		push	{r3, r4, r5, lr}
+ 517              	.LCFI0:
+ 518              		.cfi_def_cfa_offset 16
+ 519              		.cfi_offset 3, -16
+ 520              		.cfi_offset 4, -12
+ 521              		.cfi_offset 5, -8
+ 522              		.cfi_offset 14, -4
+ 523 0002 0546     		mov	r5, r0
+ 524 0004 0C46     		mov	r4, r1
+ 123:modules/algorithm/controller.c ****     // config的数据和pid的部分数据是连续且相同的的,所以可以直接用memcpy
+ 124:modules/algorithm/controller.c ****     // @todo: 不建议这样做,可扩展性差,不知道的开发者可能会误以为pid和confi
+ 125:modules/algorithm/controller.c ****     // 后续修改为逐个赋值
+ 126:modules/algorithm/controller.c ****     memset(pid, 0, sizeof(PIDInstance));
+ 525              		.loc 1 126 5 is_stmt 1 view .LVU153
+ 526 0006 7822     		movs	r2, #120
+ 527 0008 0021     		movs	r1, #0
+ 528              	.LVL9:
+ 529              		.loc 1 126 5 is_stmt 0 view .LVU154
+ 530 000a FFF7FEFF 		bl	memset
+ 531              	.LVL10:
+ 127:modules/algorithm/controller.c ****     // utilize the quality of struct that its memeory is continuous
+ 128:modules/algorithm/controller.c ****     memcpy(pid, config, sizeof(PID_Init_Config_s));
+ 532              		.loc 1 128 5 is_stmt 1 view .LVU155
+ 533 000e 2346     		mov	r3, r4
+ 534 0010 2A46     		mov	r2, r5
+ 535 0012 2034     		adds	r4, r4, #32
+ 536              	.LVL11:
+ 537              	.L50:
+ 538              		.loc 1 128 5 is_stmt 0 view .LVU156
+ 539 0014 D3F800E0 		ldr	lr, [r3]	@ unaligned
+ 540 0018 D3F804C0 		ldr	ip, [r3, #4]	@ unaligned
+ 541 001c 9868     		ldr	r0, [r3, #8]	@ unaligned
+ 542 001e D968     		ldr	r1, [r3, #12]	@ unaligned
+ 543 0020 C2F800E0 		str	lr, [r2]	@ unaligned
+ 544 0024 C2F804C0 		str	ip, [r2, #4]	@ unaligned
+ 545 0028 9060     		str	r0, [r2, #8]	@ unaligned
+ 546 002a D160     		str	r1, [r2, #12]	@ unaligned
+ 547 002c 1033     		adds	r3, r3, #16
+ 548 002e 1032     		adds	r2, r2, #16
+ 549 0030 A342     		cmp	r3, r4
+ 550 0032 EFD1     		bne	.L50
+ 551 0034 1868     		ldr	r0, [r3]	@ unaligned
+ 552 0036 5968     		ldr	r1, [r3, #4]	@ unaligned
+ 553 0038 9B68     		ldr	r3, [r3, #8]	@ unaligned
+ 554 003a 1060     		str	r0, [r2]	@ unaligned
+ 555 003c 5160     		str	r1, [r2, #4]	@ unaligned
+ 556 003e 9360     		str	r3, [r2, #8]	@ unaligned
+ 129:modules/algorithm/controller.c ****     // set rest of memory to 0
+ 130:modules/algorithm/controller.c ****     DWT_GetDeltaT(&pid->DWT_CNT);
+ 557              		.loc 1 130 5 is_stmt 1 view .LVU157
+ 558 0040 05F16000 		add	r0, r5, #96
+ 559 0044 FFF7FEFF 		bl	DWT_GetDeltaT
+ 560              	.LVL12:
+ 131:modules/algorithm/controller.c **** }
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccuXGTJg.s 			page 13
+
+
+ 561              		.loc 1 131 1 is_stmt 0 view .LVU158
+ 562 0048 38BD     		pop	{r3, r4, r5, pc}
+ 563              		.loc 1 131 1 view .LVU159
+ 564              		.cfi_endproc
+ 565              	.LFE152:
+ 567              		.section	.text.PIDCalculate,"ax",%progbits
+ 568              		.align	1
+ 569              		.global	PIDCalculate
+ 570              		.syntax unified
+ 571              		.thumb
+ 572              		.thumb_func
+ 574              	PIDCalculate:
+ 575              	.LVL13:
+ 576              	.LFB153:
+ 132:modules/algorithm/controller.c **** 
+ 133:modules/algorithm/controller.c **** /**
+ 134:modules/algorithm/controller.c ****  * @brief          PID计算
+ 135:modules/algorithm/controller.c ****  * @param[in]      PID结构体
+ 136:modules/algorithm/controller.c ****  * @param[in]      测量值
+ 137:modules/algorithm/controller.c ****  * @param[in]      期望值
+ 138:modules/algorithm/controller.c ****  * @retval         返回空
+ 139:modules/algorithm/controller.c ****  */
+ 140:modules/algorithm/controller.c **** float PIDCalculate(PIDInstance *pid, float measure, float ref)
+ 141:modules/algorithm/controller.c **** {
+ 577              		.loc 1 141 1 is_stmt 1 view -0
+ 578              		.cfi_startproc
+ 579              		@ args = 0, pretend = 0, frame = 0
+ 580              		@ frame_needed = 0, uses_anonymous_args = 0
+ 581              		.loc 1 141 1 is_stmt 0 view .LVU161
+ 582 0000 10B5     		push	{r4, lr}
+ 583              	.LCFI1:
+ 584              		.cfi_def_cfa_offset 8
+ 585              		.cfi_offset 4, -8
+ 586              		.cfi_offset 14, -4
+ 587 0002 2DED028B 		vpush.64	{d8}
+ 588              	.LCFI2:
+ 589              		.cfi_def_cfa_offset 16
+ 590              		.cfi_offset 80, -16
+ 591              		.cfi_offset 81, -12
+ 592 0006 0446     		mov	r4, r0
+ 593 0008 F0EE408A 		vmov.f32	s17, s0
+ 594 000c B0EE608A 		vmov.f32	s16, s1
+ 142:modules/algorithm/controller.c ****     // 堵转检测
+ 143:modules/algorithm/controller.c ****     if (pid->Improve & PID_ErrorHandle)
+ 595              		.loc 1 143 5 is_stmt 1 view .LVU162
+ 596              		.loc 1 143 9 is_stmt 0 view .LVU163
+ 597 0010 90F91430 		ldrsb	r3, [r0, #20]
+ 598              		.loc 1 143 8 view .LVU164
+ 599 0014 002B     		cmp	r3, #0
+ 600 0016 71DB     		blt	.L68
+ 601              	.LVL14:
+ 602              	.L53:
+ 144:modules/algorithm/controller.c ****         f_PID_ErrorHandle(pid);
+ 145:modules/algorithm/controller.c **** 
+ 146:modules/algorithm/controller.c ****     pid->dt = DWT_GetDeltaT(&pid->DWT_CNT); // 获取两次pid计算的时间间隔,用于积分和
+ 603              		.loc 1 146 5 is_stmt 1 view .LVU165
+ 604              		.loc 1 146 15 is_stmt 0 view .LVU166
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccuXGTJg.s 			page 14
+
+
+ 605 0018 04F16000 		add	r0, r4, #96
+ 606 001c FFF7FEFF 		bl	DWT_GetDeltaT
+ 607              	.LVL15:
+ 608              		.loc 1 146 13 view .LVU167
+ 609 0020 84ED190A 		vstr.32	s0, [r4, #100]
+ 147:modules/algorithm/controller.c **** 
+ 148:modules/algorithm/controller.c ****     // 保存上次的测量值和误差,计算当前error
+ 149:modules/algorithm/controller.c ****     pid->Measure = measure;
+ 610              		.loc 1 149 5 is_stmt 1 view .LVU168
+ 611              		.loc 1 149 18 is_stmt 0 view .LVU169
+ 612 0024 C4ED0B8A 		vstr.32	s17, [r4, #44]
+ 150:modules/algorithm/controller.c ****     pid->Ref = ref;
+ 613              		.loc 1 150 5 is_stmt 1 view .LVU170
+ 614              		.loc 1 150 14 is_stmt 0 view .LVU171
+ 615 0028 84ED178A 		vstr.32	s16, [r4, #92]
+ 151:modules/algorithm/controller.c ****     pid->Err = pid->Ref - pid->Measure;
+ 616              		.loc 1 151 5 is_stmt 1 view .LVU172
+ 617              		.loc 1 151 25 is_stmt 0 view .LVU173
+ 618 002c 78EE680A 		vsub.f32	s1, s16, s17
+ 619              		.loc 1 151 14 view .LVU174
+ 620 0030 C4ED0D0A 		vstr.32	s1, [r4, #52]
+ 152:modules/algorithm/controller.c **** 
+ 153:modules/algorithm/controller.c ****     // 如果在死区外,则计算PID
+ 154:modules/algorithm/controller.c ****     if (abs(pid->Err) > pid->DeadBand)
+ 621              		.loc 1 154 5 is_stmt 1 view .LVU175
+ 622              		.loc 1 154 9 is_stmt 0 view .LVU176
+ 623 0034 F5EEC00A 		vcmpe.f32	s1, #0
+ 624 0038 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 625 003c 61DD     		ble	.L69
+ 626              		.loc 1 154 9 view .LVU177
+ 627 003e F0EE607A 		vmov.f32	s15, s1
+ 628              	.L54:
+ 629              		.loc 1 154 28 discriminator 4 view .LVU178
+ 630 0042 94ED047A 		vldr.32	s14, [r4, #16]
+ 631              		.loc 1 154 8 discriminator 4 view .LVU179
+ 632 0046 B4EEE77A 		vcmpe.f32	s14, s15
+ 633 004a F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 634 004e 73D5     		bpl	.L66
+ 155:modules/algorithm/controller.c ****     {
+ 156:modules/algorithm/controller.c ****         // 基本的pid计算,使用位置式
+ 157:modules/algorithm/controller.c ****         pid->Pout = pid->Kp * pid->Err;
+ 635              		.loc 1 157 9 is_stmt 1 view .LVU180
+ 636              		.loc 1 157 24 is_stmt 0 view .LVU181
+ 637 0050 D4ED007A 		vldr.32	s15, [r4]
+ 638              		.loc 1 157 29 view .LVU182
+ 639 0054 60EEA77A 		vmul.f32	s15, s1, s15
+ 640              		.loc 1 157 19 view .LVU183
+ 641 0058 C4ED107A 		vstr.32	s15, [r4, #64]
+ 158:modules/algorithm/controller.c ****         pid->ITerm = pid->Ki * pid->Err * pid->dt;
+ 642              		.loc 1 158 9 is_stmt 1 view .LVU184
+ 643              		.loc 1 158 25 is_stmt 0 view .LVU185
+ 644 005c D4ED017A 		vldr.32	s15, [r4, #4]
+ 645              		.loc 1 158 30 view .LVU186
+ 646 0060 60EEA77A 		vmul.f32	s15, s1, s15
+ 647              		.loc 1 158 41 view .LVU187
+ 648 0064 60EE277A 		vmul.f32	s15, s0, s15
+ 649              		.loc 1 158 20 view .LVU188
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccuXGTJg.s 			page 15
+
+
+ 650 0068 C4ED137A 		vstr.32	s15, [r4, #76]
+ 159:modules/algorithm/controller.c ****         pid->Dout = pid->Kd * (pid->Err - pid->Last_Err) / pid->dt;
+ 651              		.loc 1 159 9 is_stmt 1 view .LVU189
+ 652              		.loc 1 159 24 is_stmt 0 view .LVU190
+ 653 006c D4ED027A 		vldr.32	s15, [r4, #8]
+ 654              		.loc 1 159 46 view .LVU191
+ 655 0070 94ED0E7A 		vldr.32	s14, [r4, #56]
+ 656              		.loc 1 159 41 view .LVU192
+ 657 0074 70EEC70A 		vsub.f32	s1, s1, s14
+ 658              		.loc 1 159 29 view .LVU193
+ 659 0078 67EEA00A 		vmul.f32	s1, s15, s1
+ 660              		.loc 1 159 58 view .LVU194
+ 661 007c C0EE807A 		vdiv.f32	s15, s1, s0
+ 662              		.loc 1 159 19 view .LVU195
+ 663 0080 C4ED127A 		vstr.32	s15, [r4, #72]
+ 160:modules/algorithm/controller.c **** 
+ 161:modules/algorithm/controller.c ****         // 梯形积分
+ 162:modules/algorithm/controller.c ****         if (pid->Improve & PID_Trapezoid_Intergral)
+ 664              		.loc 1 162 9 is_stmt 1 view .LVU196
+ 665              		.loc 1 162 16 is_stmt 0 view .LVU197
+ 666 0084 237D     		ldrb	r3, [r4, #20]	@ zero_extendqisi2
+ 667              		.loc 1 162 12 view .LVU198
+ 668 0086 13F0040F 		tst	r3, #4
+ 669 008a 3DD1     		bne	.L70
+ 670              	.L57:
+ 163:modules/algorithm/controller.c ****             f_Trapezoid_Intergral(pid);
+ 164:modules/algorithm/controller.c ****         // 变速积分
+ 165:modules/algorithm/controller.c ****         if (pid->Improve & PID_ChangingIntegrationRate)
+ 671              		.loc 1 165 9 is_stmt 1 view .LVU199
+ 672              		.loc 1 165 16 is_stmt 0 view .LVU200
+ 673 008c 237D     		ldrb	r3, [r4, #20]	@ zero_extendqisi2
+ 674              		.loc 1 165 12 view .LVU201
+ 675 008e 13F0200F 		tst	r3, #32
+ 676 0092 3DD1     		bne	.L71
+ 677              	.L58:
+ 166:modules/algorithm/controller.c ****             f_Changing_Integration_Rate(pid);
+ 167:modules/algorithm/controller.c ****         // 微分先行
+ 168:modules/algorithm/controller.c ****         if (pid->Improve & PID_Derivative_On_Measurement)
+ 678              		.loc 1 168 9 is_stmt 1 view .LVU202
+ 679              		.loc 1 168 16 is_stmt 0 view .LVU203
+ 680 0094 237D     		ldrb	r3, [r4, #20]	@ zero_extendqisi2
+ 681              		.loc 1 168 12 view .LVU204
+ 682 0096 13F0020F 		tst	r3, #2
+ 683 009a 3DD1     		bne	.L72
+ 684              	.L59:
+ 169:modules/algorithm/controller.c ****             f_Derivative_On_Measurement(pid);
+ 170:modules/algorithm/controller.c ****         // 微分滤波器
+ 171:modules/algorithm/controller.c ****         if (pid->Improve & PID_DerivativeFilter)
+ 685              		.loc 1 171 9 is_stmt 1 view .LVU205
+ 686              		.loc 1 171 16 is_stmt 0 view .LVU206
+ 687 009c 237D     		ldrb	r3, [r4, #20]	@ zero_extendqisi2
+ 688              		.loc 1 171 12 view .LVU207
+ 689 009e 13F0400F 		tst	r3, #64
+ 690 00a2 3DD1     		bne	.L73
+ 691              	.L60:
+ 172:modules/algorithm/controller.c ****             f_Derivative_Filter(pid);
+ 173:modules/algorithm/controller.c ****         // 积分限幅
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccuXGTJg.s 			page 16
+
+
+ 174:modules/algorithm/controller.c ****         if (pid->Improve & PID_Integral_Limit)
+ 692              		.loc 1 174 9 is_stmt 1 view .LVU208
+ 693              		.loc 1 174 16 is_stmt 0 view .LVU209
+ 694 00a4 237D     		ldrb	r3, [r4, #20]	@ zero_extendqisi2
+ 695              		.loc 1 174 12 view .LVU210
+ 696 00a6 13F0010F 		tst	r3, #1
+ 697 00aa 3DD1     		bne	.L74
+ 698              	.L61:
+ 175:modules/algorithm/controller.c ****             f_Integral_Limit(pid);
+ 176:modules/algorithm/controller.c **** 
+ 177:modules/algorithm/controller.c ****         pid->Iout += pid->ITerm;                         // 累加积分
+ 699              		.loc 1 177 9 is_stmt 1 view .LVU211
+ 700              		.loc 1 177 25 is_stmt 0 view .LVU212
+ 701 00ac D4ED137A 		vldr.32	s15, [r4, #76]
+ 702              		.loc 1 177 19 view .LVU213
+ 703 00b0 94ED117A 		vldr.32	s14, [r4, #68]
+ 704 00b4 77EE877A 		vadd.f32	s15, s15, s14
+ 705 00b8 C4ED117A 		vstr.32	s15, [r4, #68]
+ 178:modules/algorithm/controller.c ****         pid->Output = pid->Pout + pid->Iout + pid->Dout; // 计算输出
+ 706              		.loc 1 178 9 is_stmt 1 view .LVU214
+ 707              		.loc 1 178 26 is_stmt 0 view .LVU215
+ 708 00bc 94ED107A 		vldr.32	s14, [r4, #64]
+ 709              		.loc 1 178 33 view .LVU216
+ 710 00c0 77EE877A 		vadd.f32	s15, s15, s14
+ 711              		.loc 1 178 50 view .LVU217
+ 712 00c4 94ED127A 		vldr.32	s14, [r4, #72]
+ 713              		.loc 1 178 45 view .LVU218
+ 714 00c8 77EE877A 		vadd.f32	s15, s15, s14
+ 715              		.loc 1 178 21 view .LVU219
+ 716 00cc C4ED147A 		vstr.32	s15, [r4, #80]
+ 179:modules/algorithm/controller.c **** 
+ 180:modules/algorithm/controller.c ****         // 输出滤波
+ 181:modules/algorithm/controller.c ****         if (pid->Improve & PID_OutputFilter)
+ 717              		.loc 1 181 9 is_stmt 1 view .LVU220
+ 718              		.loc 1 181 16 is_stmt 0 view .LVU221
+ 719 00d0 237D     		ldrb	r3, [r4, #20]	@ zero_extendqisi2
+ 720              		.loc 1 181 12 view .LVU222
+ 721 00d2 13F0100F 		tst	r3, #16
+ 722 00d6 2BD1     		bne	.L75
+ 723              	.L62:
+ 182:modules/algorithm/controller.c ****             f_Output_Filter(pid);
+ 183:modules/algorithm/controller.c **** 
+ 184:modules/algorithm/controller.c ****         // 输出限幅
+ 185:modules/algorithm/controller.c ****         f_Output_Limit(pid);
+ 724              		.loc 1 185 9 is_stmt 1 view .LVU223
+ 725 00d8 2046     		mov	r0, r4
+ 726 00da FFF7FEFF 		bl	f_Output_Limit
+ 727              	.LVL16:
+ 728              	.L63:
+ 186:modules/algorithm/controller.c ****     }
+ 187:modules/algorithm/controller.c ****     else // 进入死区, 则清空积分和输出
+ 188:modules/algorithm/controller.c ****     {
+ 189:modules/algorithm/controller.c ****         pid->Output = 0;
+ 190:modules/algorithm/controller.c ****         pid->ITerm = 0;
+ 191:modules/algorithm/controller.c ****     }
+ 192:modules/algorithm/controller.c **** 
+ 193:modules/algorithm/controller.c ****     // 保存当前数据,用于下次计算
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccuXGTJg.s 			page 17
+
+
+ 194:modules/algorithm/controller.c ****     pid->Last_Measure = pid->Measure;
+ 729              		.loc 1 194 5 view .LVU224
+ 730              		.loc 1 194 28 is_stmt 0 view .LVU225
+ 731 00de E36A     		ldr	r3, [r4, #44]	@ float
+ 732              		.loc 1 194 23 view .LVU226
+ 733 00e0 2363     		str	r3, [r4, #48]	@ float
+ 195:modules/algorithm/controller.c ****     pid->Last_Output = pid->Output;
+ 734              		.loc 1 195 5 is_stmt 1 view .LVU227
+ 735              		.loc 1 195 27 is_stmt 0 view .LVU228
+ 736 00e2 94ED140A 		vldr.32	s0, [r4, #80]
+ 737              		.loc 1 195 22 view .LVU229
+ 738 00e6 84ED150A 		vstr.32	s0, [r4, #84]
+ 196:modules/algorithm/controller.c ****     pid->Last_Dout = pid->Dout;
+ 739              		.loc 1 196 5 is_stmt 1 view .LVU230
+ 740              		.loc 1 196 25 is_stmt 0 view .LVU231
+ 741 00ea A36C     		ldr	r3, [r4, #72]	@ float
+ 742              		.loc 1 196 20 view .LVU232
+ 743 00ec A365     		str	r3, [r4, #88]	@ float
+ 197:modules/algorithm/controller.c ****     pid->Last_Err = pid->Err;
+ 744              		.loc 1 197 5 is_stmt 1 view .LVU233
+ 745              		.loc 1 197 24 is_stmt 0 view .LVU234
+ 746 00ee 636B     		ldr	r3, [r4, #52]	@ float
+ 747              		.loc 1 197 19 view .LVU235
+ 748 00f0 A363     		str	r3, [r4, #56]	@ float
+ 198:modules/algorithm/controller.c ****     pid->Last_ITerm = pid->ITerm;
+ 749              		.loc 1 198 5 is_stmt 1 view .LVU236
+ 750              		.loc 1 198 26 is_stmt 0 view .LVU237
+ 751 00f2 E36C     		ldr	r3, [r4, #76]	@ float
+ 752              		.loc 1 198 21 view .LVU238
+ 753 00f4 E363     		str	r3, [r4, #60]	@ float
+ 199:modules/algorithm/controller.c **** 
+ 200:modules/algorithm/controller.c ****     return pid->Output;
+ 754              		.loc 1 200 5 is_stmt 1 view .LVU239
+ 201:modules/algorithm/controller.c **** }...
+ 755              		.loc 1 201 1 is_stmt 0 view .LVU240
+ 756 00f6 BDEC028B 		vldm	sp!, {d8}
+ 757              	.LCFI3:
+ 758              		.cfi_remember_state
+ 759              		.cfi_restore 80
+ 760              		.cfi_restore 81
+ 761              		.cfi_def_cfa_offset 8
+ 762              	.LVL17:
+ 763              		.loc 1 201 1 view .LVU241
+ 764 00fa 10BD     		pop	{r4, pc}
+ 765              	.LVL18:
+ 766              	.L68:
+ 767              	.LCFI4:
+ 768              		.cfi_restore_state
+ 144:modules/algorithm/controller.c ****         f_PID_ErrorHandle(pid);
+ 769              		.loc 1 144 9 is_stmt 1 view .LVU242
+ 770 00fc FFF7FEFF 		bl	f_PID_ErrorHandle
+ 771              	.LVL19:
+ 144:modules/algorithm/controller.c ****         f_PID_ErrorHandle(pid);
+ 772              		.loc 1 144 9 is_stmt 0 view .LVU243
+ 773 0100 8AE7     		b	.L53
+ 774              	.L69:
+ 154:modules/algorithm/controller.c ****     if (abs(pid->Err) > pid->DeadBand)
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccuXGTJg.s 			page 18
+
+
+ 775              		.loc 1 154 9 discriminator 2 view .LVU244
+ 776 0102 F1EE607A 		vneg.f32	s15, s1
+ 777 0106 9CE7     		b	.L54
+ 778              	.L70:
+ 163:modules/algorithm/controller.c ****             f_Trapezoid_Intergral(pid);
+ 779              		.loc 1 163 13 is_stmt 1 view .LVU245
+ 780 0108 2046     		mov	r0, r4
+ 781 010a FFF7FEFF 		bl	f_Trapezoid_Intergral
+ 782              	.LVL20:
+ 783 010e BDE7     		b	.L57
+ 784              	.L71:
+ 166:modules/algorithm/controller.c ****             f_Changing_Integration_Rate(pid);
+ 785              		.loc 1 166 13 view .LVU246
+ 786 0110 2046     		mov	r0, r4
+ 787 0112 FFF7FEFF 		bl	f_Changing_Integration_Rate
+ 788              	.LVL21:
+ 789 0116 BDE7     		b	.L58
+ 790              	.L72:
+ 169:modules/algorithm/controller.c ****             f_Derivative_On_Measurement(pid);
+ 791              		.loc 1 169 13 view .LVU247
+ 792 0118 2046     		mov	r0, r4
+ 793 011a FFF7FEFF 		bl	f_Derivative_On_Measurement
+ 794              	.LVL22:
+ 795 011e BDE7     		b	.L59
+ 796              	.L73:
+ 172:modules/algorithm/controller.c ****             f_Derivative_Filter(pid);
+ 797              		.loc 1 172 13 view .LVU248
+ 798 0120 2046     		mov	r0, r4
+ 799 0122 FFF7FEFF 		bl	f_Derivative_Filter
+ 800              	.LVL23:
+ 801 0126 BDE7     		b	.L60
+ 802              	.L74:
+ 175:modules/algorithm/controller.c ****             f_Integral_Limit(pid);
+ 803              		.loc 1 175 13 view .LVU249
+ 804 0128 2046     		mov	r0, r4
+ 805 012a FFF7FEFF 		bl	f_Integral_Limit
+ 806              	.LVL24:
+ 807 012e BDE7     		b	.L61
+ 808              	.L75:
+ 182:modules/algorithm/controller.c ****             f_Output_Filter(pid);
+ 809              		.loc 1 182 13 view .LVU250
+ 810 0130 2046     		mov	r0, r4
+ 811 0132 FFF7FEFF 		bl	f_Output_Filter
+ 812              	.LVL25:
+ 813 0136 CFE7     		b	.L62
+ 814              	.L66:
+ 189:modules/algorithm/controller.c ****         pid->Output = 0;
+ 815              		.loc 1 189 9 view .LVU251
+ 189:modules/algorithm/controller.c ****         pid->Output = 0;
+ 816              		.loc 1 189 21 is_stmt 0 view .LVU252
+ 817 0138 0023     		movs	r3, #0
+ 818 013a 2365     		str	r3, [r4, #80]	@ float
+ 190:modules/algorithm/controller.c ****         pid->ITerm = 0;
+ 819              		.loc 1 190 9 is_stmt 1 view .LVU253
+ 190:modules/algorithm/controller.c ****         pid->ITerm = 0;
+ 820              		.loc 1 190 20 is_stmt 0 view .LVU254
+ 821 013c E364     		str	r3, [r4, #76]	@ float
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccuXGTJg.s 			page 19
+
+
+ 822 013e CEE7     		b	.L63
+ 823              		.cfi_endproc
+ 824              	.LFE153:
+ 826              		.section	.bss.temp_Iout.1,"aw",%nobits
+ 827              		.align	2
+ 828              		.set	.LANCHOR0,. + 0
+ 831              	temp_Iout.1:
+ 832 0000 00000000 		.space	4
+ 833              		.section	.bss.temp_Output.0,"aw",%nobits
+ 834              		.align	2
+ 835              		.set	.LANCHOR1,. + 0
+ 838              	temp_Output.0:
+ 839 0000 00000000 		.space	4
+ 840              		.text
+ 841              	.Letext0:
+ 842              		.file 2 "d:\\rm\\arm-gnu-toolchian\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 843              		.file 3 "d:\\rm\\arm-gnu-toolchian\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 844              		.file 4 "modules/algorithm/controller.h"
+ 845              		.file 5 "bsp/dwt/bsp_dwt.h"
+ 846              		.file 6 "<built-in>"
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccuXGTJg.s 			page 20
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 controller.c
+C:\Users\blue\AppData\Local\Temp\ccuXGTJg.s:19     .text.f_Trapezoid_Intergral:00000000 $t
+C:\Users\blue\AppData\Local\Temp\ccuXGTJg.s:24     .text.f_Trapezoid_Intergral:00000000 f_Trapezoid_Intergral
+C:\Users\blue\AppData\Local\Temp\ccuXGTJg.s:59     .text.f_Changing_Integration_Rate:00000000 $t
+C:\Users\blue\AppData\Local\Temp\ccuXGTJg.s:64     .text.f_Changing_Integration_Rate:00000000 f_Changing_Integration_Rate
+C:\Users\blue\AppData\Local\Temp\ccuXGTJg.s:132    .text.f_Integral_Limit:00000000 $t
+C:\Users\blue\AppData\Local\Temp\ccuXGTJg.s:137    .text.f_Integral_Limit:00000000 f_Integral_Limit
+C:\Users\blue\AppData\Local\Temp\ccuXGTJg.s:233    .text.f_Integral_Limit:0000008c $d
+C:\Users\blue\AppData\Local\Temp\ccuXGTJg.s:239    .text.f_Derivative_On_Measurement:00000000 $t
+C:\Users\blue\AppData\Local\Temp\ccuXGTJg.s:244    .text.f_Derivative_On_Measurement:00000000 f_Derivative_On_Measurement
+C:\Users\blue\AppData\Local\Temp\ccuXGTJg.s:275    .text.f_Derivative_Filter:00000000 $t
+C:\Users\blue\AppData\Local\Temp\ccuXGTJg.s:280    .text.f_Derivative_Filter:00000000 f_Derivative_Filter
+C:\Users\blue\AppData\Local\Temp\ccuXGTJg.s:317    .text.f_Output_Filter:00000000 $t
+C:\Users\blue\AppData\Local\Temp\ccuXGTJg.s:322    .text.f_Output_Filter:00000000 f_Output_Filter
+C:\Users\blue\AppData\Local\Temp\ccuXGTJg.s:359    .text.f_Output_Limit:00000000 $t
+C:\Users\blue\AppData\Local\Temp\ccuXGTJg.s:364    .text.f_Output_Limit:00000000 f_Output_Limit
+C:\Users\blue\AppData\Local\Temp\ccuXGTJg.s:409    .text.f_PID_ErrorHandle:00000000 $t
+C:\Users\blue\AppData\Local\Temp\ccuXGTJg.s:414    .text.f_PID_ErrorHandle:00000000 f_PID_ErrorHandle
+C:\Users\blue\AppData\Local\Temp\ccuXGTJg.s:495    .text.f_PID_ErrorHandle:00000084 $d
+C:\Users\blue\AppData\Local\Temp\ccuXGTJg.s:502    .text.PIDInit:00000000 $t
+C:\Users\blue\AppData\Local\Temp\ccuXGTJg.s:508    .text.PIDInit:00000000 PIDInit
+C:\Users\blue\AppData\Local\Temp\ccuXGTJg.s:568    .text.PIDCalculate:00000000 $t
+C:\Users\blue\AppData\Local\Temp\ccuXGTJg.s:574    .text.PIDCalculate:00000000 PIDCalculate
+C:\Users\blue\AppData\Local\Temp\ccuXGTJg.s:827    .bss.temp_Iout.1:00000000 $d
+C:\Users\blue\AppData\Local\Temp\ccuXGTJg.s:831    .bss.temp_Iout.1:00000000 temp_Iout.1
+C:\Users\blue\AppData\Local\Temp\ccuXGTJg.s:834    .bss.temp_Output.0:00000000 $d
+C:\Users\blue\AppData\Local\Temp\ccuXGTJg.s:838    .bss.temp_Output.0:00000000 temp_Output.0
+
+UNDEFINED SYMBOLS
+memset
+DWT_GetDeltaT

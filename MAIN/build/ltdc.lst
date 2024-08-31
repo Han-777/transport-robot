@@ -1,0 +1,1118 @@
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccQz1LFR.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.arch armv7e-m
+   3              		.fpu fpv5-d16
+   4              		.eabi_attribute 28, 1
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 1
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.file	"ltdc.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.section	.text.MX_LTDC_Init,"ax",%progbits
+  19              		.align	1
+  20              		.global	MX_LTDC_Init
+  21              		.syntax unified
+  22              		.thumb
+  23              		.thumb_func
+  25              	MX_LTDC_Init:
+  26              	.LFB144:
+  27              		.file 1 "Core/Src/ltdc.c"
+   1:Core/Src/ltdc.c **** /* USER CODE BEGIN Header */
+   2:Core/Src/ltdc.c **** /**
+   3:Core/Src/ltdc.c ****   ******************************************************************************
+   4:Core/Src/ltdc.c ****   * @file    ltdc.c
+   5:Core/Src/ltdc.c ****   * @brief   This file provides code for the configuration
+   6:Core/Src/ltdc.c ****   *          of the LTDC instances.
+   7:Core/Src/ltdc.c ****   ******************************************************************************
+   8:Core/Src/ltdc.c ****   * @attention
+   9:Core/Src/ltdc.c ****   *
+  10:Core/Src/ltdc.c ****   * Copyright (c) 2024 STMicroelectronics.
+  11:Core/Src/ltdc.c ****   * All rights reserved.
+  12:Core/Src/ltdc.c ****   *
+  13:Core/Src/ltdc.c ****   * This software is licensed under terms that can be found in the LICENSE file
+  14:Core/Src/ltdc.c ****   * in the root directory of this software component.
+  15:Core/Src/ltdc.c ****   * If no LICENSE file comes with this software, it is provided AS-IS.
+  16:Core/Src/ltdc.c ****   *
+  17:Core/Src/ltdc.c ****   ******************************************************************************
+  18:Core/Src/ltdc.c ****   */
+  19:Core/Src/ltdc.c **** /* USER CODE END Header */
+  20:Core/Src/ltdc.c **** /* Includes ------------------------------------------------------------------*/
+  21:Core/Src/ltdc.c **** #include "ltdc.h"
+  22:Core/Src/ltdc.c **** 
+  23:Core/Src/ltdc.c **** /* USER CODE BEGIN 0 */
+  24:Core/Src/ltdc.c **** 
+  25:Core/Src/ltdc.c **** /* USER CODE END 0 */
+  26:Core/Src/ltdc.c **** 
+  27:Core/Src/ltdc.c **** LTDC_HandleTypeDef hltdc;
+  28:Core/Src/ltdc.c **** 
+  29:Core/Src/ltdc.c **** /* LTDC init function */
+  30:Core/Src/ltdc.c **** void MX_LTDC_Init(void)
+  31:Core/Src/ltdc.c **** {
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccQz1LFR.s 			page 2
+
+
+  28              		.loc 1 31 1 view -0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 56
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32 0000 00B5     		push	{lr}
+  33              	.LCFI0:
+  34              		.cfi_def_cfa_offset 4
+  35              		.cfi_offset 14, -4
+  36 0002 8FB0     		sub	sp, sp, #60
+  37              	.LCFI1:
+  38              		.cfi_def_cfa_offset 64
+  32:Core/Src/ltdc.c **** 
+  33:Core/Src/ltdc.c ****   /* USER CODE BEGIN LTDC_Init 0 */
+  34:Core/Src/ltdc.c **** 
+  35:Core/Src/ltdc.c ****   /* USER CODE END LTDC_Init 0 */
+  36:Core/Src/ltdc.c **** 
+  37:Core/Src/ltdc.c ****   LTDC_LayerCfgTypeDef pLayerCfg = {0};
+  39              		.loc 1 37 3 view .LVU1
+  40              		.loc 1 37 24 is_stmt 0 view .LVU2
+  41 0004 3422     		movs	r2, #52
+  42 0006 0021     		movs	r1, #0
+  43 0008 01A8     		add	r0, sp, #4
+  44 000a FFF7FEFF 		bl	memset
+  45              	.LVL0:
+  38:Core/Src/ltdc.c **** 
+  39:Core/Src/ltdc.c ****   /* USER CODE BEGIN LTDC_Init 1 */
+  40:Core/Src/ltdc.c **** 
+  41:Core/Src/ltdc.c ****   /* USER CODE END LTDC_Init 1 */
+  42:Core/Src/ltdc.c ****   hltdc.Instance = LTDC;
+  46              		.loc 1 42 3 is_stmt 1 view .LVU3
+  47              		.loc 1 42 18 is_stmt 0 view .LVU4
+  48 000e 2748     		ldr	r0, .L7
+  49 0010 274B     		ldr	r3, .L7+4
+  50 0012 0360     		str	r3, [r0]
+  43:Core/Src/ltdc.c ****   hltdc.Init.HSPolarity = LTDC_HSPOLARITY_AL;
+  51              		.loc 1 43 3 is_stmt 1 view .LVU5
+  52              		.loc 1 43 25 is_stmt 0 view .LVU6
+  53 0014 0023     		movs	r3, #0
+  54 0016 4360     		str	r3, [r0, #4]
+  44:Core/Src/ltdc.c ****   hltdc.Init.VSPolarity = LTDC_VSPOLARITY_AL;
+  55              		.loc 1 44 3 is_stmt 1 view .LVU7
+  56              		.loc 1 44 25 is_stmt 0 view .LVU8
+  57 0018 8360     		str	r3, [r0, #8]
+  45:Core/Src/ltdc.c ****   hltdc.Init.DEPolarity = LTDC_DEPOLARITY_AL;
+  58              		.loc 1 45 3 is_stmt 1 view .LVU9
+  59              		.loc 1 45 25 is_stmt 0 view .LVU10
+  60 001a C360     		str	r3, [r0, #12]
+  46:Core/Src/ltdc.c ****   hltdc.Init.PCPolarity = LTDC_PCPOLARITY_IPC;
+  61              		.loc 1 46 3 is_stmt 1 view .LVU11
+  62              		.loc 1 46 25 is_stmt 0 view .LVU12
+  63 001c 0361     		str	r3, [r0, #16]
+  47:Core/Src/ltdc.c ****   hltdc.Init.HorizontalSync = 0;
+  64              		.loc 1 47 3 is_stmt 1 view .LVU13
+  65              		.loc 1 47 29 is_stmt 0 view .LVU14
+  66 001e 4361     		str	r3, [r0, #20]
+  48:Core/Src/ltdc.c ****   hltdc.Init.VerticalSync = 0;
+  67              		.loc 1 48 3 is_stmt 1 view .LVU15
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccQz1LFR.s 			page 3
+
+
+  68              		.loc 1 48 27 is_stmt 0 view .LVU16
+  69 0020 8361     		str	r3, [r0, #24]
+  49:Core/Src/ltdc.c ****   hltdc.Init.AccumulatedHBP = 80;
+  70              		.loc 1 49 3 is_stmt 1 view .LVU17
+  71              		.loc 1 49 29 is_stmt 0 view .LVU18
+  72 0022 5022     		movs	r2, #80
+  73 0024 C261     		str	r2, [r0, #28]
+  50:Core/Src/ltdc.c ****   hltdc.Init.AccumulatedVBP = 40;
+  74              		.loc 1 50 3 is_stmt 1 view .LVU19
+  75              		.loc 1 50 29 is_stmt 0 view .LVU20
+  76 0026 2822     		movs	r2, #40
+  77 0028 0262     		str	r2, [r0, #32]
+  51:Core/Src/ltdc.c ****   hltdc.Init.AccumulatedActiveW = 880;
+  78              		.loc 1 51 3 is_stmt 1 view .LVU21
+  79              		.loc 1 51 33 is_stmt 0 view .LVU22
+  80 002a 4FF45C72 		mov	r2, #880
+  81 002e 4262     		str	r2, [r0, #36]
+  52:Core/Src/ltdc.c ****   hltdc.Init.AccumulatedActiveH = 520;
+  82              		.loc 1 52 3 is_stmt 1 view .LVU23
+  83              		.loc 1 52 33 is_stmt 0 view .LVU24
+  84 0030 4FF40272 		mov	r2, #520
+  85 0034 8262     		str	r2, [r0, #40]
+  53:Core/Src/ltdc.c ****   hltdc.Init.TotalWidth = 1080;
+  86              		.loc 1 53 3 is_stmt 1 view .LVU25
+  87              		.loc 1 53 25 is_stmt 0 view .LVU26
+  88 0036 4FF48762 		mov	r2, #1080
+  89 003a C262     		str	r2, [r0, #44]
+  54:Core/Src/ltdc.c ****   hltdc.Init.TotalHeigh = 542;
+  90              		.loc 1 54 3 is_stmt 1 view .LVU27
+  91              		.loc 1 54 25 is_stmt 0 view .LVU28
+  92 003c 40F21E22 		movw	r2, #542
+  93 0040 0263     		str	r2, [r0, #48]
+  55:Core/Src/ltdc.c ****   hltdc.Init.Backcolor.Blue = 0;
+  94              		.loc 1 55 3 is_stmt 1 view .LVU29
+  95              		.loc 1 55 29 is_stmt 0 view .LVU30
+  96 0042 80F83430 		strb	r3, [r0, #52]
+  56:Core/Src/ltdc.c ****   hltdc.Init.Backcolor.Green = 0;
+  97              		.loc 1 56 3 is_stmt 1 view .LVU31
+  98              		.loc 1 56 30 is_stmt 0 view .LVU32
+  99 0046 80F83530 		strb	r3, [r0, #53]
+  57:Core/Src/ltdc.c ****   hltdc.Init.Backcolor.Red = 0;
+ 100              		.loc 1 57 3 is_stmt 1 view .LVU33
+ 101              		.loc 1 57 28 is_stmt 0 view .LVU34
+ 102 004a 80F83630 		strb	r3, [r0, #54]
+  58:Core/Src/ltdc.c ****   if (HAL_LTDC_Init(&hltdc) != HAL_OK)
+ 103              		.loc 1 58 3 is_stmt 1 view .LVU35
+ 104              		.loc 1 58 7 is_stmt 0 view .LVU36
+ 105 004e FFF7FEFF 		bl	HAL_LTDC_Init
+ 106              	.LVL1:
+ 107              		.loc 1 58 6 view .LVU37
+ 108 0052 28BB     		cbnz	r0, .L5
+ 109              	.L2:
+  59:Core/Src/ltdc.c ****   {
+  60:Core/Src/ltdc.c ****     Error_Handler();
+  61:Core/Src/ltdc.c ****   }
+  62:Core/Src/ltdc.c ****   pLayerCfg.WindowX0 = 0;
+ 110              		.loc 1 62 3 is_stmt 1 view .LVU38
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccQz1LFR.s 			page 4
+
+
+ 111              		.loc 1 62 22 is_stmt 0 view .LVU39
+ 112 0054 0022     		movs	r2, #0
+ 113 0056 0192     		str	r2, [sp, #4]
+  63:Core/Src/ltdc.c ****   pLayerCfg.WindowX1 = 800;
+ 114              		.loc 1 63 3 is_stmt 1 view .LVU40
+ 115              		.loc 1 63 22 is_stmt 0 view .LVU41
+ 116 0058 4FF44871 		mov	r1, #800
+ 117 005c 0291     		str	r1, [sp, #8]
+  64:Core/Src/ltdc.c ****   pLayerCfg.WindowY0 = 0;
+ 118              		.loc 1 64 3 is_stmt 1 view .LVU42
+ 119              		.loc 1 64 22 is_stmt 0 view .LVU43
+ 120 005e 0392     		str	r2, [sp, #12]
+  65:Core/Src/ltdc.c ****   pLayerCfg.WindowY1 = 480;
+ 121              		.loc 1 65 3 is_stmt 1 view .LVU44
+ 122              		.loc 1 65 22 is_stmt 0 view .LVU45
+ 123 0060 4FF4F073 		mov	r3, #480
+ 124 0064 0493     		str	r3, [sp, #16]
+  66:Core/Src/ltdc.c ****   pLayerCfg.PixelFormat = LTDC_PIXEL_FORMAT_RGB565;
+ 125              		.loc 1 66 3 is_stmt 1 view .LVU46
+ 126              		.loc 1 66 25 is_stmt 0 view .LVU47
+ 127 0066 0220     		movs	r0, #2
+ 128 0068 0590     		str	r0, [sp, #20]
+  67:Core/Src/ltdc.c ****   pLayerCfg.Alpha = 255;
+ 129              		.loc 1 67 3 is_stmt 1 view .LVU48
+ 130              		.loc 1 67 19 is_stmt 0 view .LVU49
+ 131 006a FF20     		movs	r0, #255
+ 132 006c 0690     		str	r0, [sp, #24]
+  68:Core/Src/ltdc.c ****   pLayerCfg.Alpha0 = 0;
+ 133              		.loc 1 68 3 is_stmt 1 view .LVU50
+ 134              		.loc 1 68 20 is_stmt 0 view .LVU51
+ 135 006e 0792     		str	r2, [sp, #28]
+  69:Core/Src/ltdc.c ****   pLayerCfg.BlendingFactor1 = LTDC_BLENDING_FACTOR1_CA;
+ 136              		.loc 1 69 3 is_stmt 1 view .LVU52
+ 137              		.loc 1 69 29 is_stmt 0 view .LVU53
+ 138 0070 4FF48060 		mov	r0, #1024
+ 139 0074 0890     		str	r0, [sp, #32]
+  70:Core/Src/ltdc.c ****   pLayerCfg.BlendingFactor2 = LTDC_BLENDING_FACTOR2_CA;
+ 140              		.loc 1 70 3 is_stmt 1 view .LVU54
+ 141              		.loc 1 70 29 is_stmt 0 view .LVU55
+ 142 0076 0520     		movs	r0, #5
+ 143 0078 0990     		str	r0, [sp, #36]
+  71:Core/Src/ltdc.c ****   pLayerCfg.FBStartAdress = 0xC0000000;
+ 144              		.loc 1 71 3 is_stmt 1 view .LVU56
+ 145              		.loc 1 71 27 is_stmt 0 view .LVU57
+ 146 007a 4FF04040 		mov	r0, #-1073741824
+ 147 007e 0A90     		str	r0, [sp, #40]
+  72:Core/Src/ltdc.c ****   pLayerCfg.ImageWidth = 800;
+ 148              		.loc 1 72 3 is_stmt 1 view .LVU58
+ 149              		.loc 1 72 24 is_stmt 0 view .LVU59
+ 150 0080 0B91     		str	r1, [sp, #44]
+  73:Core/Src/ltdc.c ****   pLayerCfg.ImageHeight = 480;
+ 151              		.loc 1 73 3 is_stmt 1 view .LVU60
+ 152              		.loc 1 73 25 is_stmt 0 view .LVU61
+ 153 0082 0C93     		str	r3, [sp, #48]
+  74:Core/Src/ltdc.c ****   pLayerCfg.Backcolor.Blue = 0;
+ 154              		.loc 1 74 3 is_stmt 1 view .LVU62
+ 155              		.loc 1 74 28 is_stmt 0 view .LVU63
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccQz1LFR.s 			page 5
+
+
+ 156 0084 8DF83420 		strb	r2, [sp, #52]
+  75:Core/Src/ltdc.c ****   pLayerCfg.Backcolor.Green = 0;
+ 157              		.loc 1 75 3 is_stmt 1 view .LVU64
+ 158              		.loc 1 75 29 is_stmt 0 view .LVU65
+ 159 0088 8DF83520 		strb	r2, [sp, #53]
+  76:Core/Src/ltdc.c ****   pLayerCfg.Backcolor.Red = 0;
+ 160              		.loc 1 76 3 is_stmt 1 view .LVU66
+ 161              		.loc 1 76 27 is_stmt 0 view .LVU67
+ 162 008c 8DF83620 		strb	r2, [sp, #54]
+  77:Core/Src/ltdc.c ****   if (HAL_LTDC_ConfigLayer(&hltdc, &pLayerCfg, 0) != HAL_OK)
+ 163              		.loc 1 77 3 is_stmt 1 view .LVU68
+ 164              		.loc 1 77 7 is_stmt 0 view .LVU69
+ 165 0090 01A9     		add	r1, sp, #4
+ 166 0092 0648     		ldr	r0, .L7
+ 167 0094 FFF7FEFF 		bl	HAL_LTDC_ConfigLayer
+ 168              	.LVL2:
+ 169              		.loc 1 77 6 view .LVU70
+ 170 0098 28B9     		cbnz	r0, .L6
+ 171              	.L1:
+  78:Core/Src/ltdc.c ****   {
+  79:Core/Src/ltdc.c ****     Error_Handler();
+  80:Core/Src/ltdc.c ****   }
+  81:Core/Src/ltdc.c ****   /* USER CODE BEGIN LTDC_Init 2 */
+  82:Core/Src/ltdc.c **** 
+  83:Core/Src/ltdc.c ****   /* USER CODE END LTDC_Init 2 */
+  84:Core/Src/ltdc.c **** 
+  85:Core/Src/ltdc.c **** }
+ 172              		.loc 1 85 1 view .LVU71
+ 173 009a 0FB0     		add	sp, sp, #60
+ 174              	.LCFI2:
+ 175              		.cfi_remember_state
+ 176              		.cfi_def_cfa_offset 4
+ 177              		@ sp needed
+ 178 009c 5DF804FB 		ldr	pc, [sp], #4
+ 179              	.L5:
+ 180              	.LCFI3:
+ 181              		.cfi_restore_state
+  60:Core/Src/ltdc.c ****   }
+ 182              		.loc 1 60 5 is_stmt 1 view .LVU72
+ 183 00a0 FFF7FEFF 		bl	Error_Handler
+ 184              	.LVL3:
+ 185 00a4 D6E7     		b	.L2
+ 186              	.L6:
+  79:Core/Src/ltdc.c ****   }
+ 187              		.loc 1 79 5 view .LVU73
+ 188 00a6 FFF7FEFF 		bl	Error_Handler
+ 189              	.LVL4:
+ 190              		.loc 1 85 1 is_stmt 0 view .LVU74
+ 191 00aa F6E7     		b	.L1
+ 192              	.L8:
+ 193              		.align	2
+ 194              	.L7:
+ 195 00ac 00000000 		.word	.LANCHOR0
+ 196 00b0 00100050 		.word	1342181376
+ 197              		.cfi_endproc
+ 198              	.LFE144:
+ 200              		.section	.text.HAL_LTDC_MspInit,"ax",%progbits
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccQz1LFR.s 			page 6
+
+
+ 201              		.align	1
+ 202              		.global	HAL_LTDC_MspInit
+ 203              		.syntax unified
+ 204              		.thumb
+ 205              		.thumb_func
+ 207              	HAL_LTDC_MspInit:
+ 208              	.LVL5:
+ 209              	.LFB145:
+  86:Core/Src/ltdc.c **** 
+  87:Core/Src/ltdc.c **** void HAL_LTDC_MspInit(LTDC_HandleTypeDef* ltdcHandle)
+  88:Core/Src/ltdc.c **** {
+ 210              		.loc 1 88 1 is_stmt 1 view -0
+ 211              		.cfi_startproc
+ 212              		@ args = 0, pretend = 0, frame = 240
+ 213              		@ frame_needed = 0, uses_anonymous_args = 0
+ 214              		.loc 1 88 1 is_stmt 0 view .LVU76
+ 215 0000 2DE9F043 		push	{r4, r5, r6, r7, r8, r9, lr}
+ 216              	.LCFI4:
+ 217              		.cfi_def_cfa_offset 28
+ 218              		.cfi_offset 4, -28
+ 219              		.cfi_offset 5, -24
+ 220              		.cfi_offset 6, -20
+ 221              		.cfi_offset 7, -16
+ 222              		.cfi_offset 8, -12
+ 223              		.cfi_offset 9, -8
+ 224              		.cfi_offset 14, -4
+ 225 0004 BDB0     		sub	sp, sp, #244
+ 226              	.LCFI5:
+ 227              		.cfi_def_cfa_offset 272
+ 228 0006 0446     		mov	r4, r0
+  89:Core/Src/ltdc.c **** 
+  90:Core/Src/ltdc.c ****   GPIO_InitTypeDef GPIO_InitStruct = {0};
+ 229              		.loc 1 90 3 is_stmt 1 view .LVU77
+ 230              		.loc 1 90 20 is_stmt 0 view .LVU78
+ 231 0008 0021     		movs	r1, #0
+ 232 000a 3791     		str	r1, [sp, #220]
+ 233 000c 3891     		str	r1, [sp, #224]
+ 234 000e 3991     		str	r1, [sp, #228]
+ 235 0010 3A91     		str	r1, [sp, #232]
+ 236 0012 3B91     		str	r1, [sp, #236]
+  91:Core/Src/ltdc.c ****   RCC_PeriphCLKInitTypeDef PeriphClkInitStruct = {0};
+ 237              		.loc 1 91 3 is_stmt 1 view .LVU79
+ 238              		.loc 1 91 28 is_stmt 0 view .LVU80
+ 239 0014 C022     		movs	r2, #192
+ 240 0016 06A8     		add	r0, sp, #24
+ 241              	.LVL6:
+ 242              		.loc 1 91 28 view .LVU81
+ 243 0018 FFF7FEFF 		bl	memset
+ 244              	.LVL7:
+  92:Core/Src/ltdc.c ****   if(ltdcHandle->Instance==LTDC)
+ 245              		.loc 1 92 3 is_stmt 1 view .LVU82
+ 246              		.loc 1 92 16 is_stmt 0 view .LVU83
+ 247 001c 2268     		ldr	r2, [r4]
+ 248              		.loc 1 92 5 view .LVU84
+ 249 001e 594B     		ldr	r3, .L15
+ 250 0020 9A42     		cmp	r2, r3
+ 251 0022 02D0     		beq	.L13
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccQz1LFR.s 			page 7
+
+
+ 252              	.LVL8:
+ 253              	.L9:
+  93:Core/Src/ltdc.c ****   {
+  94:Core/Src/ltdc.c ****   /* USER CODE BEGIN LTDC_MspInit 0 */
+  95:Core/Src/ltdc.c **** 
+  96:Core/Src/ltdc.c ****   /* USER CODE END LTDC_MspInit 0 */
+  97:Core/Src/ltdc.c **** 
+  98:Core/Src/ltdc.c ****   /** Initializes the peripherals clock
+  99:Core/Src/ltdc.c ****   */
+ 100:Core/Src/ltdc.c ****     PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_LTDC;
+ 101:Core/Src/ltdc.c ****     PeriphClkInitStruct.PLL3.PLL3M = 25;
+ 102:Core/Src/ltdc.c ****     PeriphClkInitStruct.PLL3.PLL3N = 330;
+ 103:Core/Src/ltdc.c ****     PeriphClkInitStruct.PLL3.PLL3P = 2;
+ 104:Core/Src/ltdc.c ****     PeriphClkInitStruct.PLL3.PLL3Q = 2;
+ 105:Core/Src/ltdc.c ****     PeriphClkInitStruct.PLL3.PLL3R = 10;
+ 106:Core/Src/ltdc.c ****     PeriphClkInitStruct.PLL3.PLL3RGE = RCC_PLL3VCIRANGE_0;
+ 107:Core/Src/ltdc.c ****     PeriphClkInitStruct.PLL3.PLL3VCOSEL = RCC_PLL3VCOWIDE;
+ 108:Core/Src/ltdc.c ****     PeriphClkInitStruct.PLL3.PLL3FRACN = 0;
+ 109:Core/Src/ltdc.c ****     if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct) != HAL_OK)
+ 110:Core/Src/ltdc.c ****     {
+ 111:Core/Src/ltdc.c ****       Error_Handler();
+ 112:Core/Src/ltdc.c ****     }
+ 113:Core/Src/ltdc.c **** 
+ 114:Core/Src/ltdc.c ****     /* LTDC clock enable */
+ 115:Core/Src/ltdc.c ****     __HAL_RCC_LTDC_CLK_ENABLE();
+ 116:Core/Src/ltdc.c **** 
+ 117:Core/Src/ltdc.c ****     __HAL_RCC_GPIOK_CLK_ENABLE();
+ 118:Core/Src/ltdc.c ****     __HAL_RCC_GPIOG_CLK_ENABLE();
+ 119:Core/Src/ltdc.c ****     __HAL_RCC_GPIOJ_CLK_ENABLE();
+ 120:Core/Src/ltdc.c ****     __HAL_RCC_GPIOH_CLK_ENABLE();
+ 121:Core/Src/ltdc.c ****     __HAL_RCC_GPIOI_CLK_ENABLE();
+ 122:Core/Src/ltdc.c ****     /**LTDC GPIO Configuration
+ 123:Core/Src/ltdc.c ****     PK5     ------> LTDC_B6
+ 124:Core/Src/ltdc.c ****     PG10     ------> LTDC_G3
+ 125:Core/Src/ltdc.c ****     PK4     ------> LTDC_B5
+ 126:Core/Src/ltdc.c ****     PJ15     ------> LTDC_B3
+ 127:Core/Src/ltdc.c ****     PH15     ------> LTDC_G4
+ 128:Core/Src/ltdc.c ****     PK6     ------> LTDC_B7
+ 129:Core/Src/ltdc.c ****     PK3     ------> LTDC_B4
+ 130:Core/Src/ltdc.c ****     PK7     ------> LTDC_DE
+ 131:Core/Src/ltdc.c ****     PJ14     ------> LTDC_B2
+ 132:Core/Src/ltdc.c ****     PJ12     ------> LTDC_B0
+ 133:Core/Src/ltdc.c ****     PJ13     ------> LTDC_B1
+ 134:Core/Src/ltdc.c ****     PI12     ------> LTDC_HSYNC
+ 135:Core/Src/ltdc.c ****     PI13     ------> LTDC_VSYNC
+ 136:Core/Src/ltdc.c ****     PI14     ------> LTDC_CLK
+ 137:Core/Src/ltdc.c ****     PK2     ------> LTDC_G7
+ 138:Core/Src/ltdc.c ****     PK1     ------> LTDC_G6
+ 139:Core/Src/ltdc.c ****     PJ9     ------> LTDC_G2
+ 140:Core/Src/ltdc.c ****     PJ0     ------> LTDC_R1
+ 141:Core/Src/ltdc.c ****     PJ8     ------> LTDC_G1
+ 142:Core/Src/ltdc.c ****     PJ7     ------> LTDC_G0
+ 143:Core/Src/ltdc.c ****     PJ6     ------> LTDC_R7
+ 144:Core/Src/ltdc.c ****     PH4     ------> LTDC_G5
+ 145:Core/Src/ltdc.c ****     PI15     ------> LTDC_R0
+ 146:Core/Src/ltdc.c ****     PJ1     ------> LTDC_R2
+ 147:Core/Src/ltdc.c ****     PJ5     ------> LTDC_R6
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccQz1LFR.s 			page 8
+
+
+ 148:Core/Src/ltdc.c ****     PJ2     ------> LTDC_R3
+ 149:Core/Src/ltdc.c ****     PJ3     ------> LTDC_R4
+ 150:Core/Src/ltdc.c ****     PJ4     ------> LTDC_R5
+ 151:Core/Src/ltdc.c ****     */
+ 152:Core/Src/ltdc.c ****     GPIO_InitStruct.Pin = GPIO_PIN_5|GPIO_PIN_4|GPIO_PIN_6|GPIO_PIN_3
+ 153:Core/Src/ltdc.c ****                           |GPIO_PIN_7|GPIO_PIN_2|GPIO_PIN_1;
+ 154:Core/Src/ltdc.c ****     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+ 155:Core/Src/ltdc.c ****     GPIO_InitStruct.Pull = GPIO_NOPULL;
+ 156:Core/Src/ltdc.c ****     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+ 157:Core/Src/ltdc.c ****     GPIO_InitStruct.Alternate = GPIO_AF14_LTDC;
+ 158:Core/Src/ltdc.c ****     HAL_GPIO_Init(GPIOK, &GPIO_InitStruct);
+ 159:Core/Src/ltdc.c **** 
+ 160:Core/Src/ltdc.c ****     GPIO_InitStruct.Pin = GPIO_PIN_10;
+ 161:Core/Src/ltdc.c ****     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+ 162:Core/Src/ltdc.c ****     GPIO_InitStruct.Pull = GPIO_NOPULL;
+ 163:Core/Src/ltdc.c ****     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+ 164:Core/Src/ltdc.c ****     GPIO_InitStruct.Alternate = GPIO_AF9_LTDC;
+ 165:Core/Src/ltdc.c ****     HAL_GPIO_Init(GPIOG, &GPIO_InitStruct);
+ 166:Core/Src/ltdc.c **** 
+ 167:Core/Src/ltdc.c ****     GPIO_InitStruct.Pin = GPIO_PIN_15|GPIO_PIN_14|GPIO_PIN_12|GPIO_PIN_13
+ 168:Core/Src/ltdc.c ****                           |GPIO_PIN_9|GPIO_PIN_0|GPIO_PIN_8|GPIO_PIN_7
+ 169:Core/Src/ltdc.c ****                           |GPIO_PIN_6|GPIO_PIN_1|GPIO_PIN_5|GPIO_PIN_2
+ 170:Core/Src/ltdc.c ****                           |GPIO_PIN_3|GPIO_PIN_4;
+ 171:Core/Src/ltdc.c ****     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+ 172:Core/Src/ltdc.c ****     GPIO_InitStruct.Pull = GPIO_NOPULL;
+ 173:Core/Src/ltdc.c ****     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+ 174:Core/Src/ltdc.c ****     GPIO_InitStruct.Alternate = GPIO_AF14_LTDC;
+ 175:Core/Src/ltdc.c ****     HAL_GPIO_Init(GPIOJ, &GPIO_InitStruct);
+ 176:Core/Src/ltdc.c **** 
+ 177:Core/Src/ltdc.c ****     GPIO_InitStruct.Pin = GPIO_PIN_15;
+ 178:Core/Src/ltdc.c ****     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+ 179:Core/Src/ltdc.c ****     GPIO_InitStruct.Pull = GPIO_NOPULL;
+ 180:Core/Src/ltdc.c ****     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+ 181:Core/Src/ltdc.c ****     GPIO_InitStruct.Alternate = GPIO_AF14_LTDC;
+ 182:Core/Src/ltdc.c ****     HAL_GPIO_Init(GPIOH, &GPIO_InitStruct);
+ 183:Core/Src/ltdc.c **** 
+ 184:Core/Src/ltdc.c ****     GPIO_InitStruct.Pin = GPIO_PIN_12|GPIO_PIN_13|GPIO_PIN_14|GPIO_PIN_15;
+ 185:Core/Src/ltdc.c ****     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+ 186:Core/Src/ltdc.c ****     GPIO_InitStruct.Pull = GPIO_NOPULL;
+ 187:Core/Src/ltdc.c ****     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+ 188:Core/Src/ltdc.c ****     GPIO_InitStruct.Alternate = GPIO_AF14_LTDC;
+ 189:Core/Src/ltdc.c ****     HAL_GPIO_Init(GPIOI, &GPIO_InitStruct);
+ 190:Core/Src/ltdc.c **** 
+ 191:Core/Src/ltdc.c ****     GPIO_InitStruct.Pin = GPIO_PIN_4;
+ 192:Core/Src/ltdc.c ****     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+ 193:Core/Src/ltdc.c ****     GPIO_InitStruct.Pull = GPIO_NOPULL;
+ 194:Core/Src/ltdc.c ****     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+ 195:Core/Src/ltdc.c ****     GPIO_InitStruct.Alternate = GPIO_AF9_LTDC;
+ 196:Core/Src/ltdc.c ****     HAL_GPIO_Init(GPIOH, &GPIO_InitStruct);
+ 197:Core/Src/ltdc.c **** 
+ 198:Core/Src/ltdc.c ****   /* USER CODE BEGIN LTDC_MspInit 1 */
+ 199:Core/Src/ltdc.c **** 
+ 200:Core/Src/ltdc.c ****   /* USER CODE END LTDC_MspInit 1 */
+ 201:Core/Src/ltdc.c ****   }
+ 202:Core/Src/ltdc.c **** }
+ 254              		.loc 1 202 1 view .LVU85
+ 255 0024 3DB0     		add	sp, sp, #244
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccQz1LFR.s 			page 9
+
+
+ 256              	.LCFI6:
+ 257              		.cfi_remember_state
+ 258              		.cfi_def_cfa_offset 28
+ 259              		@ sp needed
+ 260 0026 BDE8F083 		pop	{r4, r5, r6, r7, r8, r9, pc}
+ 261              	.LVL9:
+ 262              	.L13:
+ 263              	.LCFI7:
+ 264              		.cfi_restore_state
+ 100:Core/Src/ltdc.c ****     PeriphClkInitStruct.PLL3.PLL3M = 25;
+ 265              		.loc 1 100 5 is_stmt 1 view .LVU86
+ 100:Core/Src/ltdc.c ****     PeriphClkInitStruct.PLL3.PLL3M = 25;
+ 266              		.loc 1 100 46 is_stmt 0 view .LVU87
+ 267 002a 4FF00052 		mov	r2, #536870912
+ 268 002e 0023     		movs	r3, #0
+ 269 0030 CDE90623 		strd	r2, [sp, #24]
+ 101:Core/Src/ltdc.c ****     PeriphClkInitStruct.PLL3.PLL3N = 330;
+ 270              		.loc 1 101 5 is_stmt 1 view .LVU88
+ 101:Core/Src/ltdc.c ****     PeriphClkInitStruct.PLL3.PLL3N = 330;
+ 271              		.loc 1 101 36 is_stmt 0 view .LVU89
+ 272 0034 1923     		movs	r3, #25
+ 273 0036 1093     		str	r3, [sp, #64]
+ 102:Core/Src/ltdc.c ****     PeriphClkInitStruct.PLL3.PLL3P = 2;
+ 274              		.loc 1 102 5 is_stmt 1 view .LVU90
+ 102:Core/Src/ltdc.c ****     PeriphClkInitStruct.PLL3.PLL3P = 2;
+ 275              		.loc 1 102 36 is_stmt 0 view .LVU91
+ 276 0038 4FF4A573 		mov	r3, #330
+ 277 003c 1193     		str	r3, [sp, #68]
+ 103:Core/Src/ltdc.c ****     PeriphClkInitStruct.PLL3.PLL3Q = 2;
+ 278              		.loc 1 103 5 is_stmt 1 view .LVU92
+ 103:Core/Src/ltdc.c ****     PeriphClkInitStruct.PLL3.PLL3Q = 2;
+ 279              		.loc 1 103 36 is_stmt 0 view .LVU93
+ 280 003e 0223     		movs	r3, #2
+ 281 0040 1293     		str	r3, [sp, #72]
+ 104:Core/Src/ltdc.c ****     PeriphClkInitStruct.PLL3.PLL3R = 10;
+ 282              		.loc 1 104 5 is_stmt 1 view .LVU94
+ 104:Core/Src/ltdc.c ****     PeriphClkInitStruct.PLL3.PLL3R = 10;
+ 283              		.loc 1 104 36 is_stmt 0 view .LVU95
+ 284 0042 1393     		str	r3, [sp, #76]
+ 105:Core/Src/ltdc.c ****     PeriphClkInitStruct.PLL3.PLL3RGE = RCC_PLL3VCIRANGE_0;
+ 285              		.loc 1 105 5 is_stmt 1 view .LVU96
+ 105:Core/Src/ltdc.c ****     PeriphClkInitStruct.PLL3.PLL3RGE = RCC_PLL3VCIRANGE_0;
+ 286              		.loc 1 105 36 is_stmt 0 view .LVU97
+ 287 0044 0A23     		movs	r3, #10
+ 288 0046 1493     		str	r3, [sp, #80]
+ 106:Core/Src/ltdc.c ****     PeriphClkInitStruct.PLL3.PLL3VCOSEL = RCC_PLL3VCOWIDE;
+ 289              		.loc 1 106 5 is_stmt 1 view .LVU98
+ 107:Core/Src/ltdc.c ****     PeriphClkInitStruct.PLL3.PLL3FRACN = 0;
+ 290              		.loc 1 107 5 view .LVU99
+ 108:Core/Src/ltdc.c ****     if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct) != HAL_OK)
+ 291              		.loc 1 108 5 view .LVU100
+ 109:Core/Src/ltdc.c ****     {
+ 292              		.loc 1 109 5 view .LVU101
+ 109:Core/Src/ltdc.c ****     {
+ 293              		.loc 1 109 9 is_stmt 0 view .LVU102
+ 294 0048 06A8     		add	r0, sp, #24
+ 295 004a FFF7FEFF 		bl	HAL_RCCEx_PeriphCLKConfig
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccQz1LFR.s 			page 10
+
+
+ 296              	.LVL10:
+ 109:Core/Src/ltdc.c ****     {
+ 297              		.loc 1 109 8 view .LVU103
+ 298 004e 0028     		cmp	r0, #0
+ 299 0050 40F09480 		bne	.L14
+ 300              	.L11:
+ 115:Core/Src/ltdc.c **** 
+ 301              		.loc 1 115 5 is_stmt 1 view .LVU104
+ 302              	.LBB2:
+ 115:Core/Src/ltdc.c **** 
+ 303              		.loc 1 115 5 view .LVU105
+ 115:Core/Src/ltdc.c **** 
+ 304              		.loc 1 115 5 view .LVU106
+ 305 0054 4C4B     		ldr	r3, .L15+4
+ 306 0056 D3F8E420 		ldr	r2, [r3, #228]
+ 307 005a 42F00802 		orr	r2, r2, #8
+ 308 005e C3F8E420 		str	r2, [r3, #228]
+ 115:Core/Src/ltdc.c **** 
+ 309              		.loc 1 115 5 view .LVU107
+ 310 0062 D3F8E420 		ldr	r2, [r3, #228]
+ 311 0066 02F00802 		and	r2, r2, #8
+ 312 006a 0092     		str	r2, [sp]
+ 115:Core/Src/ltdc.c **** 
+ 313              		.loc 1 115 5 view .LVU108
+ 314 006c 009A     		ldr	r2, [sp]
+ 315              	.LBE2:
+ 115:Core/Src/ltdc.c **** 
+ 316              		.loc 1 115 5 view .LVU109
+ 117:Core/Src/ltdc.c ****     __HAL_RCC_GPIOG_CLK_ENABLE();
+ 317              		.loc 1 117 5 view .LVU110
+ 318              	.LBB3:
+ 117:Core/Src/ltdc.c ****     __HAL_RCC_GPIOG_CLK_ENABLE();
+ 319              		.loc 1 117 5 view .LVU111
+ 117:Core/Src/ltdc.c ****     __HAL_RCC_GPIOG_CLK_ENABLE();
+ 320              		.loc 1 117 5 view .LVU112
+ 321 006e D3F8E020 		ldr	r2, [r3, #224]
+ 322 0072 42F48062 		orr	r2, r2, #1024
+ 323 0076 C3F8E020 		str	r2, [r3, #224]
+ 117:Core/Src/ltdc.c ****     __HAL_RCC_GPIOG_CLK_ENABLE();
+ 324              		.loc 1 117 5 view .LVU113
+ 325 007a D3F8E020 		ldr	r2, [r3, #224]
+ 326 007e 02F48062 		and	r2, r2, #1024
+ 327 0082 0192     		str	r2, [sp, #4]
+ 117:Core/Src/ltdc.c ****     __HAL_RCC_GPIOG_CLK_ENABLE();
+ 328              		.loc 1 117 5 view .LVU114
+ 329 0084 019A     		ldr	r2, [sp, #4]
+ 330              	.LBE3:
+ 117:Core/Src/ltdc.c ****     __HAL_RCC_GPIOG_CLK_ENABLE();
+ 331              		.loc 1 117 5 view .LVU115
+ 118:Core/Src/ltdc.c ****     __HAL_RCC_GPIOJ_CLK_ENABLE();
+ 332              		.loc 1 118 5 view .LVU116
+ 333              	.LBB4:
+ 118:Core/Src/ltdc.c ****     __HAL_RCC_GPIOJ_CLK_ENABLE();
+ 334              		.loc 1 118 5 view .LVU117
+ 118:Core/Src/ltdc.c ****     __HAL_RCC_GPIOJ_CLK_ENABLE();
+ 335              		.loc 1 118 5 view .LVU118
+ 336 0086 D3F8E020 		ldr	r2, [r3, #224]
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccQz1LFR.s 			page 11
+
+
+ 337 008a 42F04002 		orr	r2, r2, #64
+ 338 008e C3F8E020 		str	r2, [r3, #224]
+ 118:Core/Src/ltdc.c ****     __HAL_RCC_GPIOJ_CLK_ENABLE();
+ 339              		.loc 1 118 5 view .LVU119
+ 340 0092 D3F8E020 		ldr	r2, [r3, #224]
+ 341 0096 02F04002 		and	r2, r2, #64
+ 342 009a 0292     		str	r2, [sp, #8]
+ 118:Core/Src/ltdc.c ****     __HAL_RCC_GPIOJ_CLK_ENABLE();
+ 343              		.loc 1 118 5 view .LVU120
+ 344 009c 029A     		ldr	r2, [sp, #8]
+ 345              	.LBE4:
+ 118:Core/Src/ltdc.c ****     __HAL_RCC_GPIOJ_CLK_ENABLE();
+ 346              		.loc 1 118 5 view .LVU121
+ 119:Core/Src/ltdc.c ****     __HAL_RCC_GPIOH_CLK_ENABLE();
+ 347              		.loc 1 119 5 view .LVU122
+ 348              	.LBB5:
+ 119:Core/Src/ltdc.c ****     __HAL_RCC_GPIOH_CLK_ENABLE();
+ 349              		.loc 1 119 5 view .LVU123
+ 119:Core/Src/ltdc.c ****     __HAL_RCC_GPIOH_CLK_ENABLE();
+ 350              		.loc 1 119 5 view .LVU124
+ 351 009e D3F8E020 		ldr	r2, [r3, #224]
+ 352 00a2 42F40072 		orr	r2, r2, #512
+ 353 00a6 C3F8E020 		str	r2, [r3, #224]
+ 119:Core/Src/ltdc.c ****     __HAL_RCC_GPIOH_CLK_ENABLE();
+ 354              		.loc 1 119 5 view .LVU125
+ 355 00aa D3F8E020 		ldr	r2, [r3, #224]
+ 356 00ae 02F40072 		and	r2, r2, #512
+ 357 00b2 0392     		str	r2, [sp, #12]
+ 119:Core/Src/ltdc.c ****     __HAL_RCC_GPIOH_CLK_ENABLE();
+ 358              		.loc 1 119 5 view .LVU126
+ 359 00b4 039A     		ldr	r2, [sp, #12]
+ 360              	.LBE5:
+ 119:Core/Src/ltdc.c ****     __HAL_RCC_GPIOH_CLK_ENABLE();
+ 361              		.loc 1 119 5 view .LVU127
+ 120:Core/Src/ltdc.c ****     __HAL_RCC_GPIOI_CLK_ENABLE();
+ 362              		.loc 1 120 5 view .LVU128
+ 363              	.LBB6:
+ 120:Core/Src/ltdc.c ****     __HAL_RCC_GPIOI_CLK_ENABLE();
+ 364              		.loc 1 120 5 view .LVU129
+ 120:Core/Src/ltdc.c ****     __HAL_RCC_GPIOI_CLK_ENABLE();
+ 365              		.loc 1 120 5 view .LVU130
+ 366 00b6 D3F8E020 		ldr	r2, [r3, #224]
+ 367 00ba 42F08002 		orr	r2, r2, #128
+ 368 00be C3F8E020 		str	r2, [r3, #224]
+ 120:Core/Src/ltdc.c ****     __HAL_RCC_GPIOI_CLK_ENABLE();
+ 369              		.loc 1 120 5 view .LVU131
+ 370 00c2 D3F8E020 		ldr	r2, [r3, #224]
+ 371 00c6 02F08002 		and	r2, r2, #128
+ 372 00ca 0492     		str	r2, [sp, #16]
+ 120:Core/Src/ltdc.c ****     __HAL_RCC_GPIOI_CLK_ENABLE();
+ 373              		.loc 1 120 5 view .LVU132
+ 374 00cc 049A     		ldr	r2, [sp, #16]
+ 375              	.LBE6:
+ 120:Core/Src/ltdc.c ****     __HAL_RCC_GPIOI_CLK_ENABLE();
+ 376              		.loc 1 120 5 view .LVU133
+ 121:Core/Src/ltdc.c ****     /**LTDC GPIO Configuration
+ 377              		.loc 1 121 5 view .LVU134
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccQz1LFR.s 			page 12
+
+
+ 378              	.LBB7:
+ 121:Core/Src/ltdc.c ****     /**LTDC GPIO Configuration
+ 379              		.loc 1 121 5 view .LVU135
+ 121:Core/Src/ltdc.c ****     /**LTDC GPIO Configuration
+ 380              		.loc 1 121 5 view .LVU136
+ 381 00ce D3F8E020 		ldr	r2, [r3, #224]
+ 382 00d2 42F48072 		orr	r2, r2, #256
+ 383 00d6 C3F8E020 		str	r2, [r3, #224]
+ 121:Core/Src/ltdc.c ****     /**LTDC GPIO Configuration
+ 384              		.loc 1 121 5 view .LVU137
+ 385 00da D3F8E030 		ldr	r3, [r3, #224]
+ 386 00de 03F48073 		and	r3, r3, #256
+ 387 00e2 0593     		str	r3, [sp, #20]
+ 121:Core/Src/ltdc.c ****     /**LTDC GPIO Configuration
+ 388              		.loc 1 121 5 view .LVU138
+ 389 00e4 059B     		ldr	r3, [sp, #20]
+ 390              	.LBE7:
+ 121:Core/Src/ltdc.c ****     /**LTDC GPIO Configuration
+ 391              		.loc 1 121 5 view .LVU139
+ 152:Core/Src/ltdc.c ****                           |GPIO_PIN_7|GPIO_PIN_2|GPIO_PIN_1;
+ 392              		.loc 1 152 5 view .LVU140
+ 152:Core/Src/ltdc.c ****                           |GPIO_PIN_7|GPIO_PIN_2|GPIO_PIN_1;
+ 393              		.loc 1 152 25 is_stmt 0 view .LVU141
+ 394 00e6 FE23     		movs	r3, #254
+ 395 00e8 3793     		str	r3, [sp, #220]
+ 154:Core/Src/ltdc.c ****     GPIO_InitStruct.Pull = GPIO_NOPULL;
+ 396              		.loc 1 154 5 is_stmt 1 view .LVU142
+ 154:Core/Src/ltdc.c ****     GPIO_InitStruct.Pull = GPIO_NOPULL;
+ 397              		.loc 1 154 26 is_stmt 0 view .LVU143
+ 398 00ea 0226     		movs	r6, #2
+ 399 00ec 3896     		str	r6, [sp, #224]
+ 155:Core/Src/ltdc.c ****     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+ 400              		.loc 1 155 5 is_stmt 1 view .LVU144
+ 155:Core/Src/ltdc.c ****     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+ 401              		.loc 1 155 26 is_stmt 0 view .LVU145
+ 402 00ee 0025     		movs	r5, #0
+ 403 00f0 3995     		str	r5, [sp, #228]
+ 156:Core/Src/ltdc.c ****     GPIO_InitStruct.Alternate = GPIO_AF14_LTDC;
+ 404              		.loc 1 156 5 is_stmt 1 view .LVU146
+ 156:Core/Src/ltdc.c ****     GPIO_InitStruct.Alternate = GPIO_AF14_LTDC;
+ 405              		.loc 1 156 27 is_stmt 0 view .LVU147
+ 406 00f2 0324     		movs	r4, #3
+ 407              	.LVL11:
+ 156:Core/Src/ltdc.c ****     GPIO_InitStruct.Alternate = GPIO_AF14_LTDC;
+ 408              		.loc 1 156 27 view .LVU148
+ 409 00f4 3A94     		str	r4, [sp, #232]
+ 157:Core/Src/ltdc.c ****     HAL_GPIO_Init(GPIOK, &GPIO_InitStruct);
+ 410              		.loc 1 157 5 is_stmt 1 view .LVU149
+ 157:Core/Src/ltdc.c ****     HAL_GPIO_Init(GPIOK, &GPIO_InitStruct);
+ 411              		.loc 1 157 31 is_stmt 0 view .LVU150
+ 412 00f6 0E27     		movs	r7, #14
+ 413 00f8 3B97     		str	r7, [sp, #236]
+ 158:Core/Src/ltdc.c **** 
+ 414              		.loc 1 158 5 is_stmt 1 view .LVU151
+ 415 00fa 37A9     		add	r1, sp, #220
+ 416 00fc 2348     		ldr	r0, .L15+8
+ 417 00fe FFF7FEFF 		bl	HAL_GPIO_Init
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccQz1LFR.s 			page 13
+
+
+ 418              	.LVL12:
+ 160:Core/Src/ltdc.c ****     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+ 419              		.loc 1 160 5 view .LVU152
+ 160:Core/Src/ltdc.c ****     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+ 420              		.loc 1 160 25 is_stmt 0 view .LVU153
+ 421 0102 4FF48063 		mov	r3, #1024
+ 422 0106 3793     		str	r3, [sp, #220]
+ 161:Core/Src/ltdc.c ****     GPIO_InitStruct.Pull = GPIO_NOPULL;
+ 423              		.loc 1 161 5 is_stmt 1 view .LVU154
+ 161:Core/Src/ltdc.c ****     GPIO_InitStruct.Pull = GPIO_NOPULL;
+ 424              		.loc 1 161 26 is_stmt 0 view .LVU155
+ 425 0108 3896     		str	r6, [sp, #224]
+ 162:Core/Src/ltdc.c ****     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+ 426              		.loc 1 162 5 is_stmt 1 view .LVU156
+ 162:Core/Src/ltdc.c ****     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+ 427              		.loc 1 162 26 is_stmt 0 view .LVU157
+ 428 010a 3995     		str	r5, [sp, #228]
+ 163:Core/Src/ltdc.c ****     GPIO_InitStruct.Alternate = GPIO_AF9_LTDC;
+ 429              		.loc 1 163 5 is_stmt 1 view .LVU158
+ 163:Core/Src/ltdc.c ****     GPIO_InitStruct.Alternate = GPIO_AF9_LTDC;
+ 430              		.loc 1 163 27 is_stmt 0 view .LVU159
+ 431 010c 3A94     		str	r4, [sp, #232]
+ 164:Core/Src/ltdc.c ****     HAL_GPIO_Init(GPIOG, &GPIO_InitStruct);
+ 432              		.loc 1 164 5 is_stmt 1 view .LVU160
+ 164:Core/Src/ltdc.c ****     HAL_GPIO_Init(GPIOG, &GPIO_InitStruct);
+ 433              		.loc 1 164 31 is_stmt 0 view .LVU161
+ 434 010e 4FF00909 		mov	r9, #9
+ 435 0112 CDF8EC90 		str	r9, [sp, #236]
+ 165:Core/Src/ltdc.c **** 
+ 436              		.loc 1 165 5 is_stmt 1 view .LVU162
+ 437 0116 37A9     		add	r1, sp, #220
+ 438 0118 1D48     		ldr	r0, .L15+12
+ 439 011a FFF7FEFF 		bl	HAL_GPIO_Init
+ 440              	.LVL13:
+ 167:Core/Src/ltdc.c ****                           |GPIO_PIN_9|GPIO_PIN_0|GPIO_PIN_8|GPIO_PIN_7
+ 441              		.loc 1 167 5 view .LVU163
+ 167:Core/Src/ltdc.c ****                           |GPIO_PIN_9|GPIO_PIN_0|GPIO_PIN_8|GPIO_PIN_7
+ 442              		.loc 1 167 25 is_stmt 0 view .LVU164
+ 443 011e 4FF2FF33 		movw	r3, #62463
+ 444 0122 3793     		str	r3, [sp, #220]
+ 171:Core/Src/ltdc.c ****     GPIO_InitStruct.Pull = GPIO_NOPULL;
+ 445              		.loc 1 171 5 is_stmt 1 view .LVU165
+ 171:Core/Src/ltdc.c ****     GPIO_InitStruct.Pull = GPIO_NOPULL;
+ 446              		.loc 1 171 26 is_stmt 0 view .LVU166
+ 447 0124 3896     		str	r6, [sp, #224]
+ 172:Core/Src/ltdc.c ****     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+ 448              		.loc 1 172 5 is_stmt 1 view .LVU167
+ 172:Core/Src/ltdc.c ****     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+ 449              		.loc 1 172 26 is_stmt 0 view .LVU168
+ 450 0126 3995     		str	r5, [sp, #228]
+ 173:Core/Src/ltdc.c ****     GPIO_InitStruct.Alternate = GPIO_AF14_LTDC;
+ 451              		.loc 1 173 5 is_stmt 1 view .LVU169
+ 173:Core/Src/ltdc.c ****     GPIO_InitStruct.Alternate = GPIO_AF14_LTDC;
+ 452              		.loc 1 173 27 is_stmt 0 view .LVU170
+ 453 0128 3A94     		str	r4, [sp, #232]
+ 174:Core/Src/ltdc.c ****     HAL_GPIO_Init(GPIOJ, &GPIO_InitStruct);
+ 454              		.loc 1 174 5 is_stmt 1 view .LVU171
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccQz1LFR.s 			page 14
+
+
+ 174:Core/Src/ltdc.c ****     HAL_GPIO_Init(GPIOJ, &GPIO_InitStruct);
+ 455              		.loc 1 174 31 is_stmt 0 view .LVU172
+ 456 012a 3B97     		str	r7, [sp, #236]
+ 175:Core/Src/ltdc.c **** 
+ 457              		.loc 1 175 5 is_stmt 1 view .LVU173
+ 458 012c 37A9     		add	r1, sp, #220
+ 459 012e 1948     		ldr	r0, .L15+16
+ 460 0130 FFF7FEFF 		bl	HAL_GPIO_Init
+ 461              	.LVL14:
+ 177:Core/Src/ltdc.c ****     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+ 462              		.loc 1 177 5 view .LVU174
+ 177:Core/Src/ltdc.c ****     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+ 463              		.loc 1 177 25 is_stmt 0 view .LVU175
+ 464 0134 4FF40043 		mov	r3, #32768
+ 465 0138 3793     		str	r3, [sp, #220]
+ 178:Core/Src/ltdc.c ****     GPIO_InitStruct.Pull = GPIO_NOPULL;
+ 466              		.loc 1 178 5 is_stmt 1 view .LVU176
+ 178:Core/Src/ltdc.c ****     GPIO_InitStruct.Pull = GPIO_NOPULL;
+ 467              		.loc 1 178 26 is_stmt 0 view .LVU177
+ 468 013a 3896     		str	r6, [sp, #224]
+ 179:Core/Src/ltdc.c ****     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+ 469              		.loc 1 179 5 is_stmt 1 view .LVU178
+ 179:Core/Src/ltdc.c ****     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+ 470              		.loc 1 179 26 is_stmt 0 view .LVU179
+ 471 013c 3995     		str	r5, [sp, #228]
+ 180:Core/Src/ltdc.c ****     GPIO_InitStruct.Alternate = GPIO_AF14_LTDC;
+ 472              		.loc 1 180 5 is_stmt 1 view .LVU180
+ 180:Core/Src/ltdc.c ****     GPIO_InitStruct.Alternate = GPIO_AF14_LTDC;
+ 473              		.loc 1 180 27 is_stmt 0 view .LVU181
+ 474 013e 3A94     		str	r4, [sp, #232]
+ 181:Core/Src/ltdc.c ****     HAL_GPIO_Init(GPIOH, &GPIO_InitStruct);
+ 475              		.loc 1 181 5 is_stmt 1 view .LVU182
+ 181:Core/Src/ltdc.c ****     HAL_GPIO_Init(GPIOH, &GPIO_InitStruct);
+ 476              		.loc 1 181 31 is_stmt 0 view .LVU183
+ 477 0140 3B97     		str	r7, [sp, #236]
+ 182:Core/Src/ltdc.c **** 
+ 478              		.loc 1 182 5 is_stmt 1 view .LVU184
+ 479 0142 DFF85880 		ldr	r8, .L15+24
+ 480 0146 37A9     		add	r1, sp, #220
+ 481 0148 4046     		mov	r0, r8
+ 482 014a FFF7FEFF 		bl	HAL_GPIO_Init
+ 483              	.LVL15:
+ 184:Core/Src/ltdc.c ****     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+ 484              		.loc 1 184 5 view .LVU185
+ 184:Core/Src/ltdc.c ****     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+ 485              		.loc 1 184 25 is_stmt 0 view .LVU186
+ 486 014e 4FF47043 		mov	r3, #61440
+ 487 0152 3793     		str	r3, [sp, #220]
+ 185:Core/Src/ltdc.c ****     GPIO_InitStruct.Pull = GPIO_NOPULL;
+ 488              		.loc 1 185 5 is_stmt 1 view .LVU187
+ 185:Core/Src/ltdc.c ****     GPIO_InitStruct.Pull = GPIO_NOPULL;
+ 489              		.loc 1 185 26 is_stmt 0 view .LVU188
+ 490 0154 3896     		str	r6, [sp, #224]
+ 186:Core/Src/ltdc.c ****     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+ 491              		.loc 1 186 5 is_stmt 1 view .LVU189
+ 186:Core/Src/ltdc.c ****     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+ 492              		.loc 1 186 26 is_stmt 0 view .LVU190
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccQz1LFR.s 			page 15
+
+
+ 493 0156 3995     		str	r5, [sp, #228]
+ 187:Core/Src/ltdc.c ****     GPIO_InitStruct.Alternate = GPIO_AF14_LTDC;
+ 494              		.loc 1 187 5 is_stmt 1 view .LVU191
+ 187:Core/Src/ltdc.c ****     GPIO_InitStruct.Alternate = GPIO_AF14_LTDC;
+ 495              		.loc 1 187 27 is_stmt 0 view .LVU192
+ 496 0158 3A94     		str	r4, [sp, #232]
+ 188:Core/Src/ltdc.c ****     HAL_GPIO_Init(GPIOI, &GPIO_InitStruct);
+ 497              		.loc 1 188 5 is_stmt 1 view .LVU193
+ 188:Core/Src/ltdc.c ****     HAL_GPIO_Init(GPIOI, &GPIO_InitStruct);
+ 498              		.loc 1 188 31 is_stmt 0 view .LVU194
+ 499 015a 3B97     		str	r7, [sp, #236]
+ 189:Core/Src/ltdc.c **** 
+ 500              		.loc 1 189 5 is_stmt 1 view .LVU195
+ 501 015c 37A9     		add	r1, sp, #220
+ 502 015e 0E48     		ldr	r0, .L15+20
+ 503 0160 FFF7FEFF 		bl	HAL_GPIO_Init
+ 504              	.LVL16:
+ 191:Core/Src/ltdc.c ****     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+ 505              		.loc 1 191 5 view .LVU196
+ 191:Core/Src/ltdc.c ****     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+ 506              		.loc 1 191 25 is_stmt 0 view .LVU197
+ 507 0164 1023     		movs	r3, #16
+ 508 0166 3793     		str	r3, [sp, #220]
+ 192:Core/Src/ltdc.c ****     GPIO_InitStruct.Pull = GPIO_NOPULL;
+ 509              		.loc 1 192 5 is_stmt 1 view .LVU198
+ 192:Core/Src/ltdc.c ****     GPIO_InitStruct.Pull = GPIO_NOPULL;
+ 510              		.loc 1 192 26 is_stmt 0 view .LVU199
+ 511 0168 3896     		str	r6, [sp, #224]
+ 193:Core/Src/ltdc.c ****     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+ 512              		.loc 1 193 5 is_stmt 1 view .LVU200
+ 193:Core/Src/ltdc.c ****     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+ 513              		.loc 1 193 26 is_stmt 0 view .LVU201
+ 514 016a 3995     		str	r5, [sp, #228]
+ 194:Core/Src/ltdc.c ****     GPIO_InitStruct.Alternate = GPIO_AF9_LTDC;
+ 515              		.loc 1 194 5 is_stmt 1 view .LVU202
+ 194:Core/Src/ltdc.c ****     GPIO_InitStruct.Alternate = GPIO_AF9_LTDC;
+ 516              		.loc 1 194 27 is_stmt 0 view .LVU203
+ 517 016c 3A94     		str	r4, [sp, #232]
+ 195:Core/Src/ltdc.c ****     HAL_GPIO_Init(GPIOH, &GPIO_InitStruct);
+ 518              		.loc 1 195 5 is_stmt 1 view .LVU204
+ 195:Core/Src/ltdc.c ****     HAL_GPIO_Init(GPIOH, &GPIO_InitStruct);
+ 519              		.loc 1 195 31 is_stmt 0 view .LVU205
+ 520 016e CDF8EC90 		str	r9, [sp, #236]
+ 196:Core/Src/ltdc.c **** 
+ 521              		.loc 1 196 5 is_stmt 1 view .LVU206
+ 522 0172 37A9     		add	r1, sp, #220
+ 523 0174 4046     		mov	r0, r8
+ 524 0176 FFF7FEFF 		bl	HAL_GPIO_Init
+ 525              	.LVL17:
+ 526              		.loc 1 202 1 is_stmt 0 view .LVU207
+ 527 017a 53E7     		b	.L9
+ 528              	.LVL18:
+ 529              	.L14:
+ 111:Core/Src/ltdc.c ****     }
+ 530              		.loc 1 111 7 is_stmt 1 view .LVU208
+ 531 017c FFF7FEFF 		bl	Error_Handler
+ 532              	.LVL19:
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccQz1LFR.s 			page 16
+
+
+ 533 0180 68E7     		b	.L11
+ 534              	.L16:
+ 535 0182 00BF     		.align	2
+ 536              	.L15:
+ 537 0184 00100050 		.word	1342181376
+ 538 0188 00440258 		.word	1476543488
+ 539 018c 00280258 		.word	1476536320
+ 540 0190 00180258 		.word	1476532224
+ 541 0194 00240258 		.word	1476535296
+ 542 0198 00200258 		.word	1476534272
+ 543 019c 001C0258 		.word	1476533248
+ 544              		.cfi_endproc
+ 545              	.LFE145:
+ 547              		.section	.text.HAL_LTDC_MspDeInit,"ax",%progbits
+ 548              		.align	1
+ 549              		.global	HAL_LTDC_MspDeInit
+ 550              		.syntax unified
+ 551              		.thumb
+ 552              		.thumb_func
+ 554              	HAL_LTDC_MspDeInit:
+ 555              	.LVL20:
+ 556              	.LFB146:
+ 203:Core/Src/ltdc.c **** 
+ 204:Core/Src/ltdc.c **** void HAL_LTDC_MspDeInit(LTDC_HandleTypeDef* ltdcHandle)
+ 205:Core/Src/ltdc.c **** {
+ 557              		.loc 1 205 1 view -0
+ 558              		.cfi_startproc
+ 559              		@ args = 0, pretend = 0, frame = 0
+ 560              		@ frame_needed = 0, uses_anonymous_args = 0
+ 561              		.loc 1 205 1 is_stmt 0 view .LVU210
+ 562 0000 08B5     		push	{r3, lr}
+ 563              	.LCFI8:
+ 564              		.cfi_def_cfa_offset 8
+ 565              		.cfi_offset 3, -8
+ 566              		.cfi_offset 14, -4
+ 206:Core/Src/ltdc.c **** 
+ 207:Core/Src/ltdc.c ****   if(ltdcHandle->Instance==LTDC)
+ 567              		.loc 1 207 3 is_stmt 1 view .LVU211
+ 568              		.loc 1 207 16 is_stmt 0 view .LVU212
+ 569 0002 0268     		ldr	r2, [r0]
+ 570              		.loc 1 207 5 view .LVU213
+ 571 0004 114B     		ldr	r3, .L21
+ 572 0006 9A42     		cmp	r2, r3
+ 573 0008 00D0     		beq	.L20
+ 574              	.LVL21:
+ 575              	.L17:
+ 208:Core/Src/ltdc.c ****   {
+ 209:Core/Src/ltdc.c ****   /* USER CODE BEGIN LTDC_MspDeInit 0 */
+ 210:Core/Src/ltdc.c **** 
+ 211:Core/Src/ltdc.c ****   /* USER CODE END LTDC_MspDeInit 0 */
+ 212:Core/Src/ltdc.c ****     /* Peripheral clock disable */
+ 213:Core/Src/ltdc.c ****     __HAL_RCC_LTDC_CLK_DISABLE();
+ 214:Core/Src/ltdc.c **** 
+ 215:Core/Src/ltdc.c ****     /**LTDC GPIO Configuration
+ 216:Core/Src/ltdc.c ****     PK5     ------> LTDC_B6
+ 217:Core/Src/ltdc.c ****     PG10     ------> LTDC_G3
+ 218:Core/Src/ltdc.c ****     PK4     ------> LTDC_B5
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccQz1LFR.s 			page 17
+
+
+ 219:Core/Src/ltdc.c ****     PJ15     ------> LTDC_B3
+ 220:Core/Src/ltdc.c ****     PH15     ------> LTDC_G4
+ 221:Core/Src/ltdc.c ****     PK6     ------> LTDC_B7
+ 222:Core/Src/ltdc.c ****     PK3     ------> LTDC_B4
+ 223:Core/Src/ltdc.c ****     PK7     ------> LTDC_DE
+ 224:Core/Src/ltdc.c ****     PJ14     ------> LTDC_B2
+ 225:Core/Src/ltdc.c ****     PJ12     ------> LTDC_B0
+ 226:Core/Src/ltdc.c ****     PJ13     ------> LTDC_B1
+ 227:Core/Src/ltdc.c ****     PI12     ------> LTDC_HSYNC
+ 228:Core/Src/ltdc.c ****     PI13     ------> LTDC_VSYNC
+ 229:Core/Src/ltdc.c ****     PI14     ------> LTDC_CLK
+ 230:Core/Src/ltdc.c ****     PK2     ------> LTDC_G7
+ 231:Core/Src/ltdc.c ****     PK1     ------> LTDC_G6
+ 232:Core/Src/ltdc.c ****     PJ9     ------> LTDC_G2
+ 233:Core/Src/ltdc.c ****     PJ0     ------> LTDC_R1
+ 234:Core/Src/ltdc.c ****     PJ8     ------> LTDC_G1
+ 235:Core/Src/ltdc.c ****     PJ7     ------> LTDC_G0
+ 236:Core/Src/ltdc.c ****     PJ6     ------> LTDC_R7
+ 237:Core/Src/ltdc.c ****     PH4     ------> LTDC_G5
+ 238:Core/Src/ltdc.c ****     PI15     ------> LTDC_R0
+ 239:Core/Src/ltdc.c ****     PJ1     ------> LTDC_R2
+ 240:Core/Src/ltdc.c ****     PJ5     ------> LTDC_R6
+ 241:Core/Src/ltdc.c ****     PJ2     ------> LTDC_R3
+ 242:Core/Src/ltdc.c ****     PJ3     ------> LTDC_R4
+ 243:Core/Src/ltdc.c ****     PJ4     ------> LTDC_R5
+ 244:Core/Src/ltdc.c ****     */
+ 245:Core/Src/ltdc.c ****     HAL_GPIO_DeInit(GPIOK, GPIO_PIN_5|GPIO_PIN_4|GPIO_PIN_6|GPIO_PIN_3
+ 246:Core/Src/ltdc.c ****                           |GPIO_PIN_7|GPIO_PIN_2|GPIO_PIN_1);
+ 247:Core/Src/ltdc.c **** 
+ 248:Core/Src/ltdc.c ****     HAL_GPIO_DeInit(GPIOG, GPIO_PIN_10);
+ 249:Core/Src/ltdc.c **** 
+ 250:Core/Src/ltdc.c ****     HAL_GPIO_DeInit(GPIOJ, GPIO_PIN_15|GPIO_PIN_14|GPIO_PIN_12|GPIO_PIN_13
+ 251:Core/Src/ltdc.c ****                           |GPIO_PIN_9|GPIO_PIN_0|GPIO_PIN_8|GPIO_PIN_7
+ 252:Core/Src/ltdc.c ****                           |GPIO_PIN_6|GPIO_PIN_1|GPIO_PIN_5|GPIO_PIN_2
+ 253:Core/Src/ltdc.c ****                           |GPIO_PIN_3|GPIO_PIN_4);
+ 254:Core/Src/ltdc.c **** 
+ 255:Core/Src/ltdc.c ****     HAL_GPIO_DeInit(GPIOH, GPIO_PIN_15|GPIO_PIN_4);
+ 256:Core/Src/ltdc.c **** 
+ 257:Core/Src/ltdc.c ****     HAL_GPIO_DeInit(GPIOI, GPIO_PIN_12|GPIO_PIN_13|GPIO_PIN_14|GPIO_PIN_15);
+ 258:Core/Src/ltdc.c **** 
+ 259:Core/Src/ltdc.c ****   /* USER CODE BEGIN LTDC_MspDeInit 1 */
+ 260:Core/Src/ltdc.c **** 
+ 261:Core/Src/ltdc.c ****   /* USER CODE END LTDC_MspDeInit 1 */
+ 262:Core/Src/ltdc.c ****   }
+ 263:Core/Src/ltdc.c **** }
+ 576              		.loc 1 263 1 view .LVU214
+ 577 000a 08BD     		pop	{r3, pc}
+ 578              	.LVL22:
+ 579              	.L20:
+ 213:Core/Src/ltdc.c **** 
+ 580              		.loc 1 213 5 is_stmt 1 view .LVU215
+ 581 000c 104A     		ldr	r2, .L21+4
+ 582 000e D2F8E430 		ldr	r3, [r2, #228]
+ 583 0012 23F00803 		bic	r3, r3, #8
+ 584 0016 C2F8E430 		str	r3, [r2, #228]
+ 245:Core/Src/ltdc.c ****                           |GPIO_PIN_7|GPIO_PIN_2|GPIO_PIN_1);
+ 585              		.loc 1 245 5 view .LVU216
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccQz1LFR.s 			page 18
+
+
+ 586 001a FE21     		movs	r1, #254
+ 587 001c 0D48     		ldr	r0, .L21+8
+ 588              	.LVL23:
+ 245:Core/Src/ltdc.c ****                           |GPIO_PIN_7|GPIO_PIN_2|GPIO_PIN_1);
+ 589              		.loc 1 245 5 is_stmt 0 view .LVU217
+ 590 001e FFF7FEFF 		bl	HAL_GPIO_DeInit
+ 591              	.LVL24:
+ 248:Core/Src/ltdc.c **** 
+ 592              		.loc 1 248 5 is_stmt 1 view .LVU218
+ 593 0022 4FF48061 		mov	r1, #1024
+ 594 0026 0C48     		ldr	r0, .L21+12
+ 595 0028 FFF7FEFF 		bl	HAL_GPIO_DeInit
+ 596              	.LVL25:
+ 250:Core/Src/ltdc.c ****                           |GPIO_PIN_9|GPIO_PIN_0|GPIO_PIN_8|GPIO_PIN_7
+ 597              		.loc 1 250 5 view .LVU219
+ 598 002c 4FF2FF31 		movw	r1, #62463
+ 599 0030 0A48     		ldr	r0, .L21+16
+ 600 0032 FFF7FEFF 		bl	HAL_GPIO_DeInit
+ 601              	.LVL26:
+ 255:Core/Src/ltdc.c **** 
+ 602              		.loc 1 255 5 view .LVU220
+ 603 0036 48F21001 		movw	r1, #32784
+ 604 003a 0948     		ldr	r0, .L21+20
+ 605 003c FFF7FEFF 		bl	HAL_GPIO_DeInit
+ 606              	.LVL27:
+ 257:Core/Src/ltdc.c **** 
+ 607              		.loc 1 257 5 view .LVU221
+ 608 0040 4FF47041 		mov	r1, #61440
+ 609 0044 0748     		ldr	r0, .L21+24
+ 610 0046 FFF7FEFF 		bl	HAL_GPIO_DeInit
+ 611              	.LVL28:
+ 612              		.loc 1 263 1 is_stmt 0 view .LVU222
+ 613 004a DEE7     		b	.L17
+ 614              	.L22:
+ 615              		.align	2
+ 616              	.L21:
+ 617 004c 00100050 		.word	1342181376
+ 618 0050 00440258 		.word	1476543488
+ 619 0054 00280258 		.word	1476536320
+ 620 0058 00180258 		.word	1476532224
+ 621 005c 00240258 		.word	1476535296
+ 622 0060 001C0258 		.word	1476533248
+ 623 0064 00200258 		.word	1476534272
+ 624              		.cfi_endproc
+ 625              	.LFE146:
+ 627              		.global	hltdc
+ 628              		.section	.bss.hltdc,"aw",%nobits
+ 629              		.align	2
+ 630              		.set	.LANCHOR0,. + 0
+ 633              	hltdc:
+ 634 0000 00000000 		.space	168
+ 634      00000000 
+ 634      00000000 
+ 634      00000000 
+ 634      00000000 
+ 635              		.text
+ 636              	.Letext0:
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccQz1LFR.s 			page 19
+
+
+ 637              		.file 2 "d:\\rm\\arm-gnu-toolchian\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 638              		.file 3 "d:\\rm\\arm-gnu-toolchian\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 639              		.file 4 "Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h743xx.h"
+ 640              		.file 5 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_def.h"
+ 641              		.file 6 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_rcc_ex.h"
+ 642              		.file 7 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_gpio.h"
+ 643              		.file 8 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_ltdc.h"
+ 644              		.file 9 "Core/Inc/main.h"
+ 645              		.file 10 "Core/Inc/ltdc.h"
+ 646              		.file 11 "<built-in>"
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccQz1LFR.s 			page 20
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 ltdc.c
+C:\Users\blue\AppData\Local\Temp\ccQz1LFR.s:19     .text.MX_LTDC_Init:00000000 $t
+C:\Users\blue\AppData\Local\Temp\ccQz1LFR.s:25     .text.MX_LTDC_Init:00000000 MX_LTDC_Init
+C:\Users\blue\AppData\Local\Temp\ccQz1LFR.s:195    .text.MX_LTDC_Init:000000ac $d
+C:\Users\blue\AppData\Local\Temp\ccQz1LFR.s:201    .text.HAL_LTDC_MspInit:00000000 $t
+C:\Users\blue\AppData\Local\Temp\ccQz1LFR.s:207    .text.HAL_LTDC_MspInit:00000000 HAL_LTDC_MspInit
+C:\Users\blue\AppData\Local\Temp\ccQz1LFR.s:537    .text.HAL_LTDC_MspInit:00000184 $d
+C:\Users\blue\AppData\Local\Temp\ccQz1LFR.s:548    .text.HAL_LTDC_MspDeInit:00000000 $t
+C:\Users\blue\AppData\Local\Temp\ccQz1LFR.s:554    .text.HAL_LTDC_MspDeInit:00000000 HAL_LTDC_MspDeInit
+C:\Users\blue\AppData\Local\Temp\ccQz1LFR.s:617    .text.HAL_LTDC_MspDeInit:0000004c $d
+C:\Users\blue\AppData\Local\Temp\ccQz1LFR.s:633    .bss.hltdc:00000000 hltdc
+C:\Users\blue\AppData\Local\Temp\ccQz1LFR.s:629    .bss.hltdc:00000000 $d
+
+UNDEFINED SYMBOLS
+memset
+HAL_LTDC_Init
+HAL_LTDC_ConfigLayer
+Error_Handler
+HAL_RCCEx_PeriphCLKConfig
+HAL_GPIO_Init
+HAL_GPIO_DeInit
