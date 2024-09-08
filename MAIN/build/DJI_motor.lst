@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s 			page 1
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccl65Mbh.s 			page 1
 
 
    1              		.cpu cortex-m7
@@ -25,7 +25,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s 			page 1
   22              		.thumb_func
   24              	MotorSenderGrouping:
   25              	.LVL0:
-  26              	.LFB144:
+  26              	.LFB185:
   27              		.file 1 "modules/motor/DJI_motor/DJI_motor.c"
    1:modules/motor/DJI_motor/DJI_motor.c **** #include "dji_motor.h"
    2:modules/motor/DJI_motor/DJI_motor.c **** #include "general_def.h"
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s 			page 1
   29:modules/motor/DJI_motor/DJI_motor.c ****     [2] = {.can_handle = &hfdcan1, .txconf.Identifier = 0x2ff, .txconf.IdType = FDCAN_STANDARD_ID, 
   30:modules/motor/DJI_motor/DJI_motor.c ****     [3] = {.can_handle = &hfdcan2, .txconf.Identifier = 0x1ff, .txconf.IdType = FDCAN_STANDARD_ID, 
   31:modules/motor/DJI_motor/DJI_motor.c ****     [4] = {.can_handle = &hfdcan2, .txconf.Identifier = 0x200, .txconf.IdType = FDCAN_STANDARD_ID, 
-ARM GAS  C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s 			page 2
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccl65Mbh.s 			page 2
 
 
   32:modules/motor/DJI_motor/DJI_motor.c ****     [5] = {.can_handle = &hfdcan2, .txconf.Identifier = 0x2ff, .txconf.IdType = FDCAN_STANDARD_ID, 
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s 			page 1
   53:modules/motor/DJI_motor/DJI_motor.c ****     case M2006:
   54:modules/motor/DJI_motor/DJI_motor.c ****     case M3508:
   55:modules/motor/DJI_motor/DJI_motor.c ****         if (motor_id < 4) // Grouping based on ID
-ARM GAS  C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s 			page 3
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccl65Mbh.s 			page 3
 
 
   61              		.loc 1 55 9 is_stmt 1 view .LVU10
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s 			page 1
   70:modules/motor/DJI_motor/DJI_motor.c **** 
   71:modules/motor/DJI_motor/DJI_motor.c ****         // Check for ID conflict
   72:modules/motor/DJI_motor/DJI_motor.c ****         for (size_t i = 0; i < idx; ++i)
-ARM GAS  C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s 			page 4
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccl65Mbh.s 			page 4
 
 
  100              		.loc 1 72 9 is_stmt 1 view .LVU28
@@ -238,7 +238,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s 			page 1
  148 0070 9A42     		cmp	r2, r3
  149 0072 47D9     		bls	.L1
   73:modules/motor/DJI_motor/DJI_motor.c ****         {
-ARM GAS  C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s 			page 5
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccl65Mbh.s 			page 5
 
 
   74:modules/motor/DJI_motor/DJI_motor.c ****             if (dji_motor_instance[i]->motor_can_instance->can_handle == config->can_handle && dji_
@@ -298,7 +298,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s 			page 1
  187              		.loc 1 89 28 view .LVU60
  188 0098 1B4B     		ldr	r3, .L26
  189 009a 9C42     		cmp	r4, r3
-ARM GAS  C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s 			page 6
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccl65Mbh.s 			page 6
 
 
  190 009c 0FD0     		beq	.L24
@@ -358,7 +358,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s 			page 1
   88:modules/motor/DJI_motor/DJI_motor.c ****             motor_grouping = config->can_handle == &hfdcan1 ? 0 : 3;
  230              		.loc 1 88 28 view .LVU78
  231 00be 1346     		mov	r3, r2
-ARM GAS  C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s 			page 7
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccl65Mbh.s 			page 7
 
 
   89:modules/motor/DJI_motor/DJI_motor.c ****         }
@@ -418,7 +418,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s 			page 1
  279 00f6 F0D1     		bne	.L14
  280              		.loc 1 104 137 discriminator 1 view .LVU94
  281 00f8 106C     		ldr	r0, [r2, #64]	@ unaligned
-ARM GAS  C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s 			page 8
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccl65Mbh.s 			page 8
 
 
  282              		.loc 1 104 154 discriminator 1 view .LVU95
@@ -475,10 +475,10 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s 			page 1
  315 0110 00000000 		.word	.LANCHOR2
  316 0114 00000000 		.word	.LANCHOR1
  317              		.cfi_endproc
- 318              	.LFE144:
+ 318              	.LFE185:
  320              		.section	.text.DJIMotorLostCallback,"ax",%progbits
  321              		.align	1
-ARM GAS  C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s 			page 9
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccl65Mbh.s 			page 9
 
 
  322              		.syntax unified
@@ -486,7 +486,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s 			page 1
  324              		.thumb_func
  326              	DJIMotorLostCallback:
  327              	.LVL30:
- 328              	.LFB146:
+ 328              	.LFB187:
  121:modules/motor/DJI_motor/DJI_motor.c **** 
  122:modules/motor/DJI_motor/DJI_motor.c **** /**
  123:modules/motor/DJI_motor/DJI_motor.c ****  * @todo  是否可以简化多圈角度的计算？
@@ -538,12 +538,12 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s 			page 1
  162:modules/motor/DJI_motor/DJI_motor.c ****     // LOGWARNING("[dji_motor] Motor lost, can bus [%d], id [%d]", can_bus, motor->motor_can_instan
  163:modules/motor/DJI_motor/DJI_motor.c **** }
  336              		.loc 1 163 1 is_stmt 0 view .LVU108
-ARM GAS  C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s 			page 10
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccl65Mbh.s 			page 10
 
 
  337 0000 7047     		bx	lr
  338              		.cfi_endproc
- 339              	.LFE146:
+ 339              	.LFE187:
  341              		.section	.text.DecodeDJIMotor,"ax",%progbits
  342              		.align	1
  343              		.syntax unified
@@ -551,7 +551,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s 			page 1
  345              		.thumb_func
  347              	DecodeDJIMotor:
  348              	.LVL31:
- 349              	.LFB145:
+ 349              	.LFB186:
  129:modules/motor/DJI_motor/DJI_motor.c ****     // Here, the ID of the can instance is forcibly converted to get the motor instance address
  350              		.loc 1 129 1 is_stmt 1 view -0
  351              		.cfi_startproc
@@ -598,7 +598,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s 			page 1
  382 0018 84ED6C0A 		vstr.32	s0, [r4, #432]
  141:modules/motor/DJI_motor/DJI_motor.c ****     measure->ecd = ((uint16_t)rxbuff[0]) << 8 | rxbuff[1];
  383              		.loc 1 141 5 is_stmt 1 view .LVU120
-ARM GAS  C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s 			page 11
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccl65Mbh.s 			page 11
 
 
  141:modules/motor/DJI_motor/DJI_motor.c ****     measure->ecd = ((uint16_t)rxbuff[0]) << 8 | rxbuff[1];
@@ -658,7 +658,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s 			page 1
  420              		.loc 1 145 68 view .LVU138
  421 0060 F8EEE77A 		vcvt.f32.s32	s15, s15
  145:modules/motor/DJI_motor/DJI_motor.c ****     measure->real_current = (1.0f - CURRENT_SMOOTH_COEF) * measure->real_current +
-ARM GAS  C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s 			page 12
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccl65Mbh.s 			page 12
 
 
  422              		.loc 1 145 66 view .LVU139
@@ -718,7 +718,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s 			page 1
  151:modules/motor/DJI_motor/DJI_motor.c ****         measure->total_round--;
  461              		.loc 1 151 22 is_stmt 0 view .LVU155
  462 00ba 521A     		subs	r2, r2, r1
-ARM GAS  C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s 			page 13
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccl65Mbh.s 			page 13
 
 
  151:modules/motor/DJI_motor/DJI_motor.c ****         measure->total_round--;
@@ -778,14 +778,14 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s 			page 1
  502              	.L33:
  503 00f4 ACFF333D 		.word	1026817964
  504 00f8 9899193E 		.word	1041865112
-ARM GAS  C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s 			page 14
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccl65Mbh.s 			page 14
 
 
  505 00fc 3433A340 		.word	1084437300
  506 0100 D0CCCC3D 		.word	1036831952
  507 0104 6666663F 		.word	1063675494
  508              		.cfi_endproc
- 509              	.LFE145:
+ 509              	.LFE186:
  511              		.section	.text.DJIMotorInit,"ax",%progbits
  512              		.align	1
  513              		.global	DJIMotorInit
@@ -794,7 +794,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s 			page 1
  516              		.thumb_func
  518              	DJIMotorInit:
  519              	.LVL38:
- 520              	.LFB147:
+ 520              	.LFB188:
  164:modules/motor/DJI_motor/DJI_motor.c **** 
  165:modules/motor/DJI_motor/DJI_motor.c **** // 电机初始化,返回一个电机实例
  166:modules/motor/DJI_motor/DJI_motor.c **** DJIMotorInstance *DJIMotorInit(Motor_Init_Config_s *config)
@@ -838,7 +838,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s 			page 1
  552              		.loc 1 172 34 is_stmt 0 view .LVU178
  553 001a 95F89B30 		ldrb	r3, [r5, #155]	@ zero_extendqisi2
  554              		.loc 1 172 26 view .LVU179
-ARM GAS  C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s 			page 15
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccl65Mbh.s 			page 15
 
 
  555 001e 84F8A631 		strb	r3, [r4, #422]
@@ -898,7 +898,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s 			page 1
  183:modules/motor/DJI_motor/DJI_motor.c ****     // 后续增加电机前馈控制器(速度和电流)
  184:modules/motor/DJI_motor/DJI_motor.c **** 
  185:modules/motor/DJI_motor/DJI_motor.c ****     // 电机分组,因为至多4个电机可以共用一帧CAN控制报文
-ARM GAS  C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s 			page 16
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccl65Mbh.s 			page 16
 
 
  186:modules/motor/DJI_motor/DJI_motor.c ****     MotorSenderGrouping(instance, &config->can_init_config);
@@ -958,7 +958,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s 			page 1
  636 009e 1378     		ldrb	r3, [r2]	@ zero_extendqisi2
  637 00a0 591C     		adds	r1, r3, #1
  638 00a2 1170     		strb	r1, [r2]
-ARM GAS  C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s 			page 17
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccl65Mbh.s 			page 17
 
 
  639              		.loc 1 202 31 view .LVU212
@@ -984,7 +984,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s 			page 1
  657 00b8 00000000 		.word	.LANCHOR2
  658 00bc 00000000 		.word	.LANCHOR1
  659              		.cfi_endproc
- 660              	.LFE147:
+ 660              	.LFE188:
  662              		.section	.text.DJIMotorChangeFeed,"ax",%progbits
  663              		.align	1
  664              		.global	DJIMotorChangeFeed
@@ -993,7 +993,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s 			page 1
  667              		.thumb_func
  669              	DJIMotorChangeFeed:
  670              	.LVL50:
- 671              	.LFB148:
+ 671              	.LFB189:
  205:modules/motor/DJI_motor/DJI_motor.c **** 
  206:modules/motor/DJI_motor/DJI_motor.c **** /* 电流只能通过电机自带传感器监测,后续考虑加入力矩传感器应变片等 */
  207:modules/motor/DJI_motor/DJI_motor.c **** void DJIMotorChangeFeed(DJIMotorInstance *motor, Closeloop_Type_e loop, Feedback_Source_e type)
@@ -1018,7 +1018,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s 			page 1
  212:modules/motor/DJI_motor/DJI_motor.c ****         motor->motor_settings.speed_feedback_source = type;
  213:modules/motor/DJI_motor/DJI_motor.c ****     // LOGERROR("[dji_motor] loop type error, check memory access and func param"); // 检查是否
  214:modules/motor/DJI_motor/DJI_motor.c **** }
-ARM GAS  C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s 			page 18
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccl65Mbh.s 			page 18
 
 
  686              		.loc 1 214 1 view .LVU221
@@ -1039,7 +1039,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s 			page 1
  697              		.loc 1 214 1 view .LVU226
  698 0010 FAE7     		b	.L39
  699              		.cfi_endproc
- 700              	.LFE148:
+ 700              	.LFE189:
  702              		.section	.text.DJIMotorStop,"ax",%progbits
  703              		.align	1
  704              		.global	DJIMotorStop
@@ -1048,7 +1048,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s 			page 1
  707              		.thumb_func
  709              	DJIMotorStop:
  710              	.LVL51:
- 711              	.LFB149:
+ 711              	.LFB190:
  215:modules/motor/DJI_motor/DJI_motor.c **** 
  216:modules/motor/DJI_motor/DJI_motor.c **** void DJIMotorStop(DJIMotorInstance *motor)
  217:modules/motor/DJI_motor/DJI_motor.c **** {
@@ -1066,7 +1066,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s 			page 1
  721              		.loc 1 219 1 view .LVU230
  722 0006 7047     		bx	lr
  723              		.cfi_endproc
- 724              	.LFE149:
+ 724              	.LFE190:
  726              		.section	.text.DJIMotorEnable,"ax",%progbits
  727              		.align	1
  728              		.global	DJIMotorEnable
@@ -1075,10 +1075,10 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s 			page 1
  731              		.thumb_func
  733              	DJIMotorEnable:
  734              	.LVL52:
- 735              	.LFB150:
+ 735              	.LFB191:
  220:modules/motor/DJI_motor/DJI_motor.c **** 
  221:modules/motor/DJI_motor/DJI_motor.c **** void DJIMotorEnable(DJIMotorInstance *motor)
-ARM GAS  C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s 			page 19
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccl65Mbh.s 			page 19
 
 
  222:modules/motor/DJI_motor/DJI_motor.c **** {
@@ -1096,7 +1096,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s 			page 1
  745              		.loc 1 224 1 view .LVU234
  746 0006 7047     		bx	lr
  747              		.cfi_endproc
- 748              	.LFE150:
+ 748              	.LFE191:
  750              		.section	.text.DJIMotorOuterLoop,"ax",%progbits
  751              		.align	1
  752              		.global	DJIMotorOuterLoop
@@ -1105,7 +1105,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s 			page 1
  755              		.thumb_func
  757              	DJIMotorOuterLoop:
  758              	.LVL53:
- 759              	.LFB151:
+ 759              	.LFB192:
  225:modules/motor/DJI_motor/DJI_motor.c **** 
  226:modules/motor/DJI_motor/DJI_motor.c **** /* 修改电机的实际闭环对象 */
  227:modules/motor/DJI_motor/DJI_motor.c **** void DJIMotorOuterLoop(DJIMotorInstance *motor, Closeloop_Type_e outer_loop)
@@ -1123,7 +1123,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s 			page 1
  768              		.loc 1 230 1 view .LVU238
  769 0002 7047     		bx	lr
  770              		.cfi_endproc
- 771              	.LFE151:
+ 771              	.LFE192:
  773              		.section	.text.DJIMotorSetRef,"ax",%progbits
  774              		.align	1
  775              		.global	DJIMotorSetRef
@@ -1132,13 +1132,13 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s 			page 1
  778              		.thumb_func
  780              	DJIMotorSetRef:
  781              	.LVL54:
- 782              	.LFB152:
+ 782              	.LFB193:
  231:modules/motor/DJI_motor/DJI_motor.c **** 
  232:modules/motor/DJI_motor/DJI_motor.c **** // 为所有电机实例计算三环PID,发送控制报文
  233:modules/motor/DJI_motor/DJI_motor.c **** void DJIMotorSetRef(DJIMotorInstance *motor, float ref)
  234:modules/motor/DJI_motor/DJI_motor.c **** {
  783              		.loc 1 234 1 is_stmt 1 view -0
-ARM GAS  C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s 			page 20
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccl65Mbh.s 			page 20
 
 
  784              		.cfi_startproc
@@ -1153,7 +1153,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s 			page 1
  791              		.loc 1 236 1 view .LVU242
  792 0004 7047     		bx	lr
  793              		.cfi_endproc
- 794              	.LFE152:
+ 794              	.LFE193:
  796              		.section	.text.DJIMotorControl,"ax",%progbits
  797              		.align	1
  798              		.global	DJIMotorControl
@@ -1161,7 +1161,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s 			page 1
  800              		.thumb
  801              		.thumb_func
  803              	DJIMotorControl:
- 804              	.LFB153:
+ 804              	.LFB194:
  237:modules/motor/DJI_motor/DJI_motor.c **** 
  238:modules/motor/DJI_motor/DJI_motor.c **** // Calculate three-loop PID for all motor instances and send control messages
  239:modules/motor/DJI_motor/DJI_motor.c **** void DJIMotorControl()
@@ -1198,7 +1198,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s 			page 1
  248:modules/motor/DJI_motor/DJI_motor.c ****     float pid_measure, pid_ref;             // Motor PID measurement and reference values
  827              		.loc 1 248 5 view .LVU250
  249:modules/motor/DJI_motor/DJI_motor.c **** 
-ARM GAS  C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s 			page 21
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccl65Mbh.s 			page 21
 
 
  250:modules/motor/DJI_motor/DJI_motor.c ****     // Traverse all motor instances, calculate cascade PID, and set the transmission message value
@@ -1258,7 +1258,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s 			page 1
  861              		.loc 1 270 23 view .LVU265
  862 0022 F0EE400A 		vmov.f32	s1, s0
  863              	.LVL60:
-ARM GAS  C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s 			page 22
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccl65Mbh.s 			page 22
 
 
  864              		.loc 1 270 23 view .LVU266
@@ -1318,7 +1318,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s 			page 1
  899              		.loc 1 285 23 is_stmt 0 view .LVU280
  900 004a 504B     		ldr	r3, .L76
  901 004c 83ED000A 		vstr.32	s0, [r3]
-ARM GAS  C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s 			page 23
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccl65Mbh.s 			page 23
 
 
  286:modules/motor/DJI_motor/DJI_motor.c ****             real_s = pid_measure;
@@ -1378,7 +1378,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s 			page 1
  941 007c 60D0     		beq	.L70
  942              	.L60:
  301:modules/motor/DJI_motor/DJI_motor.c ****             pid_ref *= -1;
-ARM GAS  C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s 			page 24
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccl65Mbh.s 			page 24
 
 
  302:modules/motor/DJI_motor/DJI_motor.c **** 
@@ -1438,7 +1438,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s 			page 1
  984              	.LVL74:
  985              	.L49:
  251:modules/motor/DJI_motor/DJI_motor.c ****     { // Reduce memory access overhead, save pointer references first
-ARM GAS  C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s 			page 25
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccl65Mbh.s 			page 25
 
 
  986              		.loc 1 251 24 discriminator 1 view .LVU316
@@ -1498,7 +1498,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s 			page 1
  1023              	.L51:
  274:modules/motor/DJI_motor/DJI_motor.c ****         {
  1024              		.loc 1 274 9 is_stmt 1 view .LVU334
-ARM GAS  C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s 			page 26
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccl65Mbh.s 			page 26
 
 
  274:modules/motor/DJI_motor/DJI_motor.c ****         {
@@ -1558,7 +1558,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s 			page 1
  1062              		.loc 1 295 13 is_stmt 1 view .LVU351
  295:modules/motor/DJI_motor/DJI_motor.c ****             current_pid = pid_ref;
  1063              		.loc 1 295 75 is_stmt 0 view .LVU352
-ARM GAS  C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s 			page 27
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccl65Mbh.s 			page 27
 
 
  1064 010e B4F90C30 		ldrsh	r3, [r4, #12]
@@ -1618,7 +1618,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s 			page 1
  1107 0152 0144     		add	r1, r1, r0
  1108 0154 0023     		movs	r3, #0
  1109 0156 40F81C30 		str	r3, [r0, ip, lsl #1]	@ unaligned
-ARM GAS  C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s 			page 28
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccl65Mbh.s 			page 28
 
 
  1110 015a 4B60     		str	r3, [r1, #4]	@ unaligned
@@ -1678,7 +1678,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s 			page 1
  1153              		.cfi_restore 81
  1154              		.cfi_def_cfa_offset 16
  1155 018a 70BD     		pop	{r4, r5, r6, pc}
-ARM GAS  C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s 			page 29
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccl65Mbh.s 			page 29
 
 
  1156              	.LVL90:
@@ -1696,7 +1696,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s 			page 1
  1168 01a8 00000000 		.word	.LANCHOR7
  1169 01ac 00000000 		.word	.LANCHOR0
  1170              		.cfi_endproc
- 1171              	.LFE153:
+ 1171              	.LFE194:
  1173              		.global	speed_err
  1174              		.global	real_s
  1175              		.global	real_c
@@ -1738,7 +1738,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s 			page 1
  1219              		.section	.bss.speed_err,"aw",%nobits
  1220              		.align	2
  1221              		.set	.LANCHOR5,. + 0
-ARM GAS  C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s 			page 30
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccl65Mbh.s 			page 30
 
 
  1224              	speed_err:
@@ -1798,7 +1798,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s 			page 1
  1262 00a6 00000000 		.4byte	0
  1263 00aa 08000000 		.4byte	8
  1264 00ae 00000000 		.space	20
-ARM GAS  C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s 			page 31
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccl65Mbh.s 			page 31
 
 
  1264      00000000 
@@ -1858,7 +1858,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s 			page 1
  1289 0181 00000000 		.4byte	hfdcan2
  1290 0185 FF020000 		.4byte	767
  1291 0189 00000000 		.4byte	0
-ARM GAS  C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s 			page 32
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccl65Mbh.s 			page 32
 
 
  1292 018d 00000000 		.4byte	0
@@ -1896,53 +1896,53 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s 			page 1
  1314              		.file 15 "d:\\rm\\arm-gnu-toolchian\\arm-none-eabi\\include\\stdlib.h"
  1315              		.file 16 "bsp/dwt/bsp_dwt.h"
  1316              		.file 17 "<built-in>"
-ARM GAS  C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s 			page 33
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccl65Mbh.s 			page 33
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 DJI_motor.c
-C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s:19     .text.MotorSenderGrouping:00000000 $t
-C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s:24     .text.MotorSenderGrouping:00000000 MotorSenderGrouping
-C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s:313    .text.MotorSenderGrouping:00000108 $d
-C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s:321    .text.DJIMotorLostCallback:00000000 $t
-C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s:326    .text.DJIMotorLostCallback:00000000 DJIMotorLostCallback
-C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s:342    .text.DecodeDJIMotor:00000000 $t
-C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s:347    .text.DecodeDJIMotor:00000000 DecodeDJIMotor
-C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s:503    .text.DecodeDJIMotor:000000f4 $d
-C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s:512    .text.DJIMotorInit:00000000 $t
-C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s:518    .text.DJIMotorInit:00000000 DJIMotorInit
-C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s:655    .text.DJIMotorInit:000000b0 $d
-C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s:663    .text.DJIMotorChangeFeed:00000000 $t
-C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s:669    .text.DJIMotorChangeFeed:00000000 DJIMotorChangeFeed
-C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s:703    .text.DJIMotorStop:00000000 $t
-C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s:709    .text.DJIMotorStop:00000000 DJIMotorStop
-C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s:727    .text.DJIMotorEnable:00000000 $t
-C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s:733    .text.DJIMotorEnable:00000000 DJIMotorEnable
-C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s:751    .text.DJIMotorOuterLoop:00000000 $t
-C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s:757    .text.DJIMotorOuterLoop:00000000 DJIMotorOuterLoop
-C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s:774    .text.DJIMotorSetRef:00000000 $t
-C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s:780    .text.DJIMotorSetRef:00000000 DJIMotorSetRef
-C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s:797    .text.DJIMotorControl:00000000 $t
-C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s:803    .text.DJIMotorControl:00000000 DJIMotorControl
-C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s:1161   .text.DJIMotorControl:0000018c $d
-C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s:1224   .bss.speed_err:00000000 speed_err
-C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s:1210   .bss.real_s:00000000 real_s
-C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s:1203   .bss.real_c:00000000 real_c
-C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s:1183   .bss.current_pid:00000000 current_pid
-C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s:1231   .bss.speed_pid:00000000 speed_pid
-C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s:1179   .bss.current_pid:00000000 $d
-C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s:1186   .bss.dji_motor_instance:00000000 $d
-C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s:1190   .bss.dji_motor_instance:00000000 dji_motor_instance
-C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s:1196   .bss.idx:00000000 idx
-C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s:1197   .bss.idx:00000000 $d
-C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s:1199   .bss.real_c:00000000 $d
-C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s:1206   .bss.real_s:00000000 $d
-C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s:1213   .bss.sender_enable_flag:00000000 $d
-C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s:1217   .bss.sender_enable_flag:00000000 sender_enable_flag
-C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s:1220   .bss.speed_err:00000000 $d
-C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s:1227   .bss.speed_pid:00000000 $d
-C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s:1234   .data.sender_assignment:00000000 $d
-C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s:1238   .data.sender_assignment:00000000 sender_assignment
+C:\Users\blue\AppData\Local\Temp\ccl65Mbh.s:19     .text.MotorSenderGrouping:00000000 $t
+C:\Users\blue\AppData\Local\Temp\ccl65Mbh.s:24     .text.MotorSenderGrouping:00000000 MotorSenderGrouping
+C:\Users\blue\AppData\Local\Temp\ccl65Mbh.s:313    .text.MotorSenderGrouping:00000108 $d
+C:\Users\blue\AppData\Local\Temp\ccl65Mbh.s:321    .text.DJIMotorLostCallback:00000000 $t
+C:\Users\blue\AppData\Local\Temp\ccl65Mbh.s:326    .text.DJIMotorLostCallback:00000000 DJIMotorLostCallback
+C:\Users\blue\AppData\Local\Temp\ccl65Mbh.s:342    .text.DecodeDJIMotor:00000000 $t
+C:\Users\blue\AppData\Local\Temp\ccl65Mbh.s:347    .text.DecodeDJIMotor:00000000 DecodeDJIMotor
+C:\Users\blue\AppData\Local\Temp\ccl65Mbh.s:503    .text.DecodeDJIMotor:000000f4 $d
+C:\Users\blue\AppData\Local\Temp\ccl65Mbh.s:512    .text.DJIMotorInit:00000000 $t
+C:\Users\blue\AppData\Local\Temp\ccl65Mbh.s:518    .text.DJIMotorInit:00000000 DJIMotorInit
+C:\Users\blue\AppData\Local\Temp\ccl65Mbh.s:655    .text.DJIMotorInit:000000b0 $d
+C:\Users\blue\AppData\Local\Temp\ccl65Mbh.s:663    .text.DJIMotorChangeFeed:00000000 $t
+C:\Users\blue\AppData\Local\Temp\ccl65Mbh.s:669    .text.DJIMotorChangeFeed:00000000 DJIMotorChangeFeed
+C:\Users\blue\AppData\Local\Temp\ccl65Mbh.s:703    .text.DJIMotorStop:00000000 $t
+C:\Users\blue\AppData\Local\Temp\ccl65Mbh.s:709    .text.DJIMotorStop:00000000 DJIMotorStop
+C:\Users\blue\AppData\Local\Temp\ccl65Mbh.s:727    .text.DJIMotorEnable:00000000 $t
+C:\Users\blue\AppData\Local\Temp\ccl65Mbh.s:733    .text.DJIMotorEnable:00000000 DJIMotorEnable
+C:\Users\blue\AppData\Local\Temp\ccl65Mbh.s:751    .text.DJIMotorOuterLoop:00000000 $t
+C:\Users\blue\AppData\Local\Temp\ccl65Mbh.s:757    .text.DJIMotorOuterLoop:00000000 DJIMotorOuterLoop
+C:\Users\blue\AppData\Local\Temp\ccl65Mbh.s:774    .text.DJIMotorSetRef:00000000 $t
+C:\Users\blue\AppData\Local\Temp\ccl65Mbh.s:780    .text.DJIMotorSetRef:00000000 DJIMotorSetRef
+C:\Users\blue\AppData\Local\Temp\ccl65Mbh.s:797    .text.DJIMotorControl:00000000 $t
+C:\Users\blue\AppData\Local\Temp\ccl65Mbh.s:803    .text.DJIMotorControl:00000000 DJIMotorControl
+C:\Users\blue\AppData\Local\Temp\ccl65Mbh.s:1161   .text.DJIMotorControl:0000018c $d
+C:\Users\blue\AppData\Local\Temp\ccl65Mbh.s:1224   .bss.speed_err:00000000 speed_err
+C:\Users\blue\AppData\Local\Temp\ccl65Mbh.s:1210   .bss.real_s:00000000 real_s
+C:\Users\blue\AppData\Local\Temp\ccl65Mbh.s:1203   .bss.real_c:00000000 real_c
+C:\Users\blue\AppData\Local\Temp\ccl65Mbh.s:1183   .bss.current_pid:00000000 current_pid
+C:\Users\blue\AppData\Local\Temp\ccl65Mbh.s:1231   .bss.speed_pid:00000000 speed_pid
+C:\Users\blue\AppData\Local\Temp\ccl65Mbh.s:1179   .bss.current_pid:00000000 $d
+C:\Users\blue\AppData\Local\Temp\ccl65Mbh.s:1186   .bss.dji_motor_instance:00000000 $d
+C:\Users\blue\AppData\Local\Temp\ccl65Mbh.s:1190   .bss.dji_motor_instance:00000000 dji_motor_instance
+C:\Users\blue\AppData\Local\Temp\ccl65Mbh.s:1196   .bss.idx:00000000 idx
+C:\Users\blue\AppData\Local\Temp\ccl65Mbh.s:1197   .bss.idx:00000000 $d
+C:\Users\blue\AppData\Local\Temp\ccl65Mbh.s:1199   .bss.real_c:00000000 $d
+C:\Users\blue\AppData\Local\Temp\ccl65Mbh.s:1206   .bss.real_s:00000000 $d
+C:\Users\blue\AppData\Local\Temp\ccl65Mbh.s:1213   .bss.sender_enable_flag:00000000 $d
+C:\Users\blue\AppData\Local\Temp\ccl65Mbh.s:1217   .bss.sender_enable_flag:00000000 sender_enable_flag
+C:\Users\blue\AppData\Local\Temp\ccl65Mbh.s:1220   .bss.speed_err:00000000 $d
+C:\Users\blue\AppData\Local\Temp\ccl65Mbh.s:1227   .bss.speed_pid:00000000 $d
+C:\Users\blue\AppData\Local\Temp\ccl65Mbh.s:1234   .data.sender_assignment:00000000 $d
+C:\Users\blue\AppData\Local\Temp\ccl65Mbh.s:1238   .data.sender_assignment:00000000 sender_assignment
 
 UNDEFINED SYMBOLS
 hfdcan1
@@ -1956,6 +1956,6 @@ DaemonRegister
 PIDCalculate
 CANTransmit
 hfdcan2
-ARM GAS  C:\Users\blue\AppData\Local\Temp\ccS3a7Xb.s 			page 34
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccl65Mbh.s 			page 34
 
 

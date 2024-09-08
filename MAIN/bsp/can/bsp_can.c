@@ -4,7 +4,6 @@
 #include "stdlib.h"
 #include "bsp_dwt.h"
 // #include "bsp_log.h"
-#include "can_comm.h"
 /* can instance ptrs storage, used for recv callback */
 // 在CAN产生接收中断会遍历数组,选出hcan和rxid与发生中断的实例相同的那个,调用其回调函数
 // @todo: 后续为每个CAN总线单独添加一个can_instance指针数组,提高回调查找的性能
@@ -195,16 +194,7 @@ static void CANFIFOxCallback(FDCAN_HandleTypeDef *_hcan, uint32_t fifox)
  */
 void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hcan, uint32_t RxFifo0ITs)
 {
-    for (size_t i = 0; i < idx; ++i)
-    {
-        if (hcan == can_instance[i]->can_handle)
-        {
-            if (hcan == &hfdcan1)
-            {
-                CANCommRxCallback(can_instance[i]);
-            }
-        }
-    }
+    CANFIFOxCallback(hcan, FDCAN_RX_FIFO0); // 调用我们自己写的函数来处理消息
 }
 
 /**
@@ -214,14 +204,5 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hcan, uint32_t RxFifo0ITs)
  */
 void HAL_FDCAN_RxFifo1Callback(FDCAN_HandleTypeDef *hcan, uint32_t RxFifo1ITs)
 {
-    for (size_t i = 0; i < idx; ++i)
-    {
-        if (hcan == can_instance[i]->can_handle)
-        {
-            if (hcan == &hfdcan1)
-            {
-                CANCommRxCallback(can_instance[i]);
-            }
-        }
-    }
+    CANFIFOxCallback(hcan, FDCAN_RX_FIFO1); // 调用我们自己写的函数来处理消息
 }

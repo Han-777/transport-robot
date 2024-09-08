@@ -2,9 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-extern TIM_HandleTypeDef htim13;
-extern TIM_HandleTypeDef htim14;
-
 static ServoInstance *servo_motor_instance[SERVO_MOTOR_CNT] = {NULL};
 static int16_t compare_value[SERVO_MOTOR_CNT] = {0};
 static uint8_t servo_idx = 0; // register servo_idx,是该文件的全局舵机索引,在注册时使用

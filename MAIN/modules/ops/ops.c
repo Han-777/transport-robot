@@ -25,8 +25,8 @@ static void OPS_data_process(void)
         ops_data->OPS_ring--;
     }
     ops_data->OPS_heading = ops_data_buff.ActVal[0];
-    ops_data->OPS_x = ops_data_buff.ActVal[3] / 1000;
-    ops_data->OPS_y = ops_data_buff.ActVal[4] / 1000;
+    ops_data->OPS_x = ops_data_buff.ActVal[3];
+    ops_data->OPS_y = ops_data_buff.ActVal[4];
     if (ops_data->OPS_heading + ops_data->OPS_y + ops_data->OPS_heading != 0 && ops_data->OPS_Init_Flag == 0)
     {
         ops_data->OPS_Init_Flag = 1;
@@ -45,7 +45,7 @@ static void OpsLostCallback(void *id)
 {
     USARTServiceInit(ops_instance);
     memset(ops_instance->recv_buff, 0, ops_instance->recv_buff_size);
-    memset(ops_data, 0, sizeof(ops_data));
+    memset(ops_data, 0, sizeof(*ops_data));
     ops_data->OPS_ring = 0;
     ops_data->OPS_Init_Flag = 0;
 }
@@ -58,12 +58,12 @@ OPS_data_t *Ops_Init(UART_HandleTypeDef *ops_usart_handle)
     ops_instance = USARTRegister(&conf);
 
     Daemon_Init_Config_s daemon_conf = {
-        .reload_count = 1, // 200fps = 5ms, 1: 10ms没收到消息
+        .reload_count = 2, // 200fps = 5ms, 1: 10ms没收到消息
         .callback = OpsLostCallback,
         .owner_id = ops_usart_handle,
     };
     ops_daemon_instance = DaemonRegister(&daemon_conf);
-    memset(ops_data, 0, sizeof(ops_data));
+    memset(ops_data, 0, sizeof(*ops_data));
     ops_data->OPS_ring = 0;
     ops_data->OPS_Init_Flag = 0;
     return ops_data;

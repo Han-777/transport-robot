@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\blue\AppData\Local\Temp\ccO7sg1d.s 			page 1
+ARM GAS  C:\Users\blue\AppData\Local\Temp\cc1NG6wj.s 			page 1
 
 
    1              		.cpu cortex-m7
@@ -25,7 +25,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\ccO7sg1d.s 			page 1
   22              		.thumb
   23              		.thumb_func
   25              	MotorControlTask:
-  26              	.LFB144:
+  26              	.LFB185:
   27              		.file 1 "modules/motor/motor_task.c"
    1:modules/motor/motor_task.c **** #include "motor_task.h"
    2:modules/motor/motor_task.c **** #include "dji_motor.h"
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\ccO7sg1d.s 			page 1
   17:modules/motor/motor_task.c ****     // HTMotorControl();
   18:modules/motor/motor_task.c ****     // 将所有的CAN设备集中在一处发送,最高反馈频率仅能达到500Hz,为了更好�
   19:modules/motor/motor_task.c **** 
-ARM GAS  C:\Users\blue\AppData\Local\Temp\ccO7sg1d.s 			page 2
+ARM GAS  C:\Users\blue\AppData\Local\Temp\cc1NG6wj.s 			page 2
 
 
   20:modules/motor/motor_task.c ****     // ServeoMotorControl();
@@ -66,17 +66,17 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\ccO7sg1d.s 			page 1
   40              		.loc 1 21 1 is_stmt 0 view .LVU2
   41 0006 08BD     		pop	{r3, pc}
   42              		.cfi_endproc
-  43              	.LFE144:
+  43              	.LFE185:
   45              		.text
   46              	.Letext0:
   47              		.file 2 "modules/motor/DJI_motor/dji_motor.h"
-ARM GAS  C:\Users\blue\AppData\Local\Temp\ccO7sg1d.s 			page 3
+ARM GAS  C:\Users\blue\AppData\Local\Temp\cc1NG6wj.s 			page 3
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 motor_task.c
-C:\Users\blue\AppData\Local\Temp\ccO7sg1d.s:19     .text.MotorControlTask:00000000 $t
-C:\Users\blue\AppData\Local\Temp\ccO7sg1d.s:25     .text.MotorControlTask:00000000 MotorControlTask
+C:\Users\blue\AppData\Local\Temp\cc1NG6wj.s:19     .text.MotorControlTask:00000000 $t
+C:\Users\blue\AppData\Local\Temp\cc1NG6wj.s:25     .text.MotorControlTask:00000000 MotorControlTask
 
 UNDEFINED SYMBOLS
 DJIMotorControl

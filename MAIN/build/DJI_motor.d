@@ -42,7 +42,9 @@ build/DJI_motor.o: modules/motor/DJI_motor/DJI_motor.c \
  Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart.h \
  Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart_ex.h \
  modules/algorithm/controller.h Core/Inc/main.h bsp/dwt/bsp_dwt.h \
- modules/motor/motor_def.h modules/daemon/daemon.h modules/general_def.h
+ Drivers/CMSIS/DSP/Include/arm_math.h \
+ Drivers/CMSIS/Include/cmsis_compiler.h modules/motor/motor_def.h \
+ modules/daemon/daemon.h modules/general_def.h
 modules/motor/DJI_motor/dji_motor.h:
 bsp/can/bsp_can.h:
 Core/Inc/fdcan.h:
@@ -93,6 +95,8 @@ Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart_ex.h:
 modules/algorithm/controller.h:
 Core/Inc/main.h:
 bsp/dwt/bsp_dwt.h:
+Drivers/CMSIS/DSP/Include/arm_math.h:
+Drivers/CMSIS/Include/cmsis_compiler.h:
 modules/motor/motor_def.h:
 modules/daemon/daemon.h:
 modules/general_def.h:
