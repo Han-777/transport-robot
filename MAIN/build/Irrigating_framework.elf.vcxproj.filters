@@ -244,6 +244,9 @@
     <ClCompile Include="D:\Github\transport-robot\transport-robot\MAIN\modules\motor\servo_motor\servo_motor.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="D:\Github\transport-robot\transport-robot\MAIN\modules\motor\step_motor\step_motor.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="D:\Github\transport-robot\transport-robot\MAIN\modules\mp3\mp3.c">
       <Filter>Source Files</Filter>
     </ClCompile>

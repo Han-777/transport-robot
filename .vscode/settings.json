@@ -1,0 +1,7 @@
+{
+    "cmake.sourceDirectory": "D:/Github/transport-robot/transport-robot/MAIN",
+    "files.associations": {
+        "controller.h": "c",
+        "memory.h": "c"
+    }
+}

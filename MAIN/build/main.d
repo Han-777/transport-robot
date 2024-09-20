@@ -59,10 +59,10 @@ build/main.o: Core/Src/main.c Core/Inc/main.h \
  Middlewares/Third_Party/FreeRTOS/Source/include/timers.h Core/Inc/crc.h \
  Core/Inc/main.h Core/Inc/dma.h Core/Inc/dma2d.h Core/Inc/fdcan.h \
  Core/Inc/ltdc.h Core/Inc/memorymap.h Core/Inc/rng.h Core/Inc/rtc.h \
- Core/Inc/usart.h Core/Inc/gpio.h Core/Inc/fmc.h application/robot.h \
- modules/ltdc/sdram.h modules/ltdc/lcd_rgb.h modules/ltdc/sdram.h \
- modules/ltdc/lcd_fonts.h modules/ltdc/lcd_test.h modules/ltdc/lcd_rgb.h \
- modules/ltdc/lcd_image.h application/robot_def.h
+ Core/Inc/tim.h Core/Inc/usart.h Core/Inc/gpio.h Core/Inc/fmc.h \
+ application/robot.h modules/ltdc/sdram.h modules/ltdc/lcd_rgb.h \
+ modules/ltdc/sdram.h modules/ltdc/lcd_fonts.h modules/ltdc/lcd_test.h \
+ modules/ltdc/lcd_rgb.h modules/ltdc/lcd_image.h application/robot_def.h
 Core/Inc/main.h:
 Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal.h:
 Core/Inc/stm32h7xx_hal_conf.h:
@@ -133,6 +133,7 @@ Core/Inc/ltdc.h:
 Core/Inc/memorymap.h:
 Core/Inc/rng.h:
 Core/Inc/rtc.h:
+Core/Inc/tim.h:
 Core/Inc/usart.h:
 Core/Inc/gpio.h:
 Core/Inc/fmc.h:

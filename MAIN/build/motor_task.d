@@ -42,8 +42,9 @@ build/motor_task.o: modules/motor/motor_task.c modules/motor/motor_task.h \
  Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart.h \
  Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart_ex.h \
  modules/algorithm/controller.h Core/Inc/main.h bsp/dwt/bsp_dwt.h \
- modules/motor/motor_def.h modules/daemon/daemon.h \
- application/chassis/chassis.h
+ Drivers/CMSIS/DSP/Include/arm_math.h \
+ Drivers/CMSIS/Include/cmsis_compiler.h modules/motor/motor_def.h \
+ modules/daemon/daemon.h application/chassis/chassis.h
 modules/motor/motor_task.h:
 modules/motor/DJI_motor/dji_motor.h:
 bsp/can/bsp_can.h:
@@ -95,6 +96,8 @@ Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart_ex.h:
 modules/algorithm/controller.h:
 Core/Inc/main.h:
 bsp/dwt/bsp_dwt.h:
+Drivers/CMSIS/DSP/Include/arm_math.h:
+Drivers/CMSIS/Include/cmsis_compiler.h:
 modules/motor/motor_def.h:
 modules/daemon/daemon.h:
 application/chassis/chassis.h:

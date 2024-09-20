@@ -40,8 +40,7 @@ build/bsp_can.o: bsp/can/bsp_can.c bsp/can/bsp_can.h Core/Inc/fdcan.h \
  Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_tim_ex.h \
  Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart.h \
  Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart_ex.h Core/Inc/main.h \
- bsp/dwt/bsp_dwt.h modules/can_comm/can_comm.h bsp/can/bsp_can.h \
- modules/daemon/daemon.h
+ bsp/dwt/bsp_dwt.h
 bsp/can/bsp_can.h:
 Core/Inc/fdcan.h:
 Core/Inc/main.h:
@@ -90,6 +89,3 @@ Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart.h:
 Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart_ex.h:
 Core/Inc/main.h:
 bsp/dwt/bsp_dwt.h:
-modules/can_comm/can_comm.h:
-bsp/can/bsp_can.h:
-modules/daemon/daemon.h:

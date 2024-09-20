@@ -41,7 +41,8 @@ build/controller.o: modules/algorithm/controller.c \
  Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_tim_ex.h \
  Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart.h \
  Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart_ex.h \
- bsp/dwt/bsp_dwt.h
+ bsp/dwt/bsp_dwt.h Drivers/CMSIS/DSP/Include/arm_math.h \
+ Drivers/CMSIS/Include/cmsis_compiler.h
 modules/algorithm/controller.h:
 Core/Inc/main.h:
 Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal.h:
@@ -88,3 +89,5 @@ Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_tim_ex.h:
 Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart.h:
 Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart_ex.h:
 bsp/dwt/bsp_dwt.h:
+Drivers/CMSIS/DSP/Include/arm_math.h:
+Drivers/CMSIS/Include/cmsis_compiler.h:

@@ -43,11 +43,10 @@ build/chassis.o: application/chassis/chassis.c \
  Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart.h \
  Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart_ex.h \
  modules/algorithm/controller.h Core/Inc/main.h bsp/dwt/bsp_dwt.h \
- modules/motor/motor_def.h modules/daemon/daemon.h \
- modules/message_center/message_center.h modules/general_def.h \
  Drivers/CMSIS/DSP/Include/arm_math.h \
- Drivers/CMSIS/Include/cmsis_compiler.h modules/ops/ops.h \
- Core/Inc/usart.h
+ Drivers/CMSIS/Include/cmsis_compiler.h modules/motor/motor_def.h \
+ modules/daemon/daemon.h modules/message_center/message_center.h \
+ modules/general_def.h modules/ops/ops.h Core/Inc/usart.h
 application/chassis/chassis.h:
 application/robot_def.h:
 modules/motor/DJI_motor/dji_motor.h:
@@ -100,11 +99,11 @@ Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart_ex.h:
 modules/algorithm/controller.h:
 Core/Inc/main.h:
 bsp/dwt/bsp_dwt.h:
+Drivers/CMSIS/DSP/Include/arm_math.h:
+Drivers/CMSIS/Include/cmsis_compiler.h:
 modules/motor/motor_def.h:
 modules/daemon/daemon.h:
 modules/message_center/message_center.h:
 modules/general_def.h:
-Drivers/CMSIS/DSP/Include/arm_math.h:
-Drivers/CMSIS/Include/cmsis_compiler.h:
 modules/ops/ops.h:
 Core/Inc/usart.h:

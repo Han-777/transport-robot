@@ -27,6 +27,7 @@
 #include "memorymap.h"
 #include "rng.h"
 #include "rtc.h"
+#include "tim.h"
 #include "usart.h"
 #include "gpio.h"
 #include "fmc.h"
@@ -125,6 +126,10 @@ int main(void)
   MX_FDCAN2_Init();
   MX_USART2_UART_Init();
   MX_USART6_UART_Init();
+  MX_TIM2_Init();
+  MX_TIM4_Init();
+  MX_TIM5_Init();
+  MX_TIM8_Init();
   /* USER CODE BEGIN 2 */
   /*------------------------LTDC Init-------------------------------
    */

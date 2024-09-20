@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\blue\AppData\Local\Temp\cc5apA8c.s 			page 1
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccT83Jn3.s 			page 1
 
 
    1              		.cpu cortex-m7
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\cc5apA8c.s 			page 1
   40 0004 90F8C520 		ldrb	r2, [r0, #197]	@ zero_extendqisi2
   41 0008 0021     		movs	r1, #0
   42 000a 4830     		adds	r0, r0, #72
-ARM GAS  C:\Users\blue\AppData\Local\Temp\cc5apA8c.s 			page 2
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccT83Jn3.s 			page 2
 
 
   43              	.LVL1:
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\cc5apA8c.s 			page 1
   29:modules/can_comm/can_comm.c **** 
   30:modules/can_comm/can_comm.c ****     /* 当前接收状态判断 */
   31:modules/can_comm/can_comm.c ****     if (_instance->rx_buff[0] == CAN_COMM_HEADER && comm->recv_state == 0) // 之前尚未开始接
-ARM GAS  C:\Users\blue\AppData\Local\Temp\cc5apA8c.s 			page 3
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccT83Jn3.s 			page 3
 
 
   87              		.loc 1 31 5 is_stmt 1 view .LVU14
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\cc5apA8c.s 			page 1
  120              		.loc 1 52 9 is_stmt 1 view .LVU29
  121              		.loc 1 52 40 is_stmt 0 view .LVU30
  122 0036 94F84430 		ldrb	r3, [r4, #68]	@ zero_extendqisi2
-ARM GAS  C:\Users\blue\AppData\Local\Temp\cc5apA8c.s 			page 4
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccT83Jn3.s 			page 4
 
 
  123              		.loc 1 52 28 view .LVU31
@@ -238,7 +238,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\cc5apA8c.s 			page 1
  152 0062 F4D1     		bne	.L3
   35:modules/can_comm/can_comm.c ****         }
  153              		.loc 1 35 13 is_stmt 1 view .LVU42
-ARM GAS  C:\Users\blue\AppData\Local\Temp\cc5apA8c.s 			page 5
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccT83Jn3.s 			page 5
 
 
   35:modules/can_comm/can_comm.c ****         }
@@ -298,7 +298,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\cc5apA8c.s 			page 1
   60:modules/can_comm/can_comm.c ****                 { // 数据量大的话考虑使用DMA
  195              		.loc 1 60 66 view .LVU56
  196 0094 95F84610 		ldrb	r1, [r5, #70]	@ zero_extendqisi2
-ARM GAS  C:\Users\blue\AppData\Local\Temp\cc5apA8c.s 			page 6
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccT83Jn3.s 			page 6
 
 
  197 0098 2046     		mov	r0, r4
@@ -358,7 +358,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\cc5apA8c.s 			page 1
  243 0002 FFF7FEFF 		bl	CANCommResetRx
  244              	.LVL20:
   77:modules/can_comm/can_comm.c ****     // LOGWARNING("[can_comm] can comm rx[%d] lost, reset rx state.", &comm->can_ins->rx_id);
-ARM GAS  C:\Users\blue\AppData\Local\Temp\cc5apA8c.s 			page 7
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccT83Jn3.s 			page 7
 
 
   78:modules/can_comm/can_comm.c **** }
@@ -418,7 +418,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\cc5apA8c.s 			page 1
  293 0018 84F84630 		strb	r3, [r4, #70]
   86:modules/can_comm/can_comm.c ****     ins->recv_buf_len = comm_config->recv_data_len + CAN_COMM_OFFSET_BYTES; // head + datalen + crc
  294              		.loc 1 86 5 is_stmt 1 view .LVU76
-ARM GAS  C:\Users\blue\AppData\Local\Temp\cc5apA8c.s 			page 8
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccT83Jn3.s 			page 8
 
 
  295              		.loc 1 86 52 is_stmt 0 view .LVU77
@@ -478,7 +478,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\cc5apA8c.s 			page 1
   98:modules/can_comm/can_comm.c ****         .callback = CANCommLostCallback,
   99:modules/can_comm/can_comm.c ****         .owner_id = (void *)ins,
  100:modules/can_comm/can_comm.c ****         .reload_count = comm_config->daemon_count,
-ARM GAS  C:\Users\blue\AppData\Local\Temp\cc5apA8c.s 			page 9
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccT83Jn3.s 			page 9
 
 
  338              		.loc 1 100 36 is_stmt 0 view .LVU100
@@ -538,7 +538,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\cc5apA8c.s 			page 1
  386              	.LCFI6:
  387              		.cfi_def_cfa_offset 16
  388              		.cfi_offset 4, -16
-ARM GAS  C:\Users\blue\AppData\Local\Temp\cc5apA8c.s 			page 10
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccT83Jn3.s 			page 10
 
 
  389              		.cfi_offset 5, -12
@@ -598,7 +598,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\cc5apA8c.s 			page 1
  117:modules/can_comm/can_comm.c ****     { // 如果是最后一包,send len将会小于8,要修改CAN的txconf中的DLC位,调用bsp_ca
  118:modules/can_comm/can_comm.c ****         send_len = instance->send_buf_len - i >= 8 ? 8 : instance->send_buf_len - i;
  434              		.loc 1 118 9 is_stmt 1 discriminator 3 view .LVU127
-ARM GAS  C:\Users\blue\AppData\Local\Temp\cc5apA8c.s 			page 11
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccT83Jn3.s 			page 11
 
 
  435              		.loc 1 118 43 is_stmt 0 discriminator 3 view .LVU128
@@ -658,7 +658,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\cc5apA8c.s 			page 1
  479              	.L24:
  480              		.loc 1 123 1 view .LVU142
  481              		.align	2
-ARM GAS  C:\Users\blue\AppData\Local\Temp\cc5apA8c.s 			page 12
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccT83Jn3.s 			page 12
 
 
  482              	.L23:
@@ -718,7 +718,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\cc5apA8c.s 			page 1
  531 0000 08B5     		push	{r3, lr}
  532              	.LCFI7:
  533              		.cfi_def_cfa_offset 8
-ARM GAS  C:\Users\blue\AppData\Local\Temp\cc5apA8c.s 			page 13
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccT83Jn3.s 			page 13
 
 
  534              		.cfi_offset 3, -8
@@ -759,31 +759,31 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\cc5apA8c.s 			page 1
  572              		.file 12 "modules/algorithm/crc8.h"
  573              		.file 13 "d:\\rm\\arm-gnu-toolchian\\arm-none-eabi\\include\\stdlib.h"
  574              		.file 14 "<built-in>"
-ARM GAS  C:\Users\blue\AppData\Local\Temp\cc5apA8c.s 			page 14
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccT83Jn3.s 			page 14
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 can_comm.c
-C:\Users\blue\AppData\Local\Temp\cc5apA8c.s:19     .text.CANCommResetRx:00000000 $t
-C:\Users\blue\AppData\Local\Temp\cc5apA8c.s:24     .text.CANCommResetRx:00000000 CANCommResetRx
-C:\Users\blue\AppData\Local\Temp\cc5apA8c.s:61     .text.CANCommRxCallback:00000000 $t
-C:\Users\blue\AppData\Local\Temp\cc5apA8c.s:67     .text.CANCommRxCallback:00000000 CANCommRxCallback
-C:\Users\blue\AppData\Local\Temp\cc5apA8c.s:222    .text.CANCommLostCallback:00000000 $t
-C:\Users\blue\AppData\Local\Temp\cc5apA8c.s:227    .text.CANCommLostCallback:00000000 CANCommLostCallback
-C:\Users\blue\AppData\Local\Temp\cc5apA8c.s:251    .text.CANCommInit:00000000 $t
-C:\Users\blue\AppData\Local\Temp\cc5apA8c.s:257    .text.CANCommInit:00000000 CANCommInit
-C:\Users\blue\AppData\Local\Temp\cc5apA8c.s:365    .text.CANCommInit:00000064 $d
-C:\Users\blue\AppData\Local\Temp\cc5apA8c.s:371    .text.CANCommSend:00000000 $t
-C:\Users\blue\AppData\Local\Temp\cc5apA8c.s:377    .text.CANCommSend:00000000 CANCommSend
-C:\Users\blue\AppData\Local\Temp\cc5apA8c.s:483    .text.CANCommSend:00000060 $d
-C:\Users\blue\AppData\Local\Temp\cc5apA8c.s:489    .text.CANCommGet:00000000 $t
-C:\Users\blue\AppData\Local\Temp\cc5apA8c.s:495    .text.CANCommGet:00000000 CANCommGet
-C:\Users\blue\AppData\Local\Temp\cc5apA8c.s:517    .text.CANCommIsOnline:00000000 $t
-C:\Users\blue\AppData\Local\Temp\cc5apA8c.s:523    .text.CANCommIsOnline:00000000 CANCommIsOnline
-C:\Users\blue\AppData\Local\Temp\cc5apA8c.s:552    .bss.crc8.1:00000000 crc8.1
-C:\Users\blue\AppData\Local\Temp\cc5apA8c.s:553    .bss.crc8.1:00000000 $d
-C:\Users\blue\AppData\Local\Temp\cc5apA8c.s:558    .bss.send_len.0:00000000 send_len.0
-C:\Users\blue\AppData\Local\Temp\cc5apA8c.s:559    .bss.send_len.0:00000000 $d
+C:\Users\blue\AppData\Local\Temp\ccT83Jn3.s:19     .text.CANCommResetRx:00000000 $t
+C:\Users\blue\AppData\Local\Temp\ccT83Jn3.s:24     .text.CANCommResetRx:00000000 CANCommResetRx
+C:\Users\blue\AppData\Local\Temp\ccT83Jn3.s:61     .text.CANCommRxCallback:00000000 $t
+C:\Users\blue\AppData\Local\Temp\ccT83Jn3.s:67     .text.CANCommRxCallback:00000000 CANCommRxCallback
+C:\Users\blue\AppData\Local\Temp\ccT83Jn3.s:222    .text.CANCommLostCallback:00000000 $t
+C:\Users\blue\AppData\Local\Temp\ccT83Jn3.s:227    .text.CANCommLostCallback:00000000 CANCommLostCallback
+C:\Users\blue\AppData\Local\Temp\ccT83Jn3.s:251    .text.CANCommInit:00000000 $t
+C:\Users\blue\AppData\Local\Temp\ccT83Jn3.s:257    .text.CANCommInit:00000000 CANCommInit
+C:\Users\blue\AppData\Local\Temp\ccT83Jn3.s:365    .text.CANCommInit:00000064 $d
+C:\Users\blue\AppData\Local\Temp\ccT83Jn3.s:371    .text.CANCommSend:00000000 $t
+C:\Users\blue\AppData\Local\Temp\ccT83Jn3.s:377    .text.CANCommSend:00000000 CANCommSend
+C:\Users\blue\AppData\Local\Temp\ccT83Jn3.s:483    .text.CANCommSend:00000060 $d
+C:\Users\blue\AppData\Local\Temp\ccT83Jn3.s:489    .text.CANCommGet:00000000 $t
+C:\Users\blue\AppData\Local\Temp\ccT83Jn3.s:495    .text.CANCommGet:00000000 CANCommGet
+C:\Users\blue\AppData\Local\Temp\ccT83Jn3.s:517    .text.CANCommIsOnline:00000000 $t
+C:\Users\blue\AppData\Local\Temp\ccT83Jn3.s:523    .text.CANCommIsOnline:00000000 CANCommIsOnline
+C:\Users\blue\AppData\Local\Temp\ccT83Jn3.s:552    .bss.crc8.1:00000000 crc8.1
+C:\Users\blue\AppData\Local\Temp\ccT83Jn3.s:553    .bss.crc8.1:00000000 $d
+C:\Users\blue\AppData\Local\Temp\ccT83Jn3.s:558    .bss.send_len.0:00000000 send_len.0
+C:\Users\blue\AppData\Local\Temp\ccT83Jn3.s:559    .bss.send_len.0:00000000 $d
 
 UNDEFINED SYMBOLS
 memset

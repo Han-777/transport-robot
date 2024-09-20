@@ -35,8 +35,8 @@ static OPS_data_t *ops_data;
 // static float t;
 
 /* 私有函数计算的中介变量,设为静态避免参数传递的开销 */
-static float chassis_vx, chassis_vy, chassis_w; // 将云台系的速度投影到底盘
-static float vt_lf, vt_rf, vt_lb, vt_rb;        // 底盘速度解算后的临时输出,待进行限幅
+static float chassis_vx, chassis_vy, chassis_w, ff_vx, ff_vy; // 将云台系的速度投影到底盘
+static float vt_lf, vt_rf, vt_lb, vt_rb;                      // 底盘速度解算后的临时输出,待进行限幅
 
 void ChassisInit()
 {
@@ -50,7 +50,7 @@ void ChassisInit()
             .Kd = 0,
             .IntegralLimit = 500,
             .Improve = PID_Trapezoid_Intergral | PID_Integral_Limit | PID_Derivative_On_Measurement,
-            .MaxOut = 2500,
+            .MaxOut = 15000,
         };
     PID_Init_Config_s heading_pid_init_config =
         {
@@ -59,7 +59,7 @@ void ChassisInit()
             .Kd = 0,
             .IntegralLimit = 500,
             .Improve = PID_Trapezoid_Intergral | PID_Integral_Limit | PID_Derivative_On_Measurement,
-            .MaxOut = 500,
+            .MaxOut = 2000,
         };
     PIDInit(&x_pid_instance, &xy_pid_init_config);
     PIDInit(&y_pid_instance, &xy_pid_init_config);
@@ -71,16 +71,16 @@ void ChassisInit()
         .can_init_config.can_handle = &hfdcan1, // can通用设置，更多配置在下面按具体电机分配（方向和电机号）
         .controller_param_init_config = {
             .speed_PID = {
-                .Kp = 10, // 4.5
-                .Ki = 0,  // 0
-                .Kd = 0,  // 0
+                .Kp = 1, // 4.5
+                .Ki = 0, // 0
+                .Kd = 0, // 0
                 .IntegralLimit = 3000,
                 .Improve = PID_Trapezoid_Intergral | PID_Integral_Limit | PID_Derivative_On_Measurement, // 梯形积分（accuracy），微分先行 （防止突变）
                 .MaxOut = 12000,
             },
             .current_PID = {
-                .Kp = 0.5, // 0.4
-                .Ki = 0,   // 0
+                .Kp = 1, // 0.4
+                .Ki = 0, // 0
                 .Kd = 0,
                 .IntegralLimit = 3000,
                 .Improve = PID_Trapezoid_Intergral | PID_Integral_Limit | PID_Derivative_On_Measurement,
@@ -123,11 +123,18 @@ void ChassisInit()
  */
 static void speedCalculate(void)
 {
+
     PIDCalculate(&x_pid_instance, ops_data->OPS_x, chassis_cmd_recv.x);
     PIDCalculate(&y_pid_instance, ops_data->OPS_y, chassis_cmd_recv.y);
     PIDCalculate(&heading_pid_instance, ops_data->OPS_heading + ops_data->OPS_ring * 360, chassis_cmd_recv.heading);
-    chassis_vx = x_pid_instance.Output; // 可能需要乘系数
-    chassis_vy = y_pid_instance.Output;
+
+    // calculate feedforward
+    ff_vx = (x_pid_instance.Err > 0.3 ? 0.1 * chassis_cmd_recv.x : 0);
+    ff_vy = (y_pid_instance.Err > 0.3 ? 0.1 * chassis_cmd_recv.y : 0);
+    // ff_w = 0.01 * chassis_cmd_recv.heading;
+
+    chassis_vx = x_pid_instance.Output + ff_vx; // 可能需要乘系数
+    chassis_vy = y_pid_instance.Output + ff_vy; //
     chassis_w = heading_pid_instance.Output;
 }
 
@@ -212,11 +219,7 @@ void ChassisTask()
     chassis_cmd_recv = *(Chassis_Ctrl_Cmd_s *)CANCommGet(chasiss_can_comm);
 #endif // CHASSIS_BOARD
 
-    if (ops_data->OPS_Init_Flag == 0)
-    {
-        chassis_cmd_recv.chassis_mode = CHASSIS_ZERO_FORCE;
-    }
-    if (chassis_cmd_recv.chassis_mode == CHASSIS_ZERO_FORCE)
+    if (chassis_cmd_recv.chassis_mode == CHASSIS_ZERO_FORCE || !ops_data->OPS_Init_Flag)
     { // 如果出现重要模块离线或遥控器设置为急停,让电机停止
         DJIMotorStop(motor_lf);
         DJIMotorStop(motor_rf);

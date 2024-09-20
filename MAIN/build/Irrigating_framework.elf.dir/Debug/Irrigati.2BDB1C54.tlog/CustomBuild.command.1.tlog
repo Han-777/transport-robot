@@ -1,0 +1,10 @@
+^D:\GITHUB\TRANSPORT-ROBOT\TRANSPORT-ROBOT\MAIN\CMAKELISTS.TXT
+setlocal
+D:\Downloads\Cmake\bin\cmake.exe -SD:/Github/transport-robot/transport-robot/MAIN -BD:/Github/transport-robot/transport-robot/MAIN/build --check-stamp-file D:/Github/transport-robot/transport-robot/MAIN/build/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
