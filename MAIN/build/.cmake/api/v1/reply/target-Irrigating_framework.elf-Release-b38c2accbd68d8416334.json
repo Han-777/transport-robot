@@ -2,7 +2,7 @@
 	"artifacts" : 
 	[
 		{
-			"path" : "Irrigating_framework.elf"
+			"path" : "Release/Irrigating_framework.elf"
 		}
 	],
 	"backtrace" : 1,
@@ -478,7 +478,7 @@
 			"compileCommandFragments" : 
 			[
 				{
-					"fragment" : "-g -std=gnu11"
+					"fragment" : "-std:c11"
 				},
 				{
 					"backtrace" : 3,
@@ -792,7 +792,7 @@
 			"compileCommandFragments" : 
 			[
 				{
-					"fragment" : "-g"
+					"fragment" : "-O3 -DNDEBUG"
 				},
 				{
 					"backtrace" : 3,
@@ -1015,15 +1015,17 @@
 			]
 		}
 	],
+	"dependencies" : 
+	[
+		{
+			"id" : "ZERO_CHECK::@6890427a1f51a3e7e1df"
+		}
+	],
 	"id" : "Irrigating_framework.elf::@6890427a1f51a3e7e1df",
 	"link" : 
 	{
 		"commandFragments" : 
 		[
-			{
-				"fragment" : "-g",
-				"role" : "flags"
-			},
 			{
 				"fragment" : "",
 				"role" : "flags"
