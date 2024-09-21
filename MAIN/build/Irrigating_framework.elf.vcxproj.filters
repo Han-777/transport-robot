@@ -55,6 +55,9 @@
     <ClCompile Include="D:\Github\transport-robot\transport-robot\MAIN\Core\Src\system_stm32h7xx.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="D:\Github\transport-robot\transport-robot\MAIN\Core\Src\tim.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="D:\Github\transport-robot\transport-robot\MAIN\Core\Src\usart.c">
       <Filter>Source Files</Filter>
     </ClCompile>

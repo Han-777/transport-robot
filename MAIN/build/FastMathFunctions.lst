@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 1
+ARM GAS  C:\Users\blue\AppData\Local\Temp\cc9pETyv.s 			page 1
 
 
    1              		.cpu cortex-m7
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 1
   28:Drivers/CMSIS/DSP/Source/FastMathFunctions/arm_cos_f32.c **** 
   29:Drivers/CMSIS/DSP/Source/FastMathFunctions/arm_cos_f32.c **** #include "arm_math.h"
   30:Drivers/CMSIS/DSP/Source/FastMathFunctions/arm_cos_f32.c **** #include "arm_common_tables.h"
-ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 2
+ARM GAS  C:\Users\blue\AppData\Local\Temp\cc9pETyv.s 			page 2
 
 
   31:Drivers/CMSIS/DSP/Source/FastMathFunctions/arm_cos_f32.c **** 
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 1
   77:Drivers/CMSIS/DSP/Source/FastMathFunctions/arm_cos_f32.c ****   int32_t n;
   37              		.loc 1 77 3 view .LVU4
   78:Drivers/CMSIS/DSP/Source/FastMathFunctions/arm_cos_f32.c ****   float32_t findex;
-ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 3
+ARM GAS  C:\Users\blue\AppData\Local\Temp\cc9pETyv.s 			page 3
 
 
   38              		.loc 1 78 3 view .LVU5
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 1
   72 002e FCEEC07A 		vcvt.u32.f32	s15, s0
   73 0032 17EE903A 		vmov	r3, s15	@ int
   74 0036 9BB2     		uxth	r3, r3
-ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 4
+ARM GAS  C:\Users\blue\AppData\Local\Temp\cc9pETyv.s 			page 4
 
 
   75              	.LVL7:
@@ -238,7 +238,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 1
  112              		.loc 1 114 3 is_stmt 1 view .LVU34
  113              		.loc 1 114 18 is_stmt 0 view .LVU35
  114 0068 F7EE007A 		vmov.f32	s15, #1.0e+0
-ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 5
+ARM GAS  C:\Users\blue\AppData\Local\Temp\cc9pETyv.s 			page 5
 
 
  115 006c 77EEC07A 		vsub.f32	s15, s15, s0
@@ -298,7 +298,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 1
    8:Drivers/CMSIS/DSP/Source/FastMathFunctions/arm_cos_q15.c ****  *
    9:Drivers/CMSIS/DSP/Source/FastMathFunctions/arm_cos_q15.c ****  * Target Processor: Cortex-M cores
   10:Drivers/CMSIS/DSP/Source/FastMathFunctions/arm_cos_q15.c ****  * -------------------------------------------------------------------- */
-ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 6
+ARM GAS  C:\Users\blue\AppData\Local\Temp\cc9pETyv.s 			page 6
 
 
   11:Drivers/CMSIS/DSP/Source/FastMathFunctions/arm_cos_q15.c **** /*
@@ -358,7 +358,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 1
   56:Drivers/CMSIS/DSP/Source/FastMathFunctions/arm_cos_q15.c **** 
   57:Drivers/CMSIS/DSP/Source/FastMathFunctions/arm_cos_q15.c ****   /* add 0.25 (pi/2) to read sine table */
   58:Drivers/CMSIS/DSP/Source/FastMathFunctions/arm_cos_q15.c ****   x = (uint16_t)x + 0x2000;
-ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 7
+ARM GAS  C:\Users\blue\AppData\Local\Temp\cc9pETyv.s 			page 7
 
 
  166              		.loc 2 58 3 view .LVU49
@@ -418,7 +418,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 1
  203              		.loc 2 75 28 is_stmt 0 view .LVU66
  204 0020 C3F50042 		rsb	r2, r3, #32768
  205              	.LVL27:
-ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 8
+ARM GAS  C:\Users\blue\AppData\Local\Temp\cc9pETyv.s 			page 8
 
 
  206              		.loc 2 75 37 view .LVU67
@@ -478,7 +478,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 1
  253              		.file 3 "Drivers/CMSIS/DSP/Source/FastMathFunctions/arm_cos_q31.c"
    1:Drivers/CMSIS/DSP/Source/FastMathFunctions/arm_cos_q31.c **** /* ----------------------------------------------------------------------
    2:Drivers/CMSIS/DSP/Source/FastMathFunctions/arm_cos_q31.c ****  * Project:      CMSIS DSP Library
-ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 9
+ARM GAS  C:\Users\blue\AppData\Local\Temp\cc9pETyv.s 			page 9
 
 
    3:Drivers/CMSIS/DSP/Source/FastMathFunctions/arm_cos_q31.c ****  * Title:        arm_cos_q31.c
@@ -538,7 +538,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 1
  259 0000 00B5     		push	{lr}
  260              	.LCFI0:
  261              		.cfi_def_cfa_offset 4
-ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 10
+ARM GAS  C:\Users\blue\AppData\Local\Temp\cc9pETyv.s 			page 10
 
 
  262              		.cfi_offset 14, -4
@@ -598,7 +598,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 1
  295 0018 51F82220 		ldr	r2, [r1, r2, lsl #2]
  296              	.LVL40:
   73:Drivers/CMSIS/DSP/Source/FastMathFunctions/arm_cos_q31.c **** 
-ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 11
+ARM GAS  C:\Users\blue\AppData\Local\Temp\cc9pETyv.s 			page 11
 
 
   74:Drivers/CMSIS/DSP/Source/FastMathFunctions/arm_cos_q31.c ****   /* Linear interpolation process */
@@ -658,7 +658,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 1
  342              		.syntax unified
  343              		.thumb
  344              		.thumb_func
-ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 12
+ARM GAS  C:\Users\blue\AppData\Local\Temp\cc9pETyv.s 			page 12
 
 
  346              	arm_sin_f32:
@@ -718,7 +718,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 1
   51:Drivers/CMSIS/DSP/Source/FastMathFunctions/arm_sin_f32.c ****    -# The final result equals <code>(1.0f-fract)*a + fract*b;</code>
   52:Drivers/CMSIS/DSP/Source/FastMathFunctions/arm_sin_f32.c **** 
   53:Drivers/CMSIS/DSP/Source/FastMathFunctions/arm_sin_f32.c ****   where
-ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 13
+ARM GAS  C:\Users\blue\AppData\Local\Temp\cc9pETyv.s 			page 13
 
 
   54:Drivers/CMSIS/DSP/Source/FastMathFunctions/arm_sin_f32.c ****   <pre>
@@ -778,7 +778,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 1
  369              		.loc 4 88 3 is_stmt 1 view .LVU122
  370              		.loc 4 88 6 is_stmt 0 view .LVU123
  371 000c B5EEC00A 		vcmpe.f32	s0, #0
-ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 14
+ARM GAS  C:\Users\blue\AppData\Local\Temp\cc9pETyv.s 			page 14
 
 
  372 0010 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
@@ -838,7 +838,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 1
  106:Drivers/CMSIS/DSP/Source/FastMathFunctions/arm_sin_f32.c ****   /* fractional value calculation */
  107:Drivers/CMSIS/DSP/Source/FastMathFunctions/arm_sin_f32.c ****   fract = findex - (float32_t) index;
  408              		.loc 4 107 3 is_stmt 1 view .LVU137
-ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 15
+ARM GAS  C:\Users\blue\AppData\Local\Temp\cc9pETyv.s 			page 15
 
 
  409              		.loc 4 107 20 is_stmt 0 view .LVU138
@@ -898,7 +898,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 1
  450 007c 07EE903A 		vmov	s15, r3	@ int
  451              	.LVL66:
   90:Drivers/CMSIS/DSP/Source/FastMathFunctions/arm_sin_f32.c ****   }
-ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 16
+ARM GAS  C:\Users\blue\AppData\Local\Temp\cc9pETyv.s 			page 16
 
 
  452              		.loc 4 90 6 view .LVU154
@@ -958,7 +958,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 1
   35:Drivers/CMSIS/DSP/Source/FastMathFunctions/arm_sin_q15.c **** 
   36:Drivers/CMSIS/DSP/Source/FastMathFunctions/arm_sin_q15.c **** /**
   37:Drivers/CMSIS/DSP/Source/FastMathFunctions/arm_sin_q15.c ****   @addtogroup sin
-ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 17
+ARM GAS  C:\Users\blue\AppData\Local\Temp\cc9pETyv.s 			page 17
 
 
   38:Drivers/CMSIS/DSP/Source/FastMathFunctions/arm_sin_q15.c ****   @{
@@ -1018,7 +1018,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 1
  500              		.loc 5 65 25 is_stmt 0 view .LVU168
  501 000e 0132     		adds	r2, r2, #1
  502              	.LVL72:
-ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 18
+ARM GAS  C:\Users\blue\AppData\Local\Temp\cc9pETyv.s 			page 18
 
 
  503              		.loc 5 65 5 view .LVU169
@@ -1078,7 +1078,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 1
    4:Drivers/CMSIS/DSP/Source/FastMathFunctions/arm_sin_q31.c ****  * Description:  Fast sine calculation for Q31 values
    5:Drivers/CMSIS/DSP/Source/FastMathFunctions/arm_sin_q31.c ****  *
    6:Drivers/CMSIS/DSP/Source/FastMathFunctions/arm_sin_q31.c ****  * $Date:        18. March 2019
-ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 19
+ARM GAS  C:\Users\blue\AppData\Local\Temp\cc9pETyv.s 			page 19
 
 
    7:Drivers/CMSIS/DSP/Source/FastMathFunctions/arm_sin_q31.c ****  * $Revision:    V1.6.0
@@ -1138,7 +1138,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 1
   52:Drivers/CMSIS/DSP/Source/FastMathFunctions/arm_sin_q31.c ****   q31_t sinVal;                                  /* Temporary variables for input, output */
  557              		.loc 6 52 3 is_stmt 1 view .LVU182
   53:Drivers/CMSIS/DSP/Source/FastMathFunctions/arm_sin_q31.c ****   int32_t index;                                 /* Index variable */
-ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 20
+ARM GAS  C:\Users\blue\AppData\Local\Temp\cc9pETyv.s 			page 20
 
 
  558              		.loc 6 53 3 view .LVU183
@@ -1198,7 +1198,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 1
  596 0026 4FEAE27C 		asr	ip, r2, #31
  597 002a A2FB0021 		umull	r2, r1, r2, r0
  598              	.LVL87:
-ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 21
+ARM GAS  C:\Users\blue\AppData\Local\Temp\cc9pETyv.s 			page 21
 
 
  599              		.loc 6 69 62 view .LVU202
@@ -1258,7 +1258,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 1
   23:Drivers/CMSIS/DSP/Source/FastMathFunctions/arm_sqrt_q15.c ****  * distributed under the License is distributed on an AS IS BASIS, WITHOUT
   24:Drivers/CMSIS/DSP/Source/FastMathFunctions/arm_sqrt_q15.c ****  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   25:Drivers/CMSIS/DSP/Source/FastMathFunctions/arm_sqrt_q15.c ****  * See the License for the specific language governing permissions and
-ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 22
+ARM GAS  C:\Users\blue\AppData\Local\Temp\cc9pETyv.s 			page 22
 
 
   26:Drivers/CMSIS/DSP/Source/FastMathFunctions/arm_sqrt_q15.c ****  * limitations under the License.
@@ -1318,7 +1318,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 1
  642              		.loc 7 66 6 view .LVU215
  643 0002 77DD     		ble	.L36
   53:Drivers/CMSIS/DSP/Source/FastMathFunctions/arm_sqrt_q15.c ****   q31_t bits_val1;
-ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 23
+ARM GAS  C:\Users\blue\AppData\Local\Temp\cc9pETyv.s 			page 23
 
 
  644              		.loc 7 53 1 view .LVU216
@@ -1378,7 +1378,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 1
   42:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
   43:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef   __INLINE
   44:Drivers/CMSIS/Include/cmsis_gcc.h ****   #define __INLINE                               inline
-ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 24
+ARM GAS  C:\Users\blue\AppData\Local\Temp\cc9pETyv.s 			page 24
 
 
   45:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
@@ -1438,7 +1438,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 1
   99:Drivers/CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic pop
  100:Drivers/CMSIS/Include/cmsis_gcc.h ****   #define __UNALIGNED_UINT32_WRITE(addr, val)    (void)((((struct T_UINT32_WRITE *)(void *)(addr))-
  101:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
-ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 25
+ARM GAS  C:\Users\blue\AppData\Local\Temp\cc9pETyv.s 			page 25
 
 
  102:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef   __UNALIGNED_UINT32_READ
@@ -1498,7 +1498,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 1
  156:Drivers/CMSIS/Include/cmsis_gcc.h ****  
  157:Drivers/CMSIS/Include/cmsis_gcc.h ****   for (__zero_table_t const* pTable = &__zero_table_start__; pTable < &__zero_table_end__; ++pTable
  158:Drivers/CMSIS/Include/cmsis_gcc.h ****     for(uint32_t i=0u; i<pTable->wlen; ++i) {
-ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 26
+ARM GAS  C:\Users\blue\AppData\Local\Temp\cc9pETyv.s 			page 26
 
 
  159:Drivers/CMSIS/Include/cmsis_gcc.h ****       pTable->dest[i] = 0u;
@@ -1558,7 +1558,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 1
  213:Drivers/CMSIS/Include/cmsis_gcc.h **** /**
  214:Drivers/CMSIS/Include/cmsis_gcc.h ****   \brief   Get Control Register
  215:Drivers/CMSIS/Include/cmsis_gcc.h ****   \details Returns the content of the Control Register.
-ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 27
+ARM GAS  C:\Users\blue\AppData\Local\Temp\cc9pETyv.s 			page 27
 
 
  216:Drivers/CMSIS/Include/cmsis_gcc.h ****   \return               Control Register value
@@ -1618,7 +1618,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 1
  270:Drivers/CMSIS/Include/cmsis_gcc.h ****   \return               IPSR Register value
  271:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
  272:Drivers/CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE uint32_t __get_IPSR(void)
-ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 28
+ARM GAS  C:\Users\blue\AppData\Local\Temp\cc9pETyv.s 			page 28
 
 
  273:Drivers/CMSIS/Include/cmsis_gcc.h **** {
@@ -1678,7 +1678,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 1
  327:Drivers/CMSIS/Include/cmsis_gcc.h ****   \return               PSP Register value
  328:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
  329:Drivers/CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE uint32_t __TZ_get_PSP_NS(void)
-ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 29
+ARM GAS  C:\Users\blue\AppData\Local\Temp\cc9pETyv.s 			page 29
 
 
  330:Drivers/CMSIS/Include/cmsis_gcc.h **** {
@@ -1738,7 +1738,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 1
  384:Drivers/CMSIS/Include/cmsis_gcc.h **** {
  385:Drivers/CMSIS/Include/cmsis_gcc.h ****   uint32_t result;
  386:Drivers/CMSIS/Include/cmsis_gcc.h **** 
-ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 30
+ARM GAS  C:\Users\blue\AppData\Local\Temp\cc9pETyv.s 			page 30
 
 
  387:Drivers/CMSIS/Include/cmsis_gcc.h ****   __ASM volatile ("MRS %0, msp_ns" : "=r" (result) );
@@ -1798,7 +1798,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 1
  441:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
  442:Drivers/CMSIS/Include/cmsis_gcc.h **** 
  443:Drivers/CMSIS/Include/cmsis_gcc.h **** 
-ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 31
+ARM GAS  C:\Users\blue\AppData\Local\Temp\cc9pETyv.s 			page 31
 
 
  444:Drivers/CMSIS/Include/cmsis_gcc.h **** /**
@@ -1858,7 +1858,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 1
  498:Drivers/CMSIS/Include/cmsis_gcc.h **** #if ((defined (__ARM_ARCH_7M__      ) && (__ARM_ARCH_7M__      == 1)) || \
  499:Drivers/CMSIS/Include/cmsis_gcc.h ****      (defined (__ARM_ARCH_7EM__     ) && (__ARM_ARCH_7EM__     == 1)) || \
  500:Drivers/CMSIS/Include/cmsis_gcc.h ****      (defined (__ARM_ARCH_8M_MAIN__ ) && (__ARM_ARCH_8M_MAIN__ == 1))    )
-ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 32
+ARM GAS  C:\Users\blue\AppData\Local\Temp\cc9pETyv.s 			page 32
 
 
  501:Drivers/CMSIS/Include/cmsis_gcc.h **** /**
@@ -1918,7 +1918,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 1
  555:Drivers/CMSIS/Include/cmsis_gcc.h ****   \details Assigns the given value to the Base Priority register.
  556:Drivers/CMSIS/Include/cmsis_gcc.h ****   \param [in]    basePri  Base Priority value to set
  557:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
-ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 33
+ARM GAS  C:\Users\blue\AppData\Local\Temp\cc9pETyv.s 			page 33
 
 
  558:Drivers/CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE void __set_BASEPRI(uint32_t basePri)
@@ -1978,7 +1978,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 1
  612:Drivers/CMSIS/Include/cmsis_gcc.h **** 
  613:Drivers/CMSIS/Include/cmsis_gcc.h ****   __ASM volatile ("MRS %0, faultmask_ns" : "=r" (result) );
  614:Drivers/CMSIS/Include/cmsis_gcc.h ****   return(result);
-ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 34
+ARM GAS  C:\Users\blue\AppData\Local\Temp\cc9pETyv.s 			page 34
 
 
  615:Drivers/CMSIS/Include/cmsis_gcc.h **** }
@@ -2038,7 +2038,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 1
  669:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
  670:Drivers/CMSIS/Include/cmsis_gcc.h **** }
  671:Drivers/CMSIS/Include/cmsis_gcc.h **** 
-ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 35
+ARM GAS  C:\Users\blue\AppData\Local\Temp\cc9pETyv.s 			page 35
 
 
  672:Drivers/CMSIS/Include/cmsis_gcc.h **** #if (defined (__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3))
@@ -2098,7 +2098,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 1
  726:Drivers/CMSIS/Include/cmsis_gcc.h **** {
  727:Drivers/CMSIS/Include/cmsis_gcc.h **** #if (!(defined (__ARM_ARCH_8M_MAIN__ ) && (__ARM_ARCH_8M_MAIN__ == 1)))
  728:Drivers/CMSIS/Include/cmsis_gcc.h ****   // without main extensions, the non-secure PSPLIM is RAZ/WI
-ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 36
+ARM GAS  C:\Users\blue\AppData\Local\Temp\cc9pETyv.s 			page 36
 
 
  729:Drivers/CMSIS/Include/cmsis_gcc.h ****   (void)ProcStackPtrLimit;
@@ -2158,7 +2158,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 1
  783:Drivers/CMSIS/Include/cmsis_gcc.h **** /**
  784:Drivers/CMSIS/Include/cmsis_gcc.h ****   \brief   Set Main Stack Pointer Limit
  785:Drivers/CMSIS/Include/cmsis_gcc.h ****   Devices without ARMv8-M Main Extensions (i.e. Cortex-M23) lack the non-secure
-ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 37
+ARM GAS  C:\Users\blue\AppData\Local\Temp\cc9pETyv.s 			page 37
 
 
  786:Drivers/CMSIS/Include/cmsis_gcc.h ****   Stack Pointer Limit register hence the write is silently ignored in non-secure
@@ -2218,7 +2218,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 1
  840:Drivers/CMSIS/Include/cmsis_gcc.h ****   /* see https://gcc.gnu.org/ml/gcc-patches/2017-04/msg00443.html */
  841:Drivers/CMSIS/Include/cmsis_gcc.h ****   return __builtin_arm_get_fpscr();
  842:Drivers/CMSIS/Include/cmsis_gcc.h **** #else
-ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 38
+ARM GAS  C:\Users\blue\AppData\Local\Temp\cc9pETyv.s 			page 38
 
 
  843:Drivers/CMSIS/Include/cmsis_gcc.h ****   uint32_t result;
@@ -2278,7 +2278,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 1
  897:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
  898:Drivers/CMSIS/Include/cmsis_gcc.h **** 
  899:Drivers/CMSIS/Include/cmsis_gcc.h **** /**
-ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 39
+ARM GAS  C:\Users\blue\AppData\Local\Temp\cc9pETyv.s 			page 39
 
 
  900:Drivers/CMSIS/Include/cmsis_gcc.h ****   \brief   No Operation
@@ -2338,7 +2338,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 1
  954:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
  955:Drivers/CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE void __DMB(void)
  956:Drivers/CMSIS/Include/cmsis_gcc.h **** {
-ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 40
+ARM GAS  C:\Users\blue\AppData\Local\Temp\cc9pETyv.s 			page 40
 
 
  957:Drivers/CMSIS/Include/cmsis_gcc.h ****   __ASM volatile ("dmb 0xF":::"memory");
@@ -2398,7 +2398,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 1
 1011:Drivers/CMSIS/Include/cmsis_gcc.h **** }
 1012:Drivers/CMSIS/Include/cmsis_gcc.h **** 
 1013:Drivers/CMSIS/Include/cmsis_gcc.h **** 
-ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 41
+ARM GAS  C:\Users\blue\AppData\Local\Temp\cc9pETyv.s 			page 41
 
 
 1014:Drivers/CMSIS/Include/cmsis_gcc.h **** /**
@@ -2458,7 +2458,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 1
 1068:Drivers/CMSIS/Include/cmsis_gcc.h ****   return result;
 1069:Drivers/CMSIS/Include/cmsis_gcc.h **** }
 1070:Drivers/CMSIS/Include/cmsis_gcc.h **** 
-ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 42
+ARM GAS  C:\Users\blue\AppData\Local\Temp\cc9pETyv.s 			page 42
 
 
 1071:Drivers/CMSIS/Include/cmsis_gcc.h **** 
@@ -2518,7 +2518,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 1
  681              		.loc 7 73 23 is_stmt 0 view .LVU230
  682 0018 00FA0CF0 		lsl	r0, r0, ip
  683              		.loc 7 73 14 view .LVU231
-ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 43
+ARM GAS  C:\Users\blue\AppData\Local\Temp\cc9pETyv.s 			page 43
 
 
  684 001c 00B2     		sxth	r0, r0
@@ -2578,7 +2578,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 1
  715              		.loc 7 96 10 view .LVU246
  716 0044 17EE903A 		vmov	r3, s15	@ int
  717              	.LVL102:
-ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 44
+ARM GAS  C:\Users\blue\AppData\Local\Temp\cc9pETyv.s 			page 44
 
 
  718              		.loc 7 96 10 view .LVU247
@@ -2638,7 +2638,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 1
  105:Drivers/CMSIS/DSP/Source/FastMathFunctions/arm_sqrt_q15.c ****                                      ((q15_t)
  752              		.loc 7 105 45 view .LVU263
  753 007a C4F54054 		rsb	r4, r4, #12288
-ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 45
+ARM GAS  C:\Users\blue\AppData\Local\Temp\cc9pETyv.s 			page 45
 
 
  105:Drivers/CMSIS/DSP/Source/FastMathFunctions/arm_sqrt_q15.c ****                                      ((q15_t)
@@ -2698,7 +2698,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 1
  789              	.LVL112:
  790              		.loc 7 118 13 view .LVU280
  791 00ae 43F3CF33 		sbfx	r3, r3, #15, #16
-ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 46
+ARM GAS  C:\Users\blue\AppData\Local\Temp\cc9pETyv.s 			page 46
 
 
  792              		.loc 7 118 53 view .LVU281
@@ -2758,7 +2758,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 1
 1091:Drivers/CMSIS/Include/cmsis_gcc.h ****   }
  824              		.loc 8 1091 12 view .LVU293
  825 00ca 2022     		movs	r2, #32
-ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 47
+ARM GAS  C:\Users\blue\AppData\Local\Temp\cc9pETyv.s 			page 47
 
 
  826 00cc 9FE7     		b	.L37
@@ -2818,7 +2818,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 1
  866              	.L51:
  127:Drivers/CMSIS/DSP/Source/FastMathFunctions/arm_sqrt_q15.c ****     }
  867              		.loc 7 127 39 view .LVU308
-ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 48
+ARM GAS  C:\Users\blue\AppData\Local\Temp\cc9pETyv.s 			page 48
 
 
  868 00ee 0CF1010C 		add	ip, ip, #1
@@ -2878,7 +2878,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 1
   14:Drivers/CMSIS/DSP/Source/FastMathFunctions/arm_sqrt_q31.c ****  * SPDX-License-Identifier: Apache-2.0
   15:Drivers/CMSIS/DSP/Source/FastMathFunctions/arm_sqrt_q31.c ****  *
   16:Drivers/CMSIS/DSP/Source/FastMathFunctions/arm_sqrt_q31.c ****  * Licensed under the Apache License, Version 2.0 (the License); you may
-ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 49
+ARM GAS  C:\Users\blue\AppData\Local\Temp\cc9pETyv.s 			page 49
 
 
   17:Drivers/CMSIS/DSP/Source/FastMathFunctions/arm_sqrt_q31.c ****  * not use this file except in compliance with the License.
@@ -2938,7 +2938,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 1
   63:Drivers/CMSIS/DSP/Source/FastMathFunctions/arm_sqrt_q31.c ****   number = in;
  914              		.loc 9 63 3 view .LVU320
   64:Drivers/CMSIS/DSP/Source/FastMathFunctions/arm_sqrt_q31.c **** 
-ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 50
+ARM GAS  C:\Users\blue\AppData\Local\Temp\cc9pETyv.s 			page 50
 
 
   65:Drivers/CMSIS/DSP/Source/FastMathFunctions/arm_sqrt_q31.c ****   /* If the input is a positive number then compute the signBits. */
@@ -2998,7 +2998,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 1
   72:Drivers/CMSIS/DSP/Source/FastMathFunctions/arm_sqrt_q31.c ****     {
   73:Drivers/CMSIS/DSP/Source/FastMathFunctions/arm_sqrt_q31.c ****       number = number << signBits1;
  958              		.loc 9 73 7 is_stmt 1 view .LVU336
-ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 51
+ARM GAS  C:\Users\blue\AppData\Local\Temp\cc9pETyv.s 			page 51
 
 
  959              		.loc 9 73 14 is_stmt 0 view .LVU337
@@ -3058,7 +3058,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 1
  990 004a 17EE907A 		vmov	r7, s15	@ int
  991              	.LVL135:
   97:Drivers/CMSIS/DSP/Source/FastMathFunctions/arm_sqrt_q31.c **** 
-ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 52
+ARM GAS  C:\Users\blue\AppData\Local\Temp\cc9pETyv.s 			page 52
 
 
   98:Drivers/CMSIS/DSP/Source/FastMathFunctions/arm_sqrt_q31.c ****     /* 1st iteration */
@@ -3118,7 +3118,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 1
  105:Drivers/CMSIS/DSP/Source/FastMathFunctions/arm_sqrt_q31.c ****     var1 = ((q31_t) ((q63_t) var1 * (0x30000000 -
  1033              		.loc 9 105 5 is_stmt 1 view .LVU367
  1034              		.loc 9 105 22 is_stmt 0 view .LVU368
-ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 53
+ARM GAS  C:\Users\blue\AppData\Local\Temp\cc9pETyv.s 			page 53
 
 
  1035 009a 47F34077 		sbfx	r7, r7, #29, #1
@@ -3178,7 +3178,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 1
  1075 00f2 08EB4908 		add	r8, r8, r9, lsl #1
  1076              		.loc 9 114 65 view .LVU382
  1077 00f6 FF0F     		lsrs	r7, r7, #31
-ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 54
+ARM GAS  C:\Users\blue\AppData\Local\Temp\cc9pETyv.s 			page 54
 
 
  1078 00f8 47EA4807 		orr	r7, r7, r8, lsl #1
@@ -3238,7 +3238,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 1
  120:Drivers/CMSIS/DSP/Source/FastMathFunctions/arm_sqrt_q31.c ****     /* Shift the output down accordingly */
  121:Drivers/CMSIS/DSP/Source/FastMathFunctions/arm_sqrt_q31.c ****     if ((signBits1 % 2) == 0)
  1122              		.loc 9 121 5 is_stmt 1 view .LVU397
-ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 55
+ARM GAS  C:\Users\blue\AppData\Local\Temp\cc9pETyv.s 			page 55
 
 
  1123              		.loc 9 121 8 is_stmt 0 view .LVU398
@@ -3298,7 +3298,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 1
  1156              	.LBE13:
   77:Drivers/CMSIS/DSP/Source/FastMathFunctions/arm_sqrt_q31.c ****     }
  1157              		.loc 9 77 7 is_stmt 1 view .LVU409
-ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 56
+ARM GAS  C:\Users\blue\AppData\Local\Temp\cc9pETyv.s 			page 56
 
 
   77:Drivers/CMSIS/DSP/Source/FastMathFunctions/arm_sqrt_q31.c ****     }
@@ -3358,7 +3358,7 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 1
  1200              		.loc 9 136 11 is_stmt 0 view .LVU421
  1201 017e 0023     		movs	r3, #0
  1202 0180 0B60     		str	r3, [r1]
-ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 57
+ARM GAS  C:\Users\blue\AppData\Local\Temp\cc9pETyv.s 			page 57
 
 
  138:Drivers/CMSIS/DSP/Source/FastMathFunctions/arm_sqrt_q31.c ****   }
@@ -3382,35 +3382,35 @@ ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 1
  1220              		.file 11 "d:\\rm\\arm-gnu-toolchian\\arm-none-eabi\\include\\sys\\_stdint.h"
  1221              		.file 12 "Drivers/CMSIS/DSP/Include/arm_math.h"
  1222              		.file 13 "Drivers/CMSIS/DSP/Include/arm_common_tables.h"
-ARM GAS  C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s 			page 58
+ARM GAS  C:\Users\blue\AppData\Local\Temp\cc9pETyv.s 			page 58
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 FastMathFunctions.c
-C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s:19     .text.arm_cos_f32:00000000 $t
-C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s:25     .text.arm_cos_f32:00000000 arm_cos_f32
-C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s:140    .text.arm_cos_f32:0000008c $d
-C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s:147    .text.arm_cos_q15:00000000 $t
-C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s:153    .text.arm_cos_q15:00000000 arm_cos_q15
-C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s:238    .text.arm_cos_q15:00000040 $d
-C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s:244    .text.arm_cos_q31:00000000 $t
-C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s:250    .text.arm_cos_q31:00000000 arm_cos_q31
-C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s:335    .text.arm_cos_q31:00000048 $d
-C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s:340    .text.arm_sin_f32:00000000 $t
-C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s:346    .text.arm_sin_f32:00000000 arm_sin_f32
-C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s:457    .text.arm_sin_f32:00000084 $d
-C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s:464    .text.arm_sin_q15:00000000 $t
-C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s:470    .text.arm_sin_q15:00000000 arm_sin_q15
-C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s:532    .text.arm_sin_q15:0000002c $d
-C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s:538    .text.arm_sin_q31:00000000 $t
-C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s:544    .text.arm_sin_q31:00000000 arm_sin_q31
-C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s:614    .text.arm_sin_q31:0000003c $d
-C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s:619    .text.arm_sqrt_q15:00000000 $t
-C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s:625    .text.arm_sqrt_q15:00000000 arm_sqrt_q15
-C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s:890    .text.arm_sqrt_q15:00000100 $d
-C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s:896    .text.arm_sqrt_q31:00000000 $t
-C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s:902    .text.arm_sqrt_q31:00000000 arm_sqrt_q31
-C:\Users\blue\AppData\Local\Temp\cc7gJrqH.s:1212   .text.arm_sqrt_q31:00000188 $d
+C:\Users\blue\AppData\Local\Temp\cc9pETyv.s:19     .text.arm_cos_f32:00000000 $t
+C:\Users\blue\AppData\Local\Temp\cc9pETyv.s:25     .text.arm_cos_f32:00000000 arm_cos_f32
+C:\Users\blue\AppData\Local\Temp\cc9pETyv.s:140    .text.arm_cos_f32:0000008c $d
+C:\Users\blue\AppData\Local\Temp\cc9pETyv.s:147    .text.arm_cos_q15:00000000 $t
+C:\Users\blue\AppData\Local\Temp\cc9pETyv.s:153    .text.arm_cos_q15:00000000 arm_cos_q15
+C:\Users\blue\AppData\Local\Temp\cc9pETyv.s:238    .text.arm_cos_q15:00000040 $d
+C:\Users\blue\AppData\Local\Temp\cc9pETyv.s:244    .text.arm_cos_q31:00000000 $t
+C:\Users\blue\AppData\Local\Temp\cc9pETyv.s:250    .text.arm_cos_q31:00000000 arm_cos_q31
+C:\Users\blue\AppData\Local\Temp\cc9pETyv.s:335    .text.arm_cos_q31:00000048 $d
+C:\Users\blue\AppData\Local\Temp\cc9pETyv.s:340    .text.arm_sin_f32:00000000 $t
+C:\Users\blue\AppData\Local\Temp\cc9pETyv.s:346    .text.arm_sin_f32:00000000 arm_sin_f32
+C:\Users\blue\AppData\Local\Temp\cc9pETyv.s:457    .text.arm_sin_f32:00000084 $d
+C:\Users\blue\AppData\Local\Temp\cc9pETyv.s:464    .text.arm_sin_q15:00000000 $t
+C:\Users\blue\AppData\Local\Temp\cc9pETyv.s:470    .text.arm_sin_q15:00000000 arm_sin_q15
+C:\Users\blue\AppData\Local\Temp\cc9pETyv.s:532    .text.arm_sin_q15:0000002c $d
+C:\Users\blue\AppData\Local\Temp\cc9pETyv.s:538    .text.arm_sin_q31:00000000 $t
+C:\Users\blue\AppData\Local\Temp\cc9pETyv.s:544    .text.arm_sin_q31:00000000 arm_sin_q31
+C:\Users\blue\AppData\Local\Temp\cc9pETyv.s:614    .text.arm_sin_q31:0000003c $d
+C:\Users\blue\AppData\Local\Temp\cc9pETyv.s:619    .text.arm_sqrt_q15:00000000 $t
+C:\Users\blue\AppData\Local\Temp\cc9pETyv.s:625    .text.arm_sqrt_q15:00000000 arm_sqrt_q15
+C:\Users\blue\AppData\Local\Temp\cc9pETyv.s:890    .text.arm_sqrt_q15:00000100 $d
+C:\Users\blue\AppData\Local\Temp\cc9pETyv.s:896    .text.arm_sqrt_q31:00000000 $t
+C:\Users\blue\AppData\Local\Temp\cc9pETyv.s:902    .text.arm_sqrt_q31:00000000 arm_sqrt_q31
+C:\Users\blue\AppData\Local\Temp\cc9pETyv.s:1212   .text.arm_sqrt_q31:00000188 $d
 
 UNDEFINED SYMBOLS
 sinTable_f32

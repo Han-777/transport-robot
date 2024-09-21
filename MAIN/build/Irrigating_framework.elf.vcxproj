@@ -415,6 +415,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <ClCompile Include="D:\Github\transport-robot\transport-robot\MAIN\Core\Src\syscalls.c" />
     <ClCompile Include="D:\Github\transport-robot\transport-robot\MAIN\Core\Src\sysmem.c" />
     <ClCompile Include="D:\Github\transport-robot\transport-robot\MAIN\Core\Src\system_stm32h7xx.c" />
+    <ClCompile Include="D:\Github\transport-robot\transport-robot\MAIN\Core\Src\tim.c" />
     <ClCompile Include="D:\Github\transport-robot\transport-robot\MAIN\Core\Src\usart.c" />
     <ClCompile Include="D:\Github\transport-robot\transport-robot\MAIN\Drivers\STM32H7xx_HAL_Driver\Src\stm32h7xx_hal.c" />
     <ClCompile Include="D:\Github\transport-robot\transport-robot\MAIN\Drivers\STM32H7xx_HAL_Driver\Src\stm32h7xx_hal_cortex.c" />

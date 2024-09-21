@@ -2,7 +2,7 @@
 	"artifacts" : 
 	[
 		{
-			"path" : "MinSizeRel/Irrigating_framework.elf"
+			"path" : "Release/Irrigating_framework.elf"
 		}
 	],
 	"backtrace" : 1,
@@ -802,14 +802,15 @@
 				81,
 				82,
 				83,
-				84
+				84,
+				85
 			]
 		},
 		{
 			"compileCommandFragments" : 
 			[
 				{
-					"fragment" : "-Os -DNDEBUG"
+					"fragment" : "-O3 -DNDEBUG"
 				},
 				{
 					"backtrace" : 3,
@@ -1032,7 +1033,7 @@
 			"language" : "ASM",
 			"sourceIndexes" : 
 			[
-				85
+				86
 			]
 		}
 	],
@@ -1231,15 +1232,16 @@
 				81,
 				82,
 				83,
-				84
+				84,
+				85
 			]
 		},
 		{
 			"name" : "",
 			"sourceIndexes" : 
 			[
-				85,
-				86
+				86,
+				87
 			]
 		}
 	],
@@ -1351,6 +1353,12 @@
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
 			"path" : "Core/Src/system_stm32h7xx.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "Core/Src/tim.c",
 			"sourceGroupIndex" : 0
 		},
 		{
