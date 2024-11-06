@@ -29,8 +29,8 @@
 					"linkFrameworkDirectories" : [],
 					"linkLibraries" : []
 				},
-				"path" : "D:/Downloads/Microsoft Visual Studio/2022/Professional/VC/Tools/MSVC/14.39.33519/bin/Hostx64/x64/cl.exe",
-				"version" : "19.39.33521.0"
+				"path" : "C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/VC/Tools/MSVC/14.29.30133/bin/Hostx64/x64/cl.exe",
+				"version" : "19.29.30154.0"
 			},
 			"language" : "C",
 			"sourceFileExtensions" : 
@@ -50,8 +50,8 @@
 					"linkFrameworkDirectories" : [],
 					"linkLibraries" : []
 				},
-				"path" : "D:/Downloads/Microsoft Visual Studio/2022/Professional/VC/Tools/MSVC/14.39.33519/bin/Hostx64/x64/cl.exe",
-				"version" : "19.39.33521.0"
+				"path" : "C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/VC/Tools/MSVC/14.29.30133/bin/Hostx64/x64/cl.exe",
+				"version" : "19.29.30154.0"
 			},
 			"language" : "CXX",
 			"sourceFileExtensions" : 

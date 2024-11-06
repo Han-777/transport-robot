@@ -121,6 +121,29 @@ typedef struct
     uint8_t recv_feedback_flag; // 接收到正确数据返回1
 } Comm_Recv_Data_s;
 
+/*==============舵控板==============*/
+typedef enum
+{
+    defaut,   // 2s
+    calibObj, // 3s
+
+    getObjRed,
+    getObjGreen,
+    getObjBlue,
+
+    putRoughRed,
+    putRoughGreen,
+    putRoughBlue,
+    getRoughRed,
+    getRoughGreen,
+    getRoughBlue,
+
+    putDepHighRed,
+    putDepHighGreen,
+    putDepHighBlue,
+
+    idle
+} servoAction;
 #pragma pack() // 开启字节对齐,结束前面的#pragma pack(1)
 
 #endif // !ROBOT_DEF_H

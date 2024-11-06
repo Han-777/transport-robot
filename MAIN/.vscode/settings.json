@@ -83,7 +83,13 @@
     "arm_math.h": "c",
     "motor_def.h": "c",
     "arm_common_tables.h": "c",
-    "step_motor.h": "c"
+    "step_motor.h": "c",
+    "bool.h": "c",
+    "lobotservocontroller.h": "c",
+    "stm32h7xx.h": "c",
+    "stdarg.h": "c",
+    "servo.ctrl.h": "c",
+    "servo_ctrl.h": "c"
   },
   "C_Cpp.errorSquiggles": "disabled"
 }

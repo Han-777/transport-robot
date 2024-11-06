@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="D:\Github\transport-robot\transport-robot\MAIN\Core\Src\crc.c">
       <Filter>Source Files</Filter>
@@ -166,6 +166,9 @@
     <ClCompile Include="D:\Github\transport-robot\transport-robot\MAIN\application\cmd\robot_cmd.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="D:\Github\transport-robot\transport-robot\MAIN\application\lab.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="D:\Github\transport-robot\transport-robot\MAIN\application\robot.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -244,6 +247,12 @@
     <ClCompile Include="D:\Github\transport-robot\transport-robot\MAIN\modules\motor\motor_task.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="D:\Github\transport-robot\transport-robot\MAIN\modules\motor\servo_ctrl\LobotServoController.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Github\transport-robot\transport-robot\MAIN\modules\motor\servo_ctrl\servo_ctrl.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="D:\Github\transport-robot\transport-robot\MAIN\modules\motor\servo_motor\servo_motor.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -254,6 +263,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="D:\Github\transport-robot\transport-robot\MAIN\modules\ops\ops.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Github\transport-robot\transport-robot\MAIN\modules\qr_code\qr_code.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="D:\Github\transport-robot\transport-robot\MAIN\modules\usart_comm\usart_comm.c">

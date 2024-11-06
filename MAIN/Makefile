@@ -94,6 +94,7 @@ modules/ltdc/lcd_test.c \
 modules/ltdc/sdram.c \
 modules/ops/ops.c \
 modules/motor/DJI_motor/DJI_motor.c \
+modules/motor/servo_ctrl/servo_ctrl.c \
 modules/motor/step_motor/step_motor.c \
 modules/motor/motor_task.c \
 modules/message_center/message_center.c \
@@ -195,6 +196,7 @@ C_INCLUDES =  \
 -Imodules \
 -Imodules/motor/DJI_motor \
 -Imodules/motor/step_motor \
+-Imodules/motor/servo_ctrl \
 -Imodules/motor \
 -Imodules/mp3 \
 -Imodules/algorithm \

@@ -2286,6 +2286,45 @@ Discarded input sections
                 0x00000000       0x12 build/DJI_motor.o
  .text.DJIMotorOuterLoop
                 0x00000000        0x4 build/DJI_motor.o
+ .text          0x00000000        0x0 build/servo_ctrl.o
+ .data          0x00000000        0x0 build/servo_ctrl.o
+ .bss           0x00000000        0x0 build/servo_ctrl.o
+ .text.moveServo
+                0x00000000       0x58 build/servo_ctrl.o
+ .text.moveServosByArray
+                0x00000000       0x88 build/servo_ctrl.o
+ .text.moveServos
+                0x00000000       0x98 build/servo_ctrl.o
+ .text.runActionGroup
+                0x00000000       0x34 build/servo_ctrl.o
+ .text.stopActionGroup
+                0x00000000       0x2c build/servo_ctrl.o
+ .text.setActionGroupSpeed
+                0x00000000       0x34 build/servo_ctrl.o
+ .text.setAllActionGroupSpeed
+                0x00000000        0xc build/servo_ctrl.o
+ .text.getBatteryVoltage
+                0x00000000       0x2c build/servo_ctrl.o
+ .text.ServoCtrl_Init
+                0x00000000       0x24 build/servo_ctrl.o
+ .bss.LobotTxBuf
+                0x00000000       0x80 build/servo_ctrl.o
+ .bss.batteryVolt
+                0x00000000        0x2 build/servo_ctrl.o
+ .bss.lobotUsartInstance
+                0x00000000        0x4 build/servo_ctrl.o
+ .debug_info    0x00000000      0xd89 build/servo_ctrl.o
+ .debug_abbrev  0x00000000      0x247 build/servo_ctrl.o
+ .debug_loc     0x00000000      0x507 build/servo_ctrl.o
+ .debug_aranges
+                0x00000000       0x60 build/servo_ctrl.o
+ .debug_ranges  0x00000000       0x50 build/servo_ctrl.o
+ .debug_line    0x00000000      0x61c build/servo_ctrl.o
+ .debug_str     0x00000000      0x976 build/servo_ctrl.o
+ .comment       0x00000000       0x4a build/servo_ctrl.o
+ .debug_frame   0x00000000      0x11c build/servo_ctrl.o
+ .ARM.attributes
+                0x00000000       0x32 build/servo_ctrl.o
  .text          0x00000000        0x0 build/step_motor.o
  .data          0x00000000        0x0 build/step_motor.o
  .bss           0x00000000        0x0 build/step_motor.o
@@ -3419,6 +3458,7 @@ LOAD build/lcd_test.o
 LOAD build/sdram.o
 LOAD build/ops.o
 LOAD build/DJI_motor.o
+LOAD build/servo_ctrl.o
 LOAD build/step_motor.o
 LOAD build/motor_task.o
 LOAD build/message_center.o
@@ -5661,70 +5701,70 @@ LOAD d:/rm/arm-gnu-toolchian/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v7e-m+dp/
  .debug_ranges  0x00002740       0x40 build/tim.o
  .debug_ranges  0x00002780       0x20 build/startup_stm32h743xx.o
 
-.debug_line     0x00000000    0x2eb42
- .debug_line    0x00000000      0x71e build/main.o
- .debug_line    0x0000071e      0x29a build/gpio.o
- .debug_line    0x000009b8      0x67d build/usart.o
- .debug_line    0x00001035      0x338 build/stm32h7xx_it.o
- .debug_line    0x0000136d      0x15b build/stm32h7xx_hal_msp.o
- .debug_line    0x000014c8      0x20c build/crc.o
- .debug_line    0x000016d4      0x23e build/rng.o
- .debug_line    0x00001912      0x270 build/rtc.o
- .debug_line    0x00001b82      0x77b build/stm32h7xx_hal_cortex.o
- .debug_line    0x000022fd     0x125e build/stm32h7xx_hal_rcc.o
- .debug_line    0x0000355b     0x1f50 build/stm32h7xx_hal_rcc_ex.o
- .debug_line    0x000054ab      0x67d build/stm32h7xx_hal_gpio.o
- .debug_line    0x00005b28     0x2401 build/stm32h7xx_hal_dma.o
- .debug_line    0x00007f29      0xa5b build/stm32h7xx_hal_pwr_ex.o
- .debug_line    0x00008984      0x886 build/stm32h7xx_hal.o
- .debug_line    0x0000920a     0x501c build/stm32h7xx_hal_tim.o
- .debug_line    0x0000e226     0x1ec8 build/stm32h7xx_hal_tim_ex.o
- .debug_line    0x000100ee     0x668b build/stm32h7xx_hal_uart.o
- .debug_line    0x00016779      0xc32 build/stm32h7xx_hal_uart_ex.o
- .debug_line    0x000173ab      0x5cf build/stm32h7xx_hal_crc.o
- .debug_line    0x0001797a      0x275 build/stm32h7xx_hal_crc_ex.o
- .debug_line    0x00017bef      0x557 build/stm32h7xx_hal_rng.o
- .debug_line    0x00018146     0x1010 build/stm32h7xx_hal_rtc.o
- .debug_line    0x00019156      0x79a build/FastMathFunctions.o
- .debug_line    0x000198f0      0x122 build/arm_common_tables.o
- .debug_line    0x00019a12      0x3e8 build/system_stm32h7xx.o
- .debug_line    0x00019dfa      0x171 build/sysmem.o
- .debug_line    0x00019f6b      0x5fc build/fdcan.o
- .debug_line    0x0001a567     0x3255 build/stm32h7xx_hal_fdcan.o
- .debug_line    0x0001d7bc      0x725 build/bsp_usart.o
- .debug_line    0x0001dee1      0x59c build/bsp_can.o
- .debug_line    0x0001e47d      0x44d build/bsp_dwt.o
- .debug_line    0x0001e8ca      0x250 build/daemon.o
- .debug_line    0x0001eb1a      0x532 build/controller.o
- .debug_line    0x0001f04c       0xd1 build/lcd_fonts.o
- .debug_line    0x0001f11d     0x1194 build/lcd_rgb.o
- .debug_line    0x000202b1      0x458 build/sdram.o
- .debug_line    0x00020709      0x3aa build/ops.o
- .debug_line    0x00020ab3      0x89d build/DJI_motor.o
- .debug_line    0x00021350       0x7a build/motor_task.o
- .debug_line    0x000213ca      0x3d2 build/message_center.o
- .debug_line    0x0002179c      0x135 build/robot_cmd.o
- .debug_line    0x000218d1      0x3e7 build/robot.o
- .debug_line    0x00021cb8      0x640 build/chassis.o
- .debug_line    0x000222f8      0x282 build/stm32h7xx_hal_timebase_tim.o
- .debug_line    0x0002257a      0x24a build/freertos.o
- .debug_line    0x000227c4      0x323 build/list.o
- .debug_line    0x00022ae7     0x1bfd build/queue.o
- .debug_line    0x000246e4     0x2619 build/tasks.o
- .debug_line    0x00026cfd      0xd4b build/timers.o
- .debug_line    0x00027a48     0x1272 build/cmsis_os.o
- .debug_line    0x00028cba      0x6e1 build/heap_4.o
- .debug_line    0x0002939b      0x6d4 build/port.o
- .debug_line    0x00029a6f      0x454 build/fmc.o
- .debug_line    0x00029ec3      0x4b1 build/ltdc.o
- .debug_line    0x0002a374      0x678 build/stm32h7xx_ll_fmc.o
- .debug_line    0x0002a9ec      0xbaa build/stm32h7xx_hal_sdram.o
- .debug_line    0x0002b596     0x1943 build/stm32h7xx_hal_ltdc.o
- .debug_line    0x0002ced9      0x247 build/dma2d.o
- .debug_line    0x0002d120     0x1225 build/stm32h7xx_hal_dma2d.o
- .debug_line    0x0002e345      0x14f build/dma.o
- .debug_line    0x0002e494      0x638 build/tim.o
- .debug_line    0x0002eacc       0x76 build/startup_stm32h743xx.o
+.debug_line     0x00000000    0x2eb3e
+ .debug_line    0x00000000      0x71a build/main.o
+ .debug_line    0x0000071a      0x29a build/gpio.o
+ .debug_line    0x000009b4      0x67d build/usart.o
+ .debug_line    0x00001031      0x338 build/stm32h7xx_it.o
+ .debug_line    0x00001369      0x15b build/stm32h7xx_hal_msp.o
+ .debug_line    0x000014c4      0x20c build/crc.o
+ .debug_line    0x000016d0      0x23e build/rng.o
+ .debug_line    0x0000190e      0x270 build/rtc.o
+ .debug_line    0x00001b7e      0x77b build/stm32h7xx_hal_cortex.o
+ .debug_line    0x000022f9     0x125e build/stm32h7xx_hal_rcc.o
+ .debug_line    0x00003557     0x1f50 build/stm32h7xx_hal_rcc_ex.o
+ .debug_line    0x000054a7      0x67d build/stm32h7xx_hal_gpio.o
+ .debug_line    0x00005b24     0x2401 build/stm32h7xx_hal_dma.o
+ .debug_line    0x00007f25      0xa5b build/stm32h7xx_hal_pwr_ex.o
+ .debug_line    0x00008980      0x886 build/stm32h7xx_hal.o
+ .debug_line    0x00009206     0x501c build/stm32h7xx_hal_tim.o
+ .debug_line    0x0000e222     0x1ec8 build/stm32h7xx_hal_tim_ex.o
+ .debug_line    0x000100ea     0x668b build/stm32h7xx_hal_uart.o
+ .debug_line    0x00016775      0xc32 build/stm32h7xx_hal_uart_ex.o
+ .debug_line    0x000173a7      0x5cf build/stm32h7xx_hal_crc.o
+ .debug_line    0x00017976      0x275 build/stm32h7xx_hal_crc_ex.o
+ .debug_line    0x00017beb      0x557 build/stm32h7xx_hal_rng.o
+ .debug_line    0x00018142     0x1010 build/stm32h7xx_hal_rtc.o
+ .debug_line    0x00019152      0x79a build/FastMathFunctions.o
+ .debug_line    0x000198ec      0x122 build/arm_common_tables.o
+ .debug_line    0x00019a0e      0x3e8 build/system_stm32h7xx.o
+ .debug_line    0x00019df6      0x171 build/sysmem.o
+ .debug_line    0x00019f67      0x5fc build/fdcan.o
+ .debug_line    0x0001a563     0x3255 build/stm32h7xx_hal_fdcan.o
+ .debug_line    0x0001d7b8      0x725 build/bsp_usart.o
+ .debug_line    0x0001dedd      0x59c build/bsp_can.o
+ .debug_line    0x0001e479      0x44d build/bsp_dwt.o
+ .debug_line    0x0001e8c6      0x250 build/daemon.o
+ .debug_line    0x0001eb16      0x532 build/controller.o
+ .debug_line    0x0001f048       0xd1 build/lcd_fonts.o
+ .debug_line    0x0001f119     0x1194 build/lcd_rgb.o
+ .debug_line    0x000202ad      0x458 build/sdram.o
+ .debug_line    0x00020705      0x3aa build/ops.o
+ .debug_line    0x00020aaf      0x89d build/DJI_motor.o
+ .debug_line    0x0002134c       0x7a build/motor_task.o
+ .debug_line    0x000213c6      0x3d2 build/message_center.o
+ .debug_line    0x00021798      0x135 build/robot_cmd.o
+ .debug_line    0x000218cd      0x3e7 build/robot.o
+ .debug_line    0x00021cb4      0x640 build/chassis.o
+ .debug_line    0x000222f4      0x282 build/stm32h7xx_hal_timebase_tim.o
+ .debug_line    0x00022576      0x24a build/freertos.o
+ .debug_line    0x000227c0      0x323 build/list.o
+ .debug_line    0x00022ae3     0x1bfd build/queue.o
+ .debug_line    0x000246e0     0x2619 build/tasks.o
+ .debug_line    0x00026cf9      0xd4b build/timers.o
+ .debug_line    0x00027a44     0x1272 build/cmsis_os.o
+ .debug_line    0x00028cb6      0x6e1 build/heap_4.o
+ .debug_line    0x00029397      0x6d4 build/port.o
+ .debug_line    0x00029a6b      0x454 build/fmc.o
+ .debug_line    0x00029ebf      0x4b1 build/ltdc.o
+ .debug_line    0x0002a370      0x678 build/stm32h7xx_ll_fmc.o
+ .debug_line    0x0002a9e8      0xbaa build/stm32h7xx_hal_sdram.o
+ .debug_line    0x0002b592     0x1943 build/stm32h7xx_hal_ltdc.o
+ .debug_line    0x0002ced5      0x247 build/dma2d.o
+ .debug_line    0x0002d11c     0x1225 build/stm32h7xx_hal_dma2d.o
+ .debug_line    0x0002e341      0x14f build/dma.o
+ .debug_line    0x0002e490      0x638 build/tim.o
+ .debug_line    0x0002eac8       0x76 build/startup_stm32h743xx.o
 
 .debug_str      0x00000000     0xe7dd
  .debug_str     0x00000000     0x1319 build/main.o
@@ -7339,6 +7379,7 @@ SPI5_IRQHandler                                   build/startup_stm32h743xx.o
 SPI6_IRQHandler                                   build/startup_stm32h743xx.o
 SVC_Handler                                       build/port.o
 SWPMI1_IRQHandler                                 build/startup_stm32h743xx.o
+ServoCtrl_Init                                    build/servo_ctrl.o
 StartDAEMONTASK                                   build/robot.o
 StartDefaultTask                                  build/freertos.o
 StartMOTORTASK                                    build/robot.o
@@ -7429,10 +7470,12 @@ USART3_IRQHandler                                 build/startup_stm32h743xx.o
 USART6_IRQHandler                                 build/stm32h7xx_it.o
 USARTIsReady                                      build/bsp_usart.o
 USARTRegister                                     build/bsp_usart.o
+                                                  build/servo_ctrl.o
                                                   build/ops.o
                                                   build/bluetooth.o
                                                   build/mp3.o
 USARTSend                                         build/bsp_usart.o
+                                                  build/servo_ctrl.o
                                                   build/mp3.o
 USARTServiceInit                                  build/bsp_usart.o
                                                   build/ops.o
@@ -7745,6 +7788,7 @@ arm_sin_q31                                       build/FastMathFunctions.o
 arm_sqrt_q15                                      build/FastMathFunctions.o
 arm_sqrt_q31                                      build/FastMathFunctions.o
 atexit                                            d:/rm/arm-gnu-toolchian/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard/crt0.o
+batteryVolt                                       build/servo_ctrl.o
 bluetooth_buff_to_data                            build/bluetooth.o
 cleanup_glue                                      d:/rm/arm-gnu-toolchian/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(lib_a-reent.o)
 cos_factorsQ15_128                                build/arm_common_tables.o
@@ -7777,6 +7821,7 @@ exit                                              d:/rm/arm-gnu-toolchian/bin/..
 fflush                                            d:/rm/arm-gnu-toolchian/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(lib_a-fflush.o)
 free                                              d:/rm/arm-gnu-toolchian/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(lib_a-malloc.o)
 g_pfnVectors                                      build/startup_stm32h743xx.o
+getBatteryVoltage                                 build/servo_ctrl.o
 hardware_init_hook                                d:/rm/arm-gnu-toolchian/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard/crt0.o
 hcrc                                              build/crc.o
 hdma2d                                            build/dma2d.o
@@ -7862,6 +7907,9 @@ memset                                            d:/rm/arm-gnu-toolchian/bin/..
                                                   build/main.o
                                                   d:/rm/arm-gnu-toolchian/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard/crt0.o
 motorTaskHandle                                   build/robot.o
+moveServo                                         build/servo_ctrl.o
+moveServos                                        build/servo_ctrl.o
+moveServosByArray                                 build/servo_ctrl.o
 my_malloc                                         build/bsp_usart.o
 osAbortDelay                                      build/cmsis_os.o
 osDelay                                           build/cmsis_os.o
@@ -7953,7 +8001,10 @@ realCoefBQ31                                      build/arm_common_tables.o
 real_c                                            build/DJI_motor.o
 real_s                                            build/DJI_motor.o
 robotTaskHandle                                   build/robot.o
+runActionGroup                                    build/servo_ctrl.o
 screenTask                                        build/lcd_test.o
+setActionGroupSpeed                               build/servo_ctrl.o
+setAllActionGroupSpeed                            build/servo_ctrl.o
 setTargetPulse                                    build/step_motor.o
 sinTable_f32                                      build/arm_common_tables.o
                                                   build/FastMathFunctions.o
@@ -7968,6 +8019,7 @@ speed_pid                                         build/DJI_motor.o
 sprintf                                           d:/rm/arm-gnu-toolchian/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(lib_a-sprintf.o)
                                                   build/lcd_rgb.o
                                                   build/bsp_log.o
+stopActionGroup                                   build/servo_ctrl.o
 strcmp                                            d:/rm/arm-gnu-toolchian/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(lib_a-strcmp.o)
                                                   build/message_center.o
 strcpy                                            d:/rm/arm-gnu-toolchian/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(lib_a-strcpy.o)
