@@ -6,13 +6,12 @@
 #define QR_FRAME_TAIL 0x0D
 static QR_data_t *qr_data;
 static USARTInstance *qr_instance;
-static uint8_t qr_data_buff[OR_FRAME_SIZE];
 
 static void QRRxCallback(UART_HandleTypeDef *huart, uint16_t Size)
 {
-    if (qr_data_buff[OR_FRAME_SIZE - 1] == QR_FRAME_TAIL)
+    if (qr_instance->recv_buff[OR_FRAME_SIZE - 1] == QR_FRAME_TAIL)
     {
-        memcmp(qr_data, qr_data_buff, OR_FRAME_SIZE - 1);
+        memcmp(qr_data, qr_instance->recv_buff, OR_FRAME_SIZE - 1);
     }
 }
 

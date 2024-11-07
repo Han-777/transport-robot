@@ -18,7 +18,7 @@ static OPS ops_data_buff;
 
 static void OPS_data_process(void)
 {
-    // 转弯处理，顺时针为正
+    // 转弯处理，顺时针
     if (ops_data->OPS_heading > 170 && ops_data_buff.ActVal[0] < -170)
     {
         ops_data->OPS_ring++;

@@ -75,17 +75,17 @@ void ChassisInit()
                 .Kp = 2,   // 4.5
                 .Ki = 0.5, // 0
                 .Kd = 0,   // 0
-                .IntegralLimit = 3000,
+                .IntegralLimit = 10000,
                 .Improve = PID_Trapezoid_Intergral | PID_Integral_Limit | PID_Derivative_On_Measurement, // 梯形积分（accuracy），微分先行 （防止突变）
                 .MaxOut = 15000,
             },
             .current_PID = {
-                .Kp = 1,    // 0.4
-                .Ki = 0.25, // 0
+                .Kp = 1,   // 0.4
+                .Ki = 2.5, // 0
                 .Kd = 0,
-                .IntegralLimit = 3000,
+                .IntegralLimit = 5000,
                 .Improve = PID_Trapezoid_Intergral | PID_Integral_Limit | PID_Derivative_On_Measurement,
-                .MaxOut = 2000,
+                .MaxOut = 5000,
             },
         },
         .controller_setting_init_config = {
@@ -97,19 +97,19 @@ void ChassisInit()
         .motor_type = M2006,
     };
     //  @todo: 当前还没有设置电机的正反转,仍然需要手动添加reference的正负号,需要电机module的支持,待修改.
-    chassis_motor_config.can_init_config.tx_id = 1;
-    chassis_motor_config.controller_setting_init_config.motor_reverse_flag = MOTOR_DIRECTION_REVERSE;
+    chassis_motor_config.can_init_config.tx_id = 4;
+    chassis_motor_config.controller_setting_init_config.motor_reverse_flag = MOTOR_DIRECTION_NORMAL;
     motor_lf = DJIMotorInit(&chassis_motor_config);
 
-    chassis_motor_config.can_init_config.tx_id = 2;
+    chassis_motor_config.can_init_config.tx_id = 1;
     chassis_motor_config.controller_setting_init_config.motor_reverse_flag = MOTOR_DIRECTION_REVERSE;
     motor_rf = DJIMotorInit(&chassis_motor_config);
 
     chassis_motor_config.can_init_config.tx_id = 3;
-    chassis_motor_config.controller_setting_init_config.motor_reverse_flag = MOTOR_DIRECTION_REVERSE;
+    chassis_motor_config.controller_setting_init_config.motor_reverse_flag = MOTOR_DIRECTION_NORMAL;
     motor_lb = DJIMotorInit(&chassis_motor_config);
 
-    chassis_motor_config.can_init_config.tx_id = 4;
+    chassis_motor_config.can_init_config.tx_id = 2;
     chassis_motor_config.controller_setting_init_config.motor_reverse_flag = MOTOR_DIRECTION_REVERSE;
     motor_rb = DJIMotorInit(&chassis_motor_config);
 
@@ -129,12 +129,12 @@ static void speedCalculate(void)
     PIDCalculate(&heading_pid_instance, ops_data->OPS_heading + ops_data->OPS_ring * 360, chassis_cmd_recv.heading);
 
     // calculate feedforward
-    ff_vx = (x_pid_instance.Err > 0.3 ? (0.1 * chassis_cmd_recv.x) : 0);
-    ff_vy = (y_pid_instance.Err > 0.3 ? (0.1 * chassis_cmd_recv.y) : 0);
+    // ff_vx = (x_pid_instance.Err > 0.3 ? (0.1 * chassis_cmd_recv.x) : 0);
+    // ff_vy = (y_pid_instance.Err > 0.3 ? (0.1 * chassis_cmd_recv.y) : 0);
     // ff_w = 0.01 * chassis_cmd_recv.heading;
 
-    chassis_vx = x_pid_instance.Output + ff_vx; // 可能需要乘系数
-    chassis_vy = y_pid_instance.Output + ff_vy; //
+    chassis_vx = x_pid_instance.Output; // 可能需要乘系数
+    chassis_vy = y_pid_instance.Output; //
     chassis_w = heading_pid_instance.Output;
 }
 
@@ -143,6 +143,7 @@ static void speedCalculate(void)
  */
 static void speedLimit(void)
 {
+    chassis_cmd_recv.chassis_speed_limit = 2000;
     if (fabs(chassis_vx > chassis_cmd_recv.chassis_speed_limit))
     {
         chassis_vx = (chassis_vx > 0 ? chassis_cmd_recv.chassis_speed_limit : -chassis_cmd_recv.chassis_speed_limit);
@@ -239,7 +240,6 @@ void ChassisTask()
         DJIMotorStop(motor_rf);
         DJIMotorStop(motor_lb);
         DJIMotorStop(motor_rb);
-        return;
     }
     else
     { // 正常工作
@@ -262,9 +262,12 @@ void ChassisTask()
     default:
         break;
     }
-    CheckStable();
+    // speedCalculate();
+    chassis_vx = 0;
+    chassis_vy = 5000;
+    // chassis_w = 90;
     speedLimit();
-    speedCalculate();
+
     // PIDCalculate(&heading_pid_instance, ops_datsa->OPS_heading + ops_data->OPS_ring * 360, chassis_cmd_recv.heading);
     // chassis_w = heading_pid_instance.Output;
     CoordinateTransform();
@@ -274,6 +277,7 @@ void ChassisTask()
 
     // 根据裁判系统的反馈数据和电容数据对输出限幅并设定闭环参考值
     LimitChassisOutput();
+    CheckStable();
 
     // 推送反馈消息
 #ifdef ONE_BOARD

@@ -90,7 +90,7 @@ static int obj1_2(void)
 static int (*operation_sequence[])(void) = {
     qr1_1,
     qr1_2,
-    obj1_1,
+    obj1_1, 
 };
 
 void RobotCMDInit()
@@ -98,7 +98,8 @@ void RobotCMDInit()
     qr_data = QR_Init(&huart2);
     chassis_cmd_pub = PubRegister("chassis_cmd", sizeof(Chassis_Ctrl_Cmd_s));
     chassis_feed_sub = SubRegister("chassis_feed", sizeof(Chassis_Upload_Data_s));
-    chassis_cmd_send.chassis_mode = CHASSIS_ZERO_FORCE;
+    chassis_cmd_send.chassis_mode = CHASSIS_OPS_MOVE;
+    chassis_cmd_send.chassis_speed_limit = 2000;
     /*------------------------Can communication Init---------------------
     send:  CANCommSend(CANComm_ins, comm_send_data);
     recv:  (Comm_Recv_Data_s *) comm_recv_data = CANCommGet(&CANComm_ins);

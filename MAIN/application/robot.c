@@ -27,6 +27,6 @@ void RobotInit()
 
 void RobotTask()
 {
-    RobotCMDTask();
+    // RobotCMDTask();
     ChassisTask();
 }
