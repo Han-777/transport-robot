@@ -1,0 +1,170 @@
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccozP5rq.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.arch armv7e-m
+   3              		.fpu fpv5-d16
+   4              		.eabi_attribute 28, 1
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 1
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.file	"qr_code.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.section	.text.QRRxCallback,"ax",%progbits
+  19              		.align	1
+  20              		.syntax unified
+  21              		.thumb
+  22              		.thumb_func
+  24              	QRRxCallback:
+  25              	.LVL0:
+  26              	.LFB144:
+  27              		.file 1 "modules/qr_code/qr_code.c"
+   1:modules/qr_code/qr_code.c **** #include "qr_code.h"
+   2:modules/qr_code/qr_code.c **** #include "bsp_usart.h"
+   3:modules/qr_code/qr_code.c **** #include "memory.h"
+   4:modules/qr_code/qr_code.c **** 
+   5:modules/qr_code/qr_code.c **** #define OR_FRAME_SIZE 7 // 3 + 3 color + 1 tail
+   6:modules/qr_code/qr_code.c **** #define QR_FRAME_TAIL 0x0D
+   7:modules/qr_code/qr_code.c **** static QR_data_t *qr_data;
+   8:modules/qr_code/qr_code.c **** static USARTInstance *qr_instance;
+   9:modules/qr_code/qr_code.c **** 
+  10:modules/qr_code/qr_code.c **** static void QRRxCallback(UART_HandleTypeDef *huart, uint16_t Size)
+  11:modules/qr_code/qr_code.c **** {
+  28              		.loc 1 11 1 view -0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              		@ link register save eliminated.
+  12:modules/qr_code/qr_code.c ****     if (qr_instance->recv_buff[OR_FRAME_SIZE - 1] == QR_FRAME_TAIL)
+  33              		.loc 1 12 5 view .LVU1
+  13:modules/qr_code/qr_code.c ****     {
+  14:modules/qr_code/qr_code.c ****         memcmp(qr_data, qr_instance->recv_buff, OR_FRAME_SIZE - 1);
+  15:modules/qr_code/qr_code.c ****     }
+  16:modules/qr_code/qr_code.c **** }
+  34              		.loc 1 16 1 is_stmt 0 view .LVU2
+  35 0000 7047     		bx	lr
+  36              		.cfi_endproc
+  37              	.LFE144:
+  39              		.section	.text.QR_Init,"ax",%progbits
+  40              		.align	1
+  41              		.global	QR_Init
+  42              		.syntax unified
+  43              		.thumb
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccozP5rq.s 			page 2
+
+
+  44              		.thumb_func
+  46              	QR_Init:
+  47              	.LVL1:
+  48              	.LFB145:
+  17:modules/qr_code/qr_code.c **** 
+  18:modules/qr_code/qr_code.c **** QR_data_t *QR_Init(UART_HandleTypeDef *qr_usart_handle)
+  19:modules/qr_code/qr_code.c **** {
+  49              		.loc 1 19 1 is_stmt 1 view -0
+  50              		.cfi_startproc
+  51              		@ args = 0, pretend = 0, frame = 16
+  52              		@ frame_needed = 0, uses_anonymous_args = 0
+  53              		.loc 1 19 1 is_stmt 0 view .LVU4
+  54 0000 00B5     		push	{lr}
+  55              	.LCFI0:
+  56              		.cfi_def_cfa_offset 4
+  57              		.cfi_offset 14, -4
+  58 0002 85B0     		sub	sp, sp, #20
+  59              	.LCFI1:
+  60              		.cfi_def_cfa_offset 24
+  20:modules/qr_code/qr_code.c ****     USART_Init_Config_s conf;
+  61              		.loc 1 20 5 is_stmt 1 view .LVU5
+  21:modules/qr_code/qr_code.c ****     conf.module_callback = QRRxCallback;
+  62              		.loc 1 21 5 view .LVU6
+  63              		.loc 1 21 26 is_stmt 0 view .LVU7
+  64 0004 094B     		ldr	r3, .L4
+  65 0006 0393     		str	r3, [sp, #12]
+  22:modules/qr_code/qr_code.c ****     conf.recv_buff_size = OR_FRAME_SIZE;
+  66              		.loc 1 22 5 is_stmt 1 view .LVU8
+  67              		.loc 1 22 25 is_stmt 0 view .LVU9
+  68 0008 0723     		movs	r3, #7
+  69 000a 8DF80430 		strb	r3, [sp, #4]
+  23:modules/qr_code/qr_code.c ****     conf.usart_handle = qr_usart_handle;
+  70              		.loc 1 23 5 is_stmt 1 view .LVU10
+  71              		.loc 1 23 23 is_stmt 0 view .LVU11
+  72 000e 0290     		str	r0, [sp, #8]
+  24:modules/qr_code/qr_code.c ****     qr_instance = USARTRegister(&conf);
+  73              		.loc 1 24 5 is_stmt 1 view .LVU12
+  74              		.loc 1 24 19 is_stmt 0 view .LVU13
+  75 0010 01A8     		add	r0, sp, #4
+  76              	.LVL2:
+  77              		.loc 1 24 19 view .LVU14
+  78 0012 FFF7FEFF 		bl	USARTRegister
+  79              	.LVL3:
+  80              		.loc 1 24 17 view .LVU15
+  81 0016 064B     		ldr	r3, .L4+4
+  82 0018 1860     		str	r0, [r3]
+  25:modules/qr_code/qr_code.c **** 
+  26:modules/qr_code/qr_code.c ****     memset(qr_data, 0, sizeof(*qr_data));
+  83              		.loc 1 26 5 is_stmt 1 view .LVU16
+  84 001a 0622     		movs	r2, #6
+  85 001c 0021     		movs	r1, #0
+  86 001e 0846     		mov	r0, r1
+  87 0020 FFF7FEFF 		bl	memset
+  88              	.LVL4:
+  27:modules/qr_code/qr_code.c ****     return qr_data;
+  89              		.loc 1 27 5 view .LVU17
+  28:modules/qr_code/qr_code.c **** }
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccozP5rq.s 			page 3
+
+
+  90              		.loc 1 28 1 is_stmt 0 view .LVU18
+  91 0024 0020     		movs	r0, #0
+  92 0026 05B0     		add	sp, sp, #20
+  93              	.LCFI2:
+  94              		.cfi_def_cfa_offset 4
+  95              		@ sp needed
+  96 0028 5DF804FB 		ldr	pc, [sp], #4
+  97              	.L5:
+  98              		.align	2
+  99              	.L4:
+ 100 002c 00000000 		.word	QRRxCallback
+ 101 0030 00000000 		.word	.LANCHOR0
+ 102              		.cfi_endproc
+ 103              	.LFE145:
+ 105              		.section	.bss.qr_instance,"aw",%nobits
+ 106              		.align	2
+ 107              		.set	.LANCHOR0,. + 0
+ 110              	qr_instance:
+ 111 0000 00000000 		.space	4
+ 112              		.text
+ 113              	.Letext0:
+ 114              		.file 2 "d:\\rm\\arm-gnu-toolchian\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 115              		.file 3 "d:\\rm\\arm-gnu-toolchian\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 116              		.file 4 "modules/qr_code/qr_code.h"
+ 117              		.file 5 "Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h743xx.h"
+ 118              		.file 6 "d:\\rm\\arm-gnu-toolchian\\lib\\gcc\\arm-none-eabi\\10.3.1\\include\\stddef.h"
+ 119              		.file 7 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_def.h"
+ 120              		.file 8 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_dma.h"
+ 121              		.file 9 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart.h"
+ 122              		.file 10 "bsp/usart/bsp_usart.h"
+ 123              		.file 11 "d:\\rm\\arm-gnu-toolchian\\arm-none-eabi\\include\\string.h"
+ARM GAS  C:\Users\blue\AppData\Local\Temp\ccozP5rq.s 			page 4
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 qr_code.c
+C:\Users\blue\AppData\Local\Temp\ccozP5rq.s:19     .text.QRRxCallback:00000000 $t
+C:\Users\blue\AppData\Local\Temp\ccozP5rq.s:24     .text.QRRxCallback:00000000 QRRxCallback
+C:\Users\blue\AppData\Local\Temp\ccozP5rq.s:40     .text.QR_Init:00000000 $t
+C:\Users\blue\AppData\Local\Temp\ccozP5rq.s:46     .text.QR_Init:00000000 QR_Init
+C:\Users\blue\AppData\Local\Temp\ccozP5rq.s:100    .text.QR_Init:0000002c $d
+C:\Users\blue\AppData\Local\Temp\ccozP5rq.s:106    .bss.qr_instance:00000000 $d
+C:\Users\blue\AppData\Local\Temp\ccozP5rq.s:110    .bss.qr_instance:00000000 qr_instance
+
+UNDEFINED SYMBOLS
+USARTRegister
+memset
