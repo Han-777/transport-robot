@@ -34,6 +34,12 @@ void *my_malloc(size_t size)
     return ptr;
 }
 
+void init_my_section(void)
+{
+    memset(my_section, 0, MY_SECTION_SIZE_LIMIT);
+    my_section_offset = 0;
+}
+
 /**
  * @brief 启动串口服务,会在每个实例注册之后自动启用接收,当前实现为DMA接收,后续可能添加IT和BLOCKING接收
  *

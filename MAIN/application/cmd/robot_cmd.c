@@ -13,16 +13,11 @@
 #include "usart.h"
 #include <string.h>
 #include "usart.h"
+#include "qr_code.h"
 /*------------------------water message----------------------------*/
 // static Water_Ctrl_Cmd_s water_cmd_send;
 // static Water_Upload_Data_s water_feedback_data;
 /*==============data======================*/
-#ifdef CHASSIS_BOARD
-#include "can_comm.h"
-static CANCommInstance *CANComm_ins;
-static Comm_Send_Data_s *comm_send_data;
-static Comm_Recv_Data_s *comm_recv_data;
-#endif
 #ifdef ONE_BOARD
 static Publisher_t *chassis_cmd_pub;   // 底盘控制消息发布者
 static Subscriber_t *chassis_feed_sub; // 底盘反馈信息订阅者
@@ -35,43 +30,76 @@ static Chassis_Upload_Data_s chassis_feedback_data; // 从底盘应用接收的�
 // static Vision_Recv_s *vision_recv_data;             // 视觉接收数据指针,初始化时返回
 // static Vision_Send_s vision_send_data;              // 视觉发送数据
 
+static QR_data_t *qr_data;
 static int (*operation_sequence[])(void);
 #define max_run_itr 2
 static uint8_t cmd_run_idx = 0;
 
 /*--------------Coordinate Input------------------*/
-static void SetCoordinate(float x, float y, float heading)
+static void SetCoordinate(float x, float y, float heading, uint16_t speed_limit)
 {
     chassis_cmd_send.x = x;
     chassis_cmd_send.y = y;
     chassis_cmd_send.heading = heading;
+    chassis_cmd_send.chassis_speed_limit = speed_limit;
 }
 /*--------------QR Code-------------*/
+/**
+ * @brief 机器人到达二维码位置
+ */
 static int qr1_1(void)
 {
-    SetCoordinate(-0.18, 0.6, 0);
+    chassis_cmd_send.chassis_mode = CHASSIS_OPS_MOVE;
+    SetCoordinate(-0.18, 0.6, 0, 2000);
     if (chassis_feedback_data.chassis_vague_arrive)
         return 1;
     return 0;
 }
 
+/**
+ * @brief 机器人扫描成功并得到正确数据
+ */
 static int qr1_2(void)
 {
-
-    return 0;
+    // qr code handle
+    // 屏幕显示
+    return 1;
 }
 
 /*------------Get Object--------------*/
+/**
+ * @brief 机器人到达转盘位置
+ */
 static int obj1_1(void)
 {
-    SetCoordinate(-0.20, 1.25, 0);
+    // SetCoordinate(-0.20, 1.25, 0);
+    SetCoordinate(0.1, 0.1, 0, 5000);
     if (chassis_feedback_data.chassis_vague_arrive)
         return 1;
     return 0;
 }
 
+/**
+ * @brief 获取目标物体
+ */
+static int obj1_2(void)
+{
+
+    return 1;
+}
+static int (*operation_sequence[])(void) = {
+    qr1_1,
+    qr1_2,
+    obj1_1, 
+};
+
 void RobotCMDInit()
 {
+    qr_data = QR_Init(&huart2);
+    chassis_cmd_pub = PubRegister("chassis_cmd", sizeof(Chassis_Ctrl_Cmd_s));
+    chassis_feed_sub = SubRegister("chassis_feed", sizeof(Chassis_Upload_Data_s));
+    chassis_cmd_send.chassis_mode = CHASSIS_OPS_MOVE;
+    chassis_cmd_send.chassis_speed_limit = 2000;
     /*------------------------Can communication Init---------------------
     send:  CANCommSend(CANComm_ins, comm_send_data);
     recv:  (Comm_Recv_Data_s *) comm_recv_data = CANCommGet(&CANComm_ins);
@@ -87,8 +115,6 @@ void RobotCMDInit()
     //         .recv_data_len = sizeof(Comm_Recv_Data_s)};
     // CANComm_ins = CANCommInit(&can_comm_config);
     /*-----------------------message center-------------------------*/
-    // water_cmd_pub = PubRegister("water_cmd", sizeof(Water_Ctrl_Cmd_s));
-    // water_feed_sub = SubRegister("water_feed", sizeof(Water_Upload_Data_s));
 }
 
 // static int drought_info_ready(void)
@@ -163,21 +189,17 @@ void RobotCMDInit()
 //     return 0;
 // }
 
-// static int (*operation_sequence[])(void) = {
-//     drought_info_ready,
-//     Display_task};
-// /* 机器人核心控制任务,200Hz频率运行(后续可调) */
-
-// }
-
 void RobotCMDTask(void)
 {
-    // comm_recv_data = (Comm_Recv_Data_s *)CANCommGet(CANComm_ins);
-    // if (operation_sequence[cmd_run_idx]())
-    //     cmd_run_idx++;
-    // if (cmd_run_idx >= max_run_itr)
-    // {
-    //     return;
-    // }
-    // CANCommSend(CANComm_ins, (uint8_t *)comm_send_data);
+    SubGetMessage(chassis_feed_sub, (void *)&chassis_feedback_data);
+
+    if (operation_sequence[cmd_run_idx]())
+        cmd_run_idx++;
+    if (cmd_run_idx >= max_run_itr)
+    {
+        chassis_cmd_send.chassis_mode = CHASSIS_ZERO_FORCE;
+        return;
+    }
+
+    PubPushMessage(chassis_cmd_pub, (void *)&chassis_cmd_send);
 }

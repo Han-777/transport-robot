@@ -24,11 +24,9 @@
  */
 typedef enum
 {
-    CHASSIS_ZERO_FORCE = 0,    // 电流零输入
-    CHASSIS_ROTATE,            // 小陀螺模式
-    CHASSIS_NO_FOLLOW,         // 不跟随，允许全向平移
-    CHASSIS_FOLLOW_GIMBAL_YAW, // 跟随模式，底盘叠加角度环控制
-    CHASSIS_VISION_REFINE,     // 视觉微调模式
+    CHASSIS_ZERO_FORCE = 0, // 电流零输入, 停车
+    CHASSIS_OPS_MOVE,       // OPS模式
+    CHASSIS_VISION_REFINE,  // 视觉微调模式
 } chassis_mode_e;
 
 #pragma pack(1) // 压缩结构体,取消字节对齐,下面的数据都可能被传输
@@ -71,6 +69,7 @@ typedef struct
     float offset_angle; // 底盘和归中位置的夹角
     chassis_mode_e chassis_mode;
     int chassis_speed_buff;
+    uint16_t chassis_speed_limit;
     // UI部分
     //  ...
 
@@ -121,6 +120,29 @@ typedef struct
     uint8_t recv_feedback_flag; // 接收到正确数据返回1
 } Comm_Recv_Data_s;
 
+/*==============舵控板==============*/
+typedef enum
+{
+    defaut,   // 2s
+    calibObj, // 3s
+
+    getObjRed,
+    getObjGreen,
+    getObjBlue,
+
+    putRoughRed,
+    putRoughGreen,
+    putRoughBlue,
+    getRoughRed,
+    getRoughGreen,
+    getRoughBlue,
+
+    putDepHighRed,
+    putDepHighGreen,
+    putDepHighBlue,
+
+    idle
+} servoAction;
 #pragma pack() // 开启字节对齐,结束前面的#pragma pack(1)
 
 #endif // !ROBOT_DEF_H

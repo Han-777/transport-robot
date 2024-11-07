@@ -41,11 +41,12 @@ static float vt_lf, vt_rf, vt_lb, vt_rb;                      // 底盘速度解
 void ChassisInit()
 {
     /*----------------data-------------------*/
-    ops_data = Ops_Init(&huart6);
+    ops_data = Ops_Init(&huart1);
+
     /*---------------x, y and heading loop--------------*/
     PID_Init_Config_s xy_pid_init_config =
         {
-            .Kp = 1,
+            .Kp = 30,
             .Ki = 0,
             .Kd = 0,
             .IntegralLimit = 500,
@@ -54,8 +55,8 @@ void ChassisInit()
         };
     PID_Init_Config_s heading_pid_init_config =
         {
-            .Kp = 1,
-            .Ki = 0,
+            .Kp = 10,
+            .Ki = 0.5,
             .Kd = 0,
             .IntegralLimit = 500,
             .Improve = PID_Trapezoid_Intergral | PID_Integral_Limit | PID_Derivative_On_Measurement,
@@ -71,20 +72,20 @@ void ChassisInit()
         .can_init_config.can_handle = &hfdcan1, // can通用设置，更多配置在下面按具体电机分配（方向和电机号）
         .controller_param_init_config = {
             .speed_PID = {
-                .Kp = 1, // 4.5
-                .Ki = 0, // 0
-                .Kd = 0, // 0
-                .IntegralLimit = 3000,
+                .Kp = 2,   // 4.5
+                .Ki = 0.5, // 0
+                .Kd = 0,   // 0
+                .IntegralLimit = 10000,
                 .Improve = PID_Trapezoid_Intergral | PID_Integral_Limit | PID_Derivative_On_Measurement, // 梯形积分（accuracy），微分先行 （防止突变）
-                .MaxOut = 12000,
+                .MaxOut = 15000,
             },
             .current_PID = {
-                .Kp = 1, // 0.4
-                .Ki = 0, // 0
+                .Kp = 1,   // 0.4
+                .Ki = 2.5, // 0
                 .Kd = 0,
-                .IntegralLimit = 3000,
+                .IntegralLimit = 5000,
                 .Improve = PID_Trapezoid_Intergral | PID_Integral_Limit | PID_Derivative_On_Measurement,
-                .MaxOut = 15000,
+                .MaxOut = 5000,
             },
         },
         .controller_setting_init_config = {
@@ -96,19 +97,19 @@ void ChassisInit()
         .motor_type = M2006,
     };
     //  @todo: 当前还没有设置电机的正反转,仍然需要手动添加reference的正负号,需要电机module的支持,待修改.
-    chassis_motor_config.can_init_config.tx_id = 1;
-    chassis_motor_config.controller_setting_init_config.motor_reverse_flag = MOTOR_DIRECTION_REVERSE;
+    chassis_motor_config.can_init_config.tx_id = 4;
+    chassis_motor_config.controller_setting_init_config.motor_reverse_flag = MOTOR_DIRECTION_NORMAL;
     motor_lf = DJIMotorInit(&chassis_motor_config);
 
-    chassis_motor_config.can_init_config.tx_id = 2;
+    chassis_motor_config.can_init_config.tx_id = 1;
     chassis_motor_config.controller_setting_init_config.motor_reverse_flag = MOTOR_DIRECTION_REVERSE;
     motor_rf = DJIMotorInit(&chassis_motor_config);
 
-    chassis_motor_config.can_init_config.tx_id = 4;
-    chassis_motor_config.controller_setting_init_config.motor_reverse_flag = MOTOR_DIRECTION_REVERSE;
+    chassis_motor_config.can_init_config.tx_id = 3;
+    chassis_motor_config.controller_setting_init_config.motor_reverse_flag = MOTOR_DIRECTION_NORMAL;
     motor_lb = DJIMotorInit(&chassis_motor_config);
 
-    chassis_motor_config.can_init_config.tx_id = 3;
+    chassis_motor_config.can_init_config.tx_id = 2;
     chassis_motor_config.controller_setting_init_config.motor_reverse_flag = MOTOR_DIRECTION_REVERSE;
     motor_rb = DJIMotorInit(&chassis_motor_config);
 
@@ -123,21 +124,35 @@ void ChassisInit()
  */
 static void speedCalculate(void)
 {
-
     PIDCalculate(&x_pid_instance, ops_data->OPS_x, chassis_cmd_recv.x);
     PIDCalculate(&y_pid_instance, ops_data->OPS_y, chassis_cmd_recv.y);
     PIDCalculate(&heading_pid_instance, ops_data->OPS_heading + ops_data->OPS_ring * 360, chassis_cmd_recv.heading);
 
     // calculate feedforward
-    ff_vx = (x_pid_instance.Err > 0.3 ? 0.1 * chassis_cmd_recv.x : 0);
-    ff_vy = (y_pid_instance.Err > 0.3 ? 0.1 * chassis_cmd_recv.y : 0);
+    // ff_vx = (x_pid_instance.Err > 0.3 ? (0.1 * chassis_cmd_recv.x) : 0);
+    // ff_vy = (y_pid_instance.Err > 0.3 ? (0.1 * chassis_cmd_recv.y) : 0);
     // ff_w = 0.01 * chassis_cmd_recv.heading;
 
-    chassis_vx = x_pid_instance.Output + ff_vx; // 可能需要乘系数
-    chassis_vy = y_pid_instance.Output + ff_vy; //
+    chassis_vx = x_pid_instance.Output; // 可能需要乘系数
+    chassis_vy = y_pid_instance.Output; //
     chassis_w = heading_pid_instance.Output;
 }
 
+/**
+ * @brief 速度限制
+ */
+static void speedLimit(void)
+{
+    chassis_cmd_recv.chassis_speed_limit = 2000;
+    if (fabs(chassis_vx > chassis_cmd_recv.chassis_speed_limit))
+    {
+        chassis_vx = (chassis_vx > 0 ? chassis_cmd_recv.chassis_speed_limit : -chassis_cmd_recv.chassis_speed_limit);
+    }
+    if (fabs(chassis_vy > chassis_cmd_recv.chassis_speed_limit))
+    {
+        chassis_vy = (chassis_vy > 0 ? chassis_cmd_recv.chassis_speed_limit : -chassis_cmd_recv.chassis_speed_limit);
+    }
+}
 /**
  * @brief coordinate transform, 云台坐标系到底盘坐标系的变换
  */
@@ -237,24 +252,24 @@ void ChassisTask()
     // 根据控制模式设定旋转速度
     switch (chassis_cmd_recv.chassis_mode)
     {
-    case CHASSIS_NO_FOLLOW: // 底盘不旋转,但维持全向机动,一般用于调整云台姿态
-        // chassis_cmd_recv.wz = 0;
+    case CHASSIS_OPS_MOVE:
         break;
-    case CHASSIS_FOLLOW_GIMBAL_YAW: // 跟随云台,不单独设置pid,以误差角度平方为速度输出
-        // chassis_cmd_recv.wz = -1.5f * chassis_cmd_recv.offset_angle * abs(chassis_cmd_recv.offset_angle);
-        break;
-    case CHASSIS_ROTATE: // 自旋,同时保持全向机动;当前wz维持定值,后续增加不规则的变速策略
-        // chassis_cmd_recv.wz = 4000;
-        break;
+    // case CHASSIS_NO_FOLLOW: // 底盘不旋转,但维持全向机动,一般用于调整云台姿态
+    // chassis_cmd_recv.wz = 0;
+    // break;
     case CHASSIS_VISION_REFINE:
         break;
     default:
         break;
     }
-    CheckStable();
-    speedCalculate();
-    PIDCalculate(&heading_pid_instance, ops_data->OPS_heading + ops_data->OPS_ring * 360, chassis_cmd_recv.heading);
-    chassis_w = heading_pid_instance.Output;
+    // speedCalculate();
+    chassis_vx = 0;
+    chassis_vy = 5000;
+    // chassis_w = 90;
+    speedLimit();
+
+    // PIDCalculate(&heading_pid_instance, ops_datsa->OPS_heading + ops_data->OPS_ring * 360, chassis_cmd_recv.heading);
+    // chassis_w = heading_pid_instance.Output;
     CoordinateTransform();
     // 转换坐标系后的位置环pid计算
     // 根据控制模式进行正运动学解算,计算底盘输出
@@ -262,6 +277,7 @@ void ChassisTask()
 
     // 根据裁判系统的反馈数据和电容数据对输出限幅并设定闭环参考值
     LimitChassisOutput();
+    CheckStable();
 
     // 推送反馈消息
 #ifdef ONE_BOARD
