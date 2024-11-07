@@ -15,10 +15,8 @@
 osThreadId robotTaskHandle;
 osThreadId motorTaskHandle;
 osThreadId daemonTaskHandle;
-osThreadId waterTaskHandle;
 // osThreadId uiTaskHandle;
 /*      中断处理任务       */
-osThreadId lidarTaskHandle;
 // osThreadId gyroTaskHandle;
 // osThreadId isrTaskHandle;
 
@@ -106,7 +104,7 @@ __attribute__((noreturn)) void StartROBOTTASK(void const *argument)
         // {
         // LOGERROR("[freeRTOS] ROBOT core Task is being DELAY! dt = [%f]", &robot_dt);
         // }
-        osDelay(2);
+        osDelay(5);
     }
 }
 

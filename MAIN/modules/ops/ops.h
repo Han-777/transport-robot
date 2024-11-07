@@ -21,4 +21,10 @@ typedef struct
 
 OPS_data_t *Ops_Init(UART_HandleTypeDef *ops_usart_handle);
 
+/**
+ * @brief OPS data calibration
+ *
+ */
+void OPS_Calibrate(float x, float y, float heading);
+
 #endif // DEBUG

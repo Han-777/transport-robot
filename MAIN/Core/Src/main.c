@@ -34,6 +34,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "bsp_usart.h"
 #include "robot.h"
 #include "sdram.h"
 #include "lcd_rgb.h"
@@ -130,11 +131,13 @@ int main(void)
   MX_TIM4_Init();
   MX_TIM5_Init();
   MX_TIM8_Init();
+  MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
   /*------------------------LTDC Init-------------------------------
    */
-  SDRAM_Initialization_Sequence(&hsdram1);
-  LCD_RGB_Init();
+  // SDRAM_Initialization_Sequence(&hsdram1);
+  // LCD_RGB_Init();
+  init_my_section();
   RobotInit();
   /*       for testing       */
 

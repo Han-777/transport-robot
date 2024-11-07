@@ -1,167 +1,143 @@
-/*
- * Title: EE302 Lab 2 - Button Controlled LCD Display
- * Author: Han Huang, 832201324, 22125451
- * Description: A simple embedded system to increment, decrement,
- *              and reset a counter using switches, displaying the result on an LCD.
- * Date: 2024-10-24
+/**
+ * Title:        Lab 3 code
+ * C File:       lab3_main.c
+ * Platform:     PICmicro PIC16F877A @ 4 MHz
+ * Written by:   Han Huang
+ * Date:         7/11/2024
+ * Function:     Displays the ADC reading from AN2 on an LCD, controls two LEDs based on the reading.
  */
-
-#include <xc.h>
-#include <stdio.h>    // Include Standard I/O header file
-#include "ee302lcd.h" // Include LCD header file.
-
-#ifndef _XTAL_FREQ
-// Unless already defined assume 4MHz system frequency
-// This definition is required to calibrate the delay functions, __delay_us() and __delay_ms()
-#define _XTAL_FREQ 4000000
-#endif
 
 // CONFIG
 #pragma config FOSC = XT   // Oscillator Selection bits (XT oscillator)
 #pragma config WDTE = OFF  // Watchdog Timer Enable bit (WDT disabled)
 #pragma config PWRTE = OFF // Power-up Timer Enable bit (PWRT disabled)
 #pragma config BOREN = OFF // Brown-out Reset Enable bit (BOR disabled)
-#pragma config LVP = OFF   // Low-Voltage (Single-Supply) In-Circuit Serial Programming Enable bit (RB3 is digital I/O, HV on MCLR must be used for programming)
-#pragma config CPD = OFF   // Data EEPROM Memory Code Protection bit (Data EEPROM code protection off)
-#pragma config WRT = OFF   // Flash Program Memory Write Enable bits (Write protection off; all program memory may be written to by EECON control)
-#pragma config CP = OFF    // Flash Program Memory Code Protection bit (Code protection off)
+#pragma config LVP = OFF   // Low-Voltage Programming
+#pragma config CPD = OFF   // Data EEPROM Memory Code Protection bit
+#pragma config WRT = OFF   // Flash Program Memory Write Enable bits
+#pragma config CP = OFF    // Flash Program Memory Code Protection bit
 
-// #pragma config statements should precede project file includes.
-// Use project enums instead of #define for ON and OFF.
+#include <xc.h>
+#include <stdio.h>
+#include "ee302lcd.h"
 
-// Definitions____________________________________________________________
+#ifndef _XTAL_FREQ
+#define _XTAL_FREQ 4000000
+#endif
 
-#define CLOSED 0   // Define switch action "Closed" as 0
-#define OPEN 1     // Define switch action "Open" as 1
-#define SW_INC RB0 // Define switch action "SW_INC" as RB0
-#define SW_DEC RB1 // Define switch action "SW_DEC" as RB1
-#define SW_CLR RB2 // Define switch action "SW_CLR" as RB2
+// Definitions
+#define SWITCH_CLOSED 0   // Define switch state "CLOSED"
+#define SWITCH1 RB0       // Define SW1 at PortB bit 0
+#define LED_RED RC1       // Red LED connected to RC1
+#define LED_GREEN RC0     // Green LED connected to RC0
+#define LED_THRESHOLD 1.5 // Voltage threshold for LED control
+typedef unsigned char uint8_t;
 
-// globals _____________________________________________________
+char lcdLine1[16] = {0};
+char lcdLine2[16] = {0};
 
-unsigned char gOutString[16] = {0x00}; // Define outString as an array of 16 characters
-unsigned char counter = 0;             // Define counter as 0, the maximum value of counter is 8
+// Function prototypes
+void initializeSystem(void);
+void mainLoop(void);
+void displayTitle(void);
+void clearLCDStrings(void);
+float readADCChannel(void);
+void updateLCD(float voltage);
+void controlLEDs(float voltage);
 
-// Prototypes_____________________________________________________________
-
-void setup(void);           // Setup microcontroller and peripherals
-void loop(void);            // Main loop to monitor button presses
-void update_lcd(void);      // Update LCD with current counter value
-void clear_outString(void); // Clear global output string buffer
-void lcdTitle(void);        // Display title on LCD
-
-// Main program
 void main(void)
 {
-    setup();    // Initialize system
-    lcdTitle(); // Display title on LCD
+    initializeSystem(); // System initialization
+    displayTitle();     // Display title on LCD
+    while (!(SWITCH1 == SWITCH_CLOSED))
+        ; // Wait for button press
+    Lcd8_Clear();
 
-    // Superloop
-    for (;;)
+    while (1) // Main program loop
     {
-        loop(); // Write data to LCD
+        mainLoop();
     }
 }
 
-// Setup function
-void setup(void)
+void initializeSystem(void)
 {
-    Lcd8_Init();  // Initialize LCD in 8-bit mode
-    TRISB = 0x07; // Set RB0, RB1, and RB2 as inputs for buttons
-    Lcd8_Clear(); // Clear LCD display
-    update_lcd(); // Update LCD with initial counter value (0)
+    Lcd8_Init();   // Initialize LCD in 8-bit mode
+    ADCON0 = 0x51; // Select AN2 channel, set sample period to 8Tosc
+    ADCON1 = 0x02; // Left justified result, set PCFG for analog input
+    TRISA = 0x04;  // analog input
+    TRISB = 0x01;  // Set PORTB for switches
+    TRISC = 0x00;  // Set PORTC for LEDs
+    PORTC = 0x02;  // Default state: Red LED ON
 }
 
-void loop(void)
+void mainLoop()
 {
-    static unsigned char prev_sw_inc = OPEN; // Define previous switch action "SW_INC" as OPEN
-    static unsigned char prev_sw_dec = OPEN; // Define previous switch action "SW_DEC" as OPEN
-    static unsigned char prev_sw_clr = OPEN; // Define previous switch action "SW_CLR" as OPEN
+    static float lastVoltageReading = 0;     // Last voltage reading
+    float voltageReading = readADCChannel(); // Read ADC value
 
-    // Increment button logic
-    if (SW_INC == CLOSED && prev_sw_inc != CLOSED) // If SW_INC is pressed and the previous state is not CLOSED
+    if (lastVoltageReading != voltageReading)
     {
-        __delay_ms(50);                       // Debounce delay
-        if (SW_INC == CLOSED && counter < 20) // Limit counter to 20
-        {
-            counter++;
-            update_lcd();
-        }
+        updateLCD(voltageReading); // Update LCD with voltage reading
     }
-    prev_sw_inc = SW_INC; // Update previous switch action "SW_INC"
 
-    // Decrement button logic
-    if (SW_DEC == CLOSED && prev_sw_dec != CLOSED) // If SW_DEC is pressed and the previous state is not CLOSED
-    {
-        __delay_ms(50);                      // Debounce delay
-        if (SW_DEC == CLOSED && counter > 0) // Limit counter to 0
-        {
-            counter--;
-            update_lcd();
-        }
-    }
-    prev_sw_dec = SW_DEC; // Update previous switch action "SW_DEC"
+    controlLEDs(voltageReading); // Control LEDs based on voltage reading
 
-    // Clear button logic
-    if (SW_CLR == CLOSED && prev_sw_clr != CLOSED) // If SW_CLR is pressed and the previous state is not CLOSED
-    {
-        __delay_ms(50); // Debounce delay
-        if (SW_CLR == CLOSED)
-        {
-            counter = 0;
-            update_lcd();
-        }
-    }
-    prev_sw_clr = SW_CLR; // Update previous switch action "SW_CLR"
+    lastVoltageReading = voltageReading;
+    __delay_ms(100); // Delay for approximately 10 samples per second
 }
 
-/**
- * @brief Function to Update the LCD with the Current Counter Value
- *
- * @return void
- */
-void update_lcd(void)
+void updateLCD(float voltage)
 {
-    clear_outString(); // Clear the output string buffer
-
-    // Display "Button Press" centered on the first line (start at position 4)
-    Lcd8_Set_Cursor(1, 4); // Set cursor to line 1, position 4
-    Lcd8_Write_String("Button Press");
-
-    // Display "=  xx" on the second line, where xx is the counter value
-    Lcd8_Set_Cursor(2, 6); // Start at column 6 to align as shown in the picture
-    // sprintf(gOutString, "=  %02d", counter); // Format counter as two-digit number (e.g., 05)
-    // Format counter manually (if not using sprintf)
-    gOutString[0] = '=';
-    gOutString[1] = ' ';
-    gOutString[2] = ' ';
-    gOutString[3] = (counter / 10) + '0'; // Tens place
-    gOutString[4] = (counter % 10) + '0'; // Ones place
-    gOutString[5] = '\0';                 // Null-terminate the string
-    Lcd8_Write_String(gOutString);
+    clearLCDStrings(); // Clear previous strings
+    Lcd8_Clear();
+    sprintf(lcdLine1, "ADC Voltage is");
+    Lcd8_Set_Cursor(1, 1);
+    Lcd8_Write_String(lcdLine1);
+    sprintf(lcdLine2, "   %.1f V", voltage);
+    Lcd8_Set_Cursor(2, 1);
+    Lcd8_Write_String(lcdLine2);
 }
 
-/**
- * @brief Function to Display Title on the LCD
- */
-void lcdTitle(void)
+void controlLEDs(float voltage)
 {
-    Lcd8_Set_Cursor(1, 1);             // Set cursor to line 1, position 1
-    Lcd8_Write_String("Laboratory 2"); // Write title on line 1
-    Lcd8_Set_Cursor(2, 1);             // Set cursor to line 2, position 1
-    Lcd8_Write_String("EE302");        // Write subtitle on line 2
-    __delay_ms(2000);                  // Delay for 2 second
+    if (voltage < LED_THRESHOLD)
+    {
+        PORTC = 0x02; // Turn ON Red LED
+    }
+    else
+    {
+        PORTC = 0x01; // Turn ON Green LED
+    }
 }
 
-/**
- * @brief Function to Clear the Global Output String Buffer
- *
- * @return void
- */
-void clear_outString(void)
+void displayTitle(void)
+{
+    Lcd8_Set_Cursor(1, 1);
+    Lcd8_Write_String("Laboratory 3");
+    Lcd8_Set_Cursor(2, 1);
+    Lcd8_Write_String(" EE302-ADC");
+    __delay_ms(1500);
+}
+
+void clearLCDStrings(void)
 {
     for (int i = 0; i < 16; i++)
     {
-        gOutString[i] = 0x00;
+        lcdLine1[i] = 0x00;
+        lcdLine2[i] = 0x00;
     }
+}
+
+float readADCChannel(void)
+{
+    ADCON0 |= 0x04; // Start ADC conversion
+    __delay_us(50); // Wait for acquisition time (should be > 19.72us)
+
+    while (ADCON0 & 0x04)
+        ; // Wait until the conversion is complete
+
+    uint8_t adcResult = ADRESH; // Read the ADC result
+
+    // Convert ADC value to voltage
+    return (5.0 * adcResult) / 256.0; // Convert to voltage (0-5V)
 }

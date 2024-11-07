@@ -2,6 +2,9 @@
 #include "bsp_usart.h"
 #include "daemon.h"
 #include "memory.h"
+#include "FreeRTOS.h"
+#include "task.h"
+
 /***
  * @note ops的y轴(front)位0度，逆时针方向为正方向
  */
@@ -32,6 +35,36 @@ static void OPS_data_process(void)
         ops_data->OPS_Init_Flag = 1;
     }
 }
+
+void OPS_Calibrate(float x, float y, float heading)
+{
+    uint8_t update_x[4] = "ACTX";
+    uint8_t update_y[4] = "ACTY";
+    uint8_t update_j[4] = "ACTJ";
+
+    static union
+    {
+        float value;
+        uint8_t data[4];
+    } new_value;
+
+    new_value.value = x * 1000;
+    USARTSend(ops_instance, update_x, 4, USART_TRANSFER_DMA);
+    USARTSend(ops_instance, new_value.data, 4, USART_TRANSFER_DMA);
+
+    vTaskDelay(10);
+
+    new_value.value = y * 1000;
+    USARTSend(ops_instance, update_y, 4, USART_TRANSFER_DMA);
+    USARTSend(ops_instance, new_value.data, 4, USART_TRANSFER_DMA);
+
+    vTaskDelay(10);
+
+    new_value.value = heading / 360;
+    USARTSend(ops_instance, update_j, 4, USART_TRANSFER_DMA);
+    USARTSend(ops_instance, new_value.data, 4, USART_TRANSFER_DMA);
+}
+
 static void OPSRxCallback(UART_HandleTypeDef *huart, uint16_t size)
 {
     DaemonReload(ops_daemon_instance);
@@ -41,6 +74,7 @@ static void OPSRxCallback(UART_HandleTypeDef *huart, uint16_t size)
         OPS_data_process();
     }
 }
+
 static void OpsLostCallback(void *id)
 {
     USARTServiceInit(ops_instance);
@@ -49,6 +83,7 @@ static void OpsLostCallback(void *id)
     ops_data->OPS_ring = 0;
     ops_data->OPS_Init_Flag = 0;
 }
+
 OPS_data_t *Ops_Init(UART_HandleTypeDef *ops_usart_handle)
 {
     USART_Init_Config_s conf;
@@ -64,7 +99,5 @@ OPS_data_t *Ops_Init(UART_HandleTypeDef *ops_usart_handle)
     };
     ops_daemon_instance = DaemonRegister(&daemon_conf);
     memset(ops_data, 0, sizeof(*ops_data));
-    ops_data->OPS_ring = 0;
-    ops_data->OPS_Init_Flag = 0;
     return ops_data;
 }
