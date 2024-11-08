@@ -46,21 +46,21 @@ void ChassisInit()
     /*---------------x, y and heading loop--------------*/
     PID_Init_Config_s xy_pid_init_config =
         {
-            .Kp = 30,
-            .Ki = 0,
-            .Kd = 0,
-            .IntegralLimit = 500,
+            .Kp = 50,
+            .Ki = 12,
+            .Kd = 2,
+            .IntegralLimit = 15000,
             .Improve = PID_Trapezoid_Intergral | PID_Integral_Limit | PID_Derivative_On_Measurement,
             .MaxOut = 15000,
         };
     PID_Init_Config_s heading_pid_init_config =
         {
-            .Kp = 10,
-            .Ki = 0.5,
+            .Kp = 50,
+            .Ki = 5,
             .Kd = 0,
             .IntegralLimit = 500,
             .Improve = PID_Trapezoid_Intergral | PID_Integral_Limit | PID_Derivative_On_Measurement,
-            .MaxOut = 2000,
+            .MaxOut = 2500,
         };
     PIDInit(&x_pid_instance, &xy_pid_init_config);
     PIDInit(&y_pid_instance, &xy_pid_init_config);
@@ -72,20 +72,20 @@ void ChassisInit()
         .can_init_config.can_handle = &hfdcan1, // can通用设置，更多配置在下面按具体电机分配（方向和电机号）
         .controller_param_init_config = {
             .speed_PID = {
-                .Kp = 2,   // 4.5
-                .Ki = 0.5, // 0
-                .Kd = 0,   // 0
-                .IntegralLimit = 10000,
+                .Kp = 2,  // 4.5
+                .Ki = 10, // 0
+                .Kd = 0,  // 0
+                .IntegralLimit = 20000,
                 .Improve = PID_Trapezoid_Intergral | PID_Integral_Limit | PID_Derivative_On_Measurement, // 梯形积分（accuracy），微分先行 （防止突变）
-                .MaxOut = 15000,
+                .MaxOut = 20000,
             },
             .current_PID = {
-                .Kp = 1,   // 0.4
-                .Ki = 2.5, // 0
+                .Kp = 2,  // 0.4
+                .Ki = 10, // 0
                 .Kd = 0,
-                .IntegralLimit = 5000,
+                .IntegralLimit = 20000,
                 .Improve = PID_Trapezoid_Intergral | PID_Integral_Limit | PID_Derivative_On_Measurement,
-                .MaxOut = 5000,
+                .MaxOut = 20000,
             },
         },
         .controller_setting_init_config = {
@@ -139,21 +139,6 @@ static void speedCalculate(void)
 }
 
 /**
- * @brief 速度限制
- */
-static void speedLimit(void)
-{
-    chassis_cmd_recv.chassis_speed_limit = 2000;
-    if (fabs(chassis_vx > chassis_cmd_recv.chassis_speed_limit))
-    {
-        chassis_vx = (chassis_vx > 0 ? chassis_cmd_recv.chassis_speed_limit : -chassis_cmd_recv.chassis_speed_limit);
-    }
-    if (fabs(chassis_vy > chassis_cmd_recv.chassis_speed_limit))
-    {
-        chassis_vy = (chassis_vy > 0 ? chassis_cmd_recv.chassis_speed_limit : -chassis_cmd_recv.chassis_speed_limit);
-    }
-}
-/**
  * @brief coordinate transform, 云台坐标系到底盘坐标系的变换
  */
 static void CoordinateTransform(void)
@@ -197,7 +182,23 @@ static void LimitChassisOutput()
     // 功率限制待添加}
     // referee_data->PowerHeatData.chassis_power;
     // referee_data->PowerHeatData.chassis_power_buffer;
-
+    chassis_cmd_recv.chassis_speed_limit = 10000;
+    if (fabs(vt_lf) > chassis_cmd_recv.chassis_speed_limit)
+    {
+        vt_lf = (vt_lf > 0 ? chassis_cmd_recv.chassis_speed_limit : -chassis_cmd_recv.chassis_speed_limit);
+    }
+    if (fabs(vt_rf) > chassis_cmd_recv.chassis_speed_limit)
+    {
+        vt_rf = (vt_rf > 0 ? chassis_cmd_recv.chassis_speed_limit : -chassis_cmd_recv.chassis_speed_limit);
+    }
+    if (fabs(vt_lb) > chassis_cmd_recv.chassis_speed_limit)
+    {
+        vt_lb = (vt_lb > 0 ? chassis_cmd_recv.chassis_speed_limit : -chassis_cmd_recv.chassis_speed_limit);
+    }
+    if (fabs(vt_rb) > chassis_cmd_recv.chassis_speed_limit)
+    {
+        vt_rb = (vt_rb > 0 ? chassis_cmd_recv.chassis_speed_limit : -chassis_cmd_recv.chassis_speed_limit);
+    }
     // 完成功率限制后进行电机参考输入设定
     DJIMotorSetRef(motor_lf, vt_lf);
     DJIMotorSetRef(motor_rf, vt_rf);
@@ -212,12 +213,12 @@ static void CheckStable(void)
 {
     chassis_feedback_data.chassis_arrive = 0;
     chassis_feedback_data.chassis_vague_arrive = 0;
-    if (fabs(x_pid_instance.Err) < 0.2 && fabs(y_pid_instance.Err) < 0.2 && fabs(heading_pid_instance.Err) < 0.2)
+    if (fabs(x_pid_instance.Err) < 0.2 && fabs(y_pid_instance.Err) < 0.05 && fabs(heading_pid_instance.Err) < 0.05)
         chassis_feedback_data.chassis_arrive = 1;
     // else
     //     chassis_feedback_data.chassis_arrive = 0;
 
-    if (fabs(x_pid_instance.Err) < 2 && fabs(y_pid_instance.Err) < 2 && fabs(heading_pid_instance.Err) < 2)
+    if (fabs(x_pid_instance.Err) < 2 && fabs(y_pid_instance.Err) < 0.2 && fabs(heading_pid_instance.Err) < 0.2)
         chassis_feedback_data.chassis_vague_arrive = 1;
     // else
     // chassis_feedback_data.chassis_vague_arrive = 0;
@@ -233,8 +234,9 @@ void ChassisTask()
 #ifdef CHASSIS_BOARD
     chassis_cmd_recv = *(Chassis_Ctrl_Cmd_s *)CANCommGet(chasiss_can_comm);
 #endif // CHASSIS_BOARD
-
-    if (chassis_cmd_recv.chassis_mode == CHASSIS_ZERO_FORCE || !ops_data->OPS_Init_Flag)
+    // chassis_cmd_recv.chassis_mode = CHASSIS_OPS_MOVE;
+    // if (chassis_cmd_recv.chassis_mode == CHASSIS_ZERO_FORCE || !ops_data->OPS_Init_Flag)
+    if (chassis_cmd_recv.chassis_mode == CHASSIS_ZERO_FORCE)
     { // 如果出现重要模块离线或遥控器设置为急停,让电机停止
         DJIMotorStop(motor_lf);
         DJIMotorStop(motor_rf);
@@ -262,12 +264,10 @@ void ChassisTask()
     default:
         break;
     }
-    // speedCalculate();
-    chassis_vx = 0;
-    chassis_vy = 5000;
+    speedCalculate();
+    // chassis_vx = 0;
+    // chassis_vy = 15000;
     // chassis_w = 90;
-    speedLimit();
-
     // PIDCalculate(&heading_pid_instance, ops_datsa->OPS_heading + ops_data->OPS_ring * 360, chassis_cmd_recv.heading);
     // chassis_w = heading_pid_instance.Output;
     CoordinateTransform();

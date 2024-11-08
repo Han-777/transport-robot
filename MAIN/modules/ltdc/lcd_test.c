@@ -1209,46 +1209,46 @@ void LCD_Test_Vertical(void)
 	LCD_DisplayDirection(Direction_H); // 切换回横屏显示
 }
 
-void LCD_Display_One(Drought_Info_e drought_info, uint8_t flower_Cnt)
-{
-	switch (drought_info)
-	{
-	case SLIGHT:
-		Qinwei(flower_Cnt);
-		break;
-	case GENERAL:
-		Yiban(flower_Cnt);
-		break;
-	case SERIOUS:
-		Yanzhong(flower_Cnt);
-		break;
-	}
-}
+// void LCD_Display_One(Drought_Info_e drought_info, uint8_t flower_Cnt)
+// {
+// 	switch (drought_info)
+// 	{
+// 	case SLIGHT:
+// 		Qinwei(flower_Cnt);
+// 		break;
+// 	case GENERAL:
+// 		Yiban(flower_Cnt);
+// 		break;
+// 	case SERIOUS:
+// 		Yanzhong(flower_Cnt);
+// 		break;
+// 	}
+// }
 
-void LCD_Display_All(Drought_Info_e *drought_info_buff)
-{
-	// size_t data_len = sizeof(drought_info_buff);
-	for (size_t i = 0; i < 18; ++i)
-	{
-		LCD_Display_One(drought_info_buff[i], i);
-	}
-}
+// void LCD_Display_All(Drought_Info_e *drought_info_buff)
+// {
+// 	// size_t data_len = sizeof(drought_info_buff);
+// 	for (size_t i = 0; i < 18; ++i)
+// 	{
+// 		LCD_Display_One(drought_info_buff[i], i);
+// 	}
+// }
 
-void LCD_hanqing(uint8_t drought_info, uint8_t flower_Cnt)
-{
-	if (drought_info == 0x01)
-		Qinwei(flower_Cnt);
-	else if (drought_info == 0x02)
-		Yiban(flower_Cnt);
-	else if (drought_info == 0x03)
-		Yanzhong(flower_Cnt);
-}
+// void LCD_hanqing(uint8_t drought_info, uint8_t flower_Cnt)
+// {
+// 	if (drought_info == 0x01)
+// 		Qinwei(flower_Cnt);
+// 	else if (drought_info == 0x02)
+// 		Yiban(flower_Cnt);
+// 	else if (drought_info == 0x03)
+// 		Yanzhong(flower_Cnt);
+// }
 
-void screenTask(void)
-{
-	//    LCD_SetTextFont(&CH_Font32);
-	//    LCD_DisplayText(200, 10,"严重干旱");
-	LCD_hanqing(0x02, 4);
-	LCD_hanqing(0x01, 8);
-	LCD_hanqing(0x03, 17);
-}
+// void screenTask(void)
+// {
+// 	//    LCD_SetTextFont(&CH_Font32);
+// 	//    LCD_DisplayText(200, 10,"严重干旱");
+// 	LCD_hanqing(0x02, 4);
+// 	LCD_hanqing(0x01, 8);
+// 	LCD_hanqing(0x03, 17);
+// }

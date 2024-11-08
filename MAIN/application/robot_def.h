@@ -43,18 +43,6 @@ typedef enum
 } Robot_Status_e;
 
 /* ----------------CMD应用发布的控制数据,应当由gimbal/chassis/shoot订阅---------------- */
-/**
- * @brief 区域ENUN
- */
-typedef enum
-{
-    A,
-    B,
-    C,
-    D,
-    C2C, // cross to cross
-    home
-} regionEnum;
 
 // cmd发布的底盘控制数据,由chassis订阅
 typedef struct
@@ -75,6 +63,18 @@ typedef struct
 
 } Chassis_Ctrl_Cmd_s;
 
+typedef enum
+{
+    none,
+    getObect,
+    putObject,
+    Scan,
+    calib
+} objectAction;
+typedef struct
+{
+
+} Object_Ctrl_Cmd_s;
 typedef struct
 {
     uint8_t water_flag;
@@ -99,27 +99,14 @@ typedef struct
     uint8_t plant_cnt;          // number of plant
 } Water_Upload_Data_s;
 
-/*=================双板通信================*/
-typedef enum
-{
-    SLIGHT = 0x01,
-    GENERAL = 0x02, // Corrected typo from "GENERAl" to "GENERAL"
-    SERIOUS = 0x03,
-} Drought_Info_e;
-
+/**
+ * @brief object状态
+ */
 typedef struct
 {
-    Drought_Info_e drought_info[18];
-    uint8_t recv_feedback_flag; // 接收到正确数据返回1
-} Comm_Send_Data_s;             // 板间通信结构体
-
-typedef struct
-{
-    uint8_t plant_Cnt;
-    uint8_t D_Drougnt_info;
-    uint8_t recv_feedback_flag; // 接收到正确数据返回1
-} Comm_Recv_Data_s;
-
+    uint8_t obj_finish_state; // object state (完成为1)
+    uint8_t obj_color;        // object color
+} Object_Upload_Data_s;
 /*==============舵控板==============*/
 typedef enum
 {

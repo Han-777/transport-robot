@@ -15,6 +15,7 @@
 osThreadId robotTaskHandle;
 osThreadId motorTaskHandle;
 osThreadId daemonTaskHandle;
+osThreadId objectTaskHandle;
 // osThreadId uiTaskHandle;
 /*      中断处理任务       */
 // osThreadId gyroTaskHandle;
@@ -25,9 +26,7 @@ osThreadId daemonTaskHandle;
 void StartMOTORTASK(void const *argument);
 void StartDAEMONTASK(void const *argument);
 void StartROBOTTASK(void const *argument);
-void StartWaterTASK(void const *argument);
-
-void StartLidarTask(void const *argument);
+void StartOBJECTTASK(void const *argument);
 // void StartGyroTask(void const *argument);
 // void StartISRTASK(void const *argument);
 
@@ -43,8 +42,11 @@ void OSTaskInit()
     osThreadDef(daemontask, StartDAEMONTASK, osPriorityNormal, 0, 128);
     daemonTaskHandle = osThreadCreate(osThread(daemontask), NULL);
 
-    osThreadDef(robottask, StartROBOTTASK, osPriorityNormal, 0, 1024);
+    osThreadDef(robottask, StartROBOTTASK, osPriorityNormal, 0, 2048);
     robotTaskHandle = osThreadCreate(osThread(robottask), NULL);
+
+    // osThreadDef(objecttask, StartOBJECTTASK, osPriorityNormal, 0, 256);
+    // robotTaskHandle = osThreadCreate(osThread(objecttask), NULL);
 
     // osThreadDef(watertask, StartWaterTASK, osPriorityNormal, 0, 1024);
     // waterTaskHandle = osThreadCreate(osThread(watertask), NULL);
@@ -104,17 +106,15 @@ __attribute__((noreturn)) void StartROBOTTASK(void const *argument)
         // {
         // LOGERROR("[freeRTOS] ROBOT core Task is being DELAY! dt = [%f]", &robot_dt);
         // }
-        osDelay(5);
+        osDelay(3);
     }
 }
 
-__attribute__((noreturn)) void StartWaterTASK(void const *argument)
+__attribute__((noreturn)) void StartOBJECTTASK(void const *argument)
 {
     for (;;)
     {
-        WaterTask();
-        osDelay(1); // 即使没有任何UI需要刷新,也挂起一次,防止卡在UITask中无法切换
+        ObjectTask();
+        osDelay(3); // 即使没有任何UI需要刷新,也挂起一次,防止卡在UITask中无法切换
     }
 }
-
-void RobotInitTASK() {}
