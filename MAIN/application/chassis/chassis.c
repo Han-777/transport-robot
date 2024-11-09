@@ -46,21 +46,21 @@ void ChassisInit()
     /*---------------x, y and heading loop--------------*/
     PID_Init_Config_s xy_pid_init_config =
         {
-            .Kp = 50,
-            .Ki = 12,
-            .Kd = 2,
-            .IntegralLimit = 15000,
+            .Kp = 0.5,
+            .Ki = 0.001,
+            .Kd = 0.4,
+            .IntegralLimit = 3000,
             .Improve = PID_Trapezoid_Intergral | PID_Integral_Limit | PID_Derivative_On_Measurement,
-            .MaxOut = 15000,
+            .MaxOut = 10000,
         };
     PID_Init_Config_s heading_pid_init_config =
         {
-            .Kp = 50,
-            .Ki = 5,
+            .Kp = 1,
+            .Ki = 0,
             .Kd = 0,
-            .IntegralLimit = 500,
+            .IntegralLimit = 2500,
             .Improve = PID_Trapezoid_Intergral | PID_Integral_Limit | PID_Derivative_On_Measurement,
-            .MaxOut = 2500,
+            .MaxOut = 10000,
         };
     PIDInit(&x_pid_instance, &xy_pid_init_config);
     PIDInit(&y_pid_instance, &xy_pid_init_config);
@@ -72,18 +72,18 @@ void ChassisInit()
         .can_init_config.can_handle = &hfdcan1, // can通用设置，更多配置在下面按具体电机分配（方向和电机号）
         .controller_param_init_config = {
             .speed_PID = {
-                .Kp = 2,  // 4.5
-                .Ki = 10, // 0
-                .Kd = 0,  // 0
-                .IntegralLimit = 20000,
+                .Kp = 1,   // 4.5
+                .Ki = 0.2, // 0
+                .Kd = 0,   // 0
+                .IntegralLimit = 3000,
                 .Improve = PID_Trapezoid_Intergral | PID_Integral_Limit | PID_Derivative_On_Measurement, // 梯形积分（accuracy），微分先行 （防止突变）
                 .MaxOut = 20000,
             },
             .current_PID = {
-                .Kp = 2,  // 0.4
-                .Ki = 10, // 0
+                .Kp = 1,   // 0.4
+                .Ki = 0.2, // 0
                 .Kd = 0,
-                .IntegralLimit = 20000,
+                .IntegralLimit = 3000,
                 .Improve = PID_Trapezoid_Intergral | PID_Integral_Limit | PID_Derivative_On_Measurement,
                 .MaxOut = 20000,
             },
@@ -133,8 +133,8 @@ static void speedCalculate(void)
     // ff_vy = (y_pid_instance.Err > 0.3 ? (0.1 * chassis_cmd_recv.y) : 0);
     // ff_w = 0.01 * chassis_cmd_recv.heading;
 
-    chassis_vx = x_pid_instance.Output; // 可能需要乘系数
-    chassis_vy = y_pid_instance.Output; //
+    chassis_vx = x_pid_instance.Output * 40; // 可能需要乘系数
+    chassis_vy = y_pid_instance.Output * 40; //
     chassis_w = heading_pid_instance.Output;
 }
 
@@ -152,10 +152,14 @@ static void CoordinateTransform(void)
     chassis_vy = chassis_vx * sin_theta + chassis_vy * cos_theta;
 }
 
-#define LF_CENTER ((HALF_TRACK_WIDTH + CENTER_GIMBAL_OFFSET_X + HALF_WHEEL_BASE - CENTER_GIMBAL_OFFSET_Y) * DEGREE_2_RAD)
-#define RF_CENTER ((HALF_TRACK_WIDTH - CENTER_GIMBAL_OFFSET_X + HALF_WHEEL_BASE - CENTER_GIMBAL_OFFSET_Y) * DEGREE_2_RAD)
-#define LB_CENTER ((HALF_TRACK_WIDTH + CENTER_GIMBAL_OFFSET_X + HALF_WHEEL_BASE + CENTER_GIMBAL_OFFSET_Y) * DEGREE_2_RAD)
-#define RB_CENTER ((HALF_TRACK_WIDTH - CENTER_GIMBAL_OFFSET_X + HALF_WHEEL_BASE + CENTER_GIMBAL_OFFSET_Y) * DEGREE_2_RAD)
+// #define LF_CENTER ((HALF_TRACK_WIDTH + CENTER_GIMBAL_OFFSET_X + HALF_WHEEL_BASE - CENTER_GIMBAL_OFFSET_Y) * DEGREE_2_RAD)
+// #define RF_CENTER ((HALF_TRACK_WIDTH - CENTER_GIMBAL_OFFSET_X + HALF_WHEEL_BASE - CENTER_GIMBAL_OFFSET_Y) * DEGREE_2_RAD)
+// #define LB_CENTER ((HALF_TRACK_WIDTH + CENTER_GIMBAL_OFFSET_X + HALF_WHEEL_BASE + CENTER_GIMBAL_OFFSET_Y) * DEGREE_2_RAD)
+// #define RB_CENTER ((HALF_TRACK_WIDTH - CENTER_GIMBAL_OFFSET_X + HALF_WHEEL_BASE + CENTER_GIMBAL_OFFSET_Y) * DEGREE_2_RAD)
+#define LF_CENTER 113
+#define RF_CENTER 113
+#define LB_CENTER 113
+#define RB_CENTER 113
 /**
  * @brief 计算每个轮毂电机的输出,正运动学解算
  *        用宏进行预替换减小开销,运动解算具体过程参考教程
@@ -182,7 +186,7 @@ static void LimitChassisOutput()
     // 功率限制待添加}
     // referee_data->PowerHeatData.chassis_power;
     // referee_data->PowerHeatData.chassis_power_buffer;
-    chassis_cmd_recv.chassis_speed_limit = 10000;
+    // chassis_cmd_recv.chassis_speed_limit = 10000;
     if (fabs(vt_lf) > chassis_cmd_recv.chassis_speed_limit)
     {
         vt_lf = (vt_lf > 0 ? chassis_cmd_recv.chassis_speed_limit : -chassis_cmd_recv.chassis_speed_limit);
@@ -213,12 +217,12 @@ static void CheckStable(void)
 {
     chassis_feedback_data.chassis_arrive = 0;
     chassis_feedback_data.chassis_vague_arrive = 0;
-    if (fabs(x_pid_instance.Err) < 0.2 && fabs(y_pid_instance.Err) < 0.05 && fabs(heading_pid_instance.Err) < 0.05)
+    if (fabs(x_pid_instance.Err) < 0.2 && fabs(y_pid_instance.Err) < 0.05 && fabs(heading_pid_instance.Err) < 2)
         chassis_feedback_data.chassis_arrive = 1;
     // else
     //     chassis_feedback_data.chassis_arrive = 0;
 
-    if (fabs(x_pid_instance.Err) < 2 && fabs(y_pid_instance.Err) < 0.2 && fabs(heading_pid_instance.Err) < 0.2)
+    if (fabs(x_pid_instance.Err) < 2 && fabs(y_pid_instance.Err) < 0.2 && fabs(heading_pid_instance.Err) < 1)
         chassis_feedback_data.chassis_vague_arrive = 1;
     // else
     // chassis_feedback_data.chassis_vague_arrive = 0;
@@ -265,14 +269,12 @@ void ChassisTask()
         break;
     }
     speedCalculate();
-    // chassis_vx = 0;
-    // chassis_vy = 15000;
-    // chassis_w = 90;
-    // PIDCalculate(&heading_pid_instance, ops_datsa->OPS_heading + ops_data->OPS_ring * 360, chassis_cmd_recv.heading);
+    // PIDCalculate(&heading_pid_instance, ops_data->OPS_heading + ops_data->OPS_ring * 360, chassis_cmd_recv.heading);
     // chassis_w = heading_pid_instance.Output;
     CoordinateTransform();
     // 转换坐标系后的位置环pid计算
     // 根据控制模式进行正运动学解算,计算底盘输出
+    // chassis_vy = 10000;
     OmniCalculate();
 
     // 根据裁判系统的反馈数据和电容数据对输出限幅并设定闭环参考值

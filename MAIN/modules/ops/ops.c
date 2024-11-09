@@ -52,13 +52,13 @@ void OPS_Calibrate(float x, float y, float heading)
     USARTSend(ops_instance, update_x, 4, USART_TRANSFER_DMA);
     USARTSend(ops_instance, new_value.data, 4, USART_TRANSFER_DMA);
 
-    vTaskDelay(10);
+    // vTaskDelay(10);
 
     new_value.value = y * 1000;
     USARTSend(ops_instance, update_y, 4, USART_TRANSFER_DMA);
     USARTSend(ops_instance, new_value.data, 4, USART_TRANSFER_DMA);
 
-    vTaskDelay(10);
+    // vTaskDelay(10);
 
     new_value.value = heading / 360;
     USARTSend(ops_instance, update_j, 4, USART_TRANSFER_DMA);

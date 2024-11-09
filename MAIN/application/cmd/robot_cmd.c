@@ -51,7 +51,7 @@ static void SetCoordinate(float x, float y, float heading, uint16_t speed_limit)
 static int qr1_1(void)
 {
     // SetCoordinate(-0.18, 0.6, 0, 5000);
-    SetCoordinate(0, 1, 0, 10000);
+    SetCoordinate(0, 2000, 0, 20000);
 
     if (chassis_feedback_data.chassis_vague_arrive)
         return 1;
@@ -63,6 +63,10 @@ static int qr1_1(void)
  */
 static int qr1_2(void)
 {
+    // SetCoordinate(-2000, 3000, 0, 20000);
+
+    // if (chassis_feedback_data.chassis_vague_arrive)
+    //     return 0;
     // qr code handle
     // 屏幕显示
     return 0;
@@ -75,7 +79,7 @@ static int qr1_2(void)
 static int obj1_1(void)
 {
     // SetCoordinate(-0.20, 1.25, 0);
-    SetCoordinate(0, 0.1, 0, 5000);
+    SetCoordinate(0, 2000, 0, 20000);
     if (chassis_feedback_data.chassis_vague_arrive)
         return 1;
     return 0;
@@ -104,6 +108,7 @@ void RobotCMDInit()
     // object_feedback_sub = SubRegister("object_feed", sizeof(Object_Upload_Data_s));
     chassis_cmd_send.chassis_mode = CHASSIS_OPS_MOVE;
     chassis_cmd_send.chassis_speed_limit = 2000;
+    // OPS_Calibrate(0, 0, 0);
     /*------------------------Can communication Init---------------------
     send:  CANCommSend(CANComm_ins, comm_send_data);
     recv:  (Comm_Recv_Data_s *) comm_recv_data = CANCommGet(&CANComm_ins);
