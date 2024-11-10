@@ -21,7 +21,7 @@ static uint8_t usart_instance_idx = 0;
 static USARTInstance *usart_instance[DEVICE_USART_CNT] = {NULL};
 
 // 内存处理
-#define MY_SECTION_SIZE_LIMIT 1 * 1024 // 2KB(for memory protection unit), ram size
+#define MY_SECTION_SIZE_LIMIT 4 * 1024 // 2KB(for memory protection unit), ram size
 __attribute__((section(".my_section"))) static uint8_t my_section[MY_SECTION_SIZE_LIMIT];
 static size_t my_section_offset = 0;
 void *my_malloc(size_t size)
@@ -84,6 +84,9 @@ USARTInstance *USARTRegister(USART_Init_Config_s *init_config)
 }
 // double buffer regisitor
 
+/**
+ * @brief
+ */
 /* @todo 当前仅进行了形式上的封装,后续要进一步考虑是否将module的行为与bsp完全分离 */
 void USARTSend(USARTInstance *_instance, uint8_t *send_buf, uint16_t send_size, USART_TRANSFER_MODE mode)
 {
@@ -102,6 +105,25 @@ void USARTSend(USARTInstance *_instance, uint8_t *send_buf, uint16_t send_size, 
         while (1)
             ; // illegal mode! check your code context! 检查定义instance的代码上下文,可能出现指针越界
         break;
+    }
+}
+
+/**
+ * @ brief 串口发送一个字节
+ */
+void USARTSendBytes(USARTInstance *_instance, uint8_t *send_buf, uint16_t send_size, USART_TRANSFER_MODE mode)
+{
+    for (uint16_t i = 0; i < send_size; i++)
+    {
+        USARTSend(_instance, send_buf[i], 1, mode);
+        // 如果是阻塞模式，确保每个字节发送完成后再发送下一个字节
+        if (mode == USART_TRANSFER_BLOCKING)
+        {
+            while (_instance->usart_handle->gState == HAL_UART_STATE_BUSY_TX)
+            {
+                // 等待发送完成
+            }
+        }
     }
 }
 

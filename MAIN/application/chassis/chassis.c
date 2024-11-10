@@ -42,23 +42,22 @@ void ChassisInit()
 {
     /*----------------data-------------------*/
     ops_data = Ops_Init(&huart1);
-
     /*---------------x, y and heading loop--------------*/
     PID_Init_Config_s xy_pid_init_config =
         {
-            .Kp = 0.5,
-            .Ki = 0.001,
-            .Kd = 0.4,
-            .IntegralLimit = 3000,
+            .Kp = 1,
+            .Ki = 0.05,
+            .Kd = 1,
+            .IntegralLimit = 15000,
             .Improve = PID_Trapezoid_Intergral | PID_Integral_Limit | PID_Derivative_On_Measurement,
-            .MaxOut = 10000,
+            .MaxOut = 20000,
         };
     PID_Init_Config_s heading_pid_init_config =
         {
-            .Kp = 1,
-            .Ki = 0,
-            .Kd = 0,
-            .IntegralLimit = 2500,
+            .Kp = 50,
+            .Ki = 0.1,
+            .Kd = 10,
+            .IntegralLimit = 2000,
             .Improve = PID_Trapezoid_Intergral | PID_Integral_Limit | PID_Derivative_On_Measurement,
             .MaxOut = 10000,
         };
@@ -75,17 +74,17 @@ void ChassisInit()
                 .Kp = 1,   // 4.5
                 .Ki = 0.2, // 0
                 .Kd = 0,   // 0
-                .IntegralLimit = 3000,
+                .IntegralLimit = 20000,
                 .Improve = PID_Trapezoid_Intergral | PID_Integral_Limit | PID_Derivative_On_Measurement, // 梯形积分（accuracy），微分先行 （防止突变）
-                .MaxOut = 20000,
+                .MaxOut = 30000,
             },
             .current_PID = {
                 .Kp = 1,   // 0.4
                 .Ki = 0.2, // 0
                 .Kd = 0,
-                .IntegralLimit = 3000,
+                .IntegralLimit = 20000,
                 .Improve = PID_Trapezoid_Intergral | PID_Integral_Limit | PID_Derivative_On_Measurement,
-                .MaxOut = 20000,
+                .MaxOut = 30000,
             },
         },
         .controller_setting_init_config = {
@@ -133,9 +132,9 @@ static void speedCalculate(void)
     // ff_vy = (y_pid_instance.Err > 0.3 ? (0.1 * chassis_cmd_recv.y) : 0);
     // ff_w = 0.01 * chassis_cmd_recv.heading;
 
-    chassis_vx = x_pid_instance.Output * 40; // 可能需要乘系数
-    chassis_vy = y_pid_instance.Output * 40; //
-    chassis_w = heading_pid_instance.Output;
+    chassis_vx = x_pid_instance.Output * 20; // 可能需要乘系数
+    chassis_vy = y_pid_instance.Output * 20; //
+    chassis_w = heading_pid_instance.Output * DEGREE_2_RAD;
 }
 
 /**
@@ -156,10 +155,10 @@ static void CoordinateTransform(void)
 // #define RF_CENTER ((HALF_TRACK_WIDTH - CENTER_GIMBAL_OFFSET_X + HALF_WHEEL_BASE - CENTER_GIMBAL_OFFSET_Y) * DEGREE_2_RAD)
 // #define LB_CENTER ((HALF_TRACK_WIDTH + CENTER_GIMBAL_OFFSET_X + HALF_WHEEL_BASE + CENTER_GIMBAL_OFFSET_Y) * DEGREE_2_RAD)
 // #define RB_CENTER ((HALF_TRACK_WIDTH - CENTER_GIMBAL_OFFSET_X + HALF_WHEEL_BASE + CENTER_GIMBAL_OFFSET_Y) * DEGREE_2_RAD)
-#define LF_CENTER 113
-#define RF_CENTER 113
-#define LB_CENTER 113
-#define RB_CENTER 113
+#define LF_CENTER 115
+#define RF_CENTER 115
+#define LB_CENTER 115
+#define RB_CENTER 115
 /**
  * @brief 计算每个轮毂电机的输出,正运动学解算
  *        用宏进行预替换减小开销,运动解算具体过程参考教程
@@ -171,10 +170,10 @@ static void OmniCalculate()
     // vt_lb = -chassis_vx + chassis_vy + chassis_cmd_recv.wz * LB_CENTER;
     // vt_rb = chassis_vx + chassis_vy - chassis_cmd_recv.wz * RB_CENTER;
     // PIDCalculate(&w_pid_instance, chassis_heading, ops_data->OPS_heading + ops_data->OPS_ring * 360);
-    vt_lf = chassis_vx + chassis_vy - chassis_w * LF_CENTER;
-    vt_rf = -chassis_vx + chassis_vy + chassis_w * RF_CENTER;
-    vt_lb = -chassis_vx + chassis_vy - chassis_w * LB_CENTER;
-    vt_rb = chassis_vx + chassis_vy + chassis_w * RB_CENTER;
+    vt_lf = 0.707 * (chassis_vx + chassis_vy) - chassis_w * LF_CENTER;
+    vt_rf = 0.707 * (-chassis_vx + chassis_vy) + chassis_w * RF_CENTER;
+    vt_lb = 0.707 * (-chassis_vx + chassis_vy) - chassis_w * LB_CENTER;
+    vt_rb = 0.707 * (chassis_vx + chassis_vy) + chassis_w * RB_CENTER;
 }
 
 /**

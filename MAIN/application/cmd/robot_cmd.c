@@ -45,6 +45,11 @@ static void SetCoordinate(float x, float y, float heading, uint16_t speed_limit)
     chassis_cmd_send.chassis_speed_limit = speed_limit;
 }
 /*--------------QR Code-------------*/
+static int robot_init(void)
+{
+    OPS_Calibrate(0, 0, 0);
+    return 1;
+}
 /**
  * @brief 机器人到达二维码位置
  */
@@ -54,7 +59,10 @@ static int qr1_1(void)
     SetCoordinate(0, 2000, 0, 20000);
 
     if (chassis_feedback_data.chassis_vague_arrive)
-        return 1;
+    {
+        chassis_cmd_send.chassis_mode = CHASSIS_ZERO_FORCE;
+        return 0;
+    }
     return 0;
 }
 
@@ -94,6 +102,7 @@ static int obj1_2(void)
     return 1;
 }
 static int (*operation_sequence[])(void) = {
+    robot_init,
     qr1_1,
     qr1_2,
     obj1_1,
@@ -108,6 +117,7 @@ void RobotCMDInit()
     // object_feedback_sub = SubRegister("object_feed", sizeof(Object_Upload_Data_s));
     chassis_cmd_send.chassis_mode = CHASSIS_OPS_MOVE;
     chassis_cmd_send.chassis_speed_limit = 2000;
+
     // OPS_Calibrate(0, 0, 0);
     /*------------------------Can communication Init---------------------
     send:  CANCommSend(CANComm_ins, comm_send_data);

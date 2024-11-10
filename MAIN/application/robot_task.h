@@ -11,6 +11,7 @@
 #include "daemon.h"
 // #include "buzzer.h"
 #include <memory.h>
+
 // osThreadId insTaskHandle;
 osThreadId robotTaskHandle;
 osThreadId motorTaskHandle;

@@ -136,8 +136,8 @@ int main(void)
    */
   // SDRAM_Initialization_Sequence(&hsdram1);
   // LCD_RGB_Init();
-  init_my_section();
   RobotInit();
+  init_my_section();
   /*       for testing       */
 
   /* USER CODE END 2 */
