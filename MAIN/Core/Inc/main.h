@@ -57,10 +57,26 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
+#define STP3_DIR_Pin GPIO_PIN_0
+#define STP3_DIR_GPIO_Port GPIOI
+#define STP4_EN_Pin GPIO_PIN_2
+#define STP4_EN_GPIO_Port GPIOI
 #define MP3_UART5_TX_Pin GPIO_PIN_12
 #define MP3_UART5_TX_GPIO_Port GPIOC
+#define STP4_DIR_Pin GPIO_PIN_3
+#define STP4_DIR_GPIO_Port GPIOI
 #define MP3_UART5_RX_Pin GPIO_PIN_2
 #define MP3_UART5_RX_GPIO_Port GPIOD
+#define STP2_EN_Pin GPIO_PIN_11
+#define STP2_EN_GPIO_Port GPIOH
+#define STP1_DIR_Pin GPIO_PIN_9
+#define STP1_DIR_GPIO_Port GPIOH
+#define STP2_DIR_Pin GPIO_PIN_12
+#define STP2_DIR_GPIO_Port GPIOH
+#define STP1_EN_Pin GPIO_PIN_8
+#define STP1_EN_GPIO_Port GPIOH
+#define STP3_EN_Pin GPIO_PIN_7
+#define STP3_EN_GPIO_Port GPIOH
 
 /* USER CODE BEGIN Private defines */
 

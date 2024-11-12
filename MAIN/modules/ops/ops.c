@@ -4,7 +4,7 @@
 #include "memory.h"
 #include "FreeRTOS.h"
 #include "task.h"
-
+#include "cmsis_os.h"
 /***
  * @note ops的y轴(front)位0度，逆时针方向为正方向
  */
@@ -21,16 +21,16 @@ static void OPS_data_process(void)
     // 转弯处理，顺时针
     if (ops_data->OPS_heading > 170 && ops_data_buff.ActVal[0] < -170)
     {
-        ops_data->OPS_ring++;
+        ops_data->OPS_ring--;
     }
     else if (ops_data->OPS_heading < -170 && ops_data_buff.ActVal[0] > 170)
     {
-        ops_data->OPS_ring--;
+        ops_data->OPS_ring++;
     }
     ops_data->OPS_heading = ops_data_buff.ActVal[0];
     ops_data->OPS_x = ops_data_buff.ActVal[3];
     ops_data->OPS_y = ops_data_buff.ActVal[4];
-    if (ops_data->OPS_heading + ops_data->OPS_y + ops_data->OPS_heading != 0 && ops_data->OPS_Init_Flag == 0)
+    if (ops_data->OPS_x + ops_data->OPS_y + ops_data->OPS_heading != 0 && ops_data->OPS_Init_Flag == 0)
     {
         ops_data->OPS_Init_Flag = 1;
     }
@@ -48,21 +48,21 @@ void OPS_Calibrate(float x, float y, float heading)
         uint8_t data[4];
     } new_value;
 
-    new_value.value = x * 1000;
-    USARTSend(ops_instance, update_x, 4, USART_TRANSFER_DMA);
-    USARTSend(ops_instance, new_value.data, 4, USART_TRANSFER_DMA);
+    new_value.value = x;
+    USARTSendBytes(ops_instance, update_x, 4, USART_TRANSFER_DMA);
+    USARTSendBytes(ops_instance, &new_value.data[0], 4, USART_TRANSFER_DMA);
 
-    vTaskDelay(10);
+    osDelay(20);
 
-    new_value.value = y * 1000;
-    USARTSend(ops_instance, update_y, 4, USART_TRANSFER_DMA);
-    USARTSend(ops_instance, new_value.data, 4, USART_TRANSFER_DMA);
+    new_value.value = y;
+    USARTSendBytes(ops_instance, update_y, 4, USART_TRANSFER_DMA);
+    USARTSendBytes(ops_instance, &new_value.data[0], 4, USART_TRANSFER_DMA);
 
-    vTaskDelay(10);
+    osDelay(20);
 
-    new_value.value = heading / 360;
-    USARTSend(ops_instance, update_j, 4, USART_TRANSFER_DMA);
-    USARTSend(ops_instance, new_value.data, 4, USART_TRANSFER_DMA);
+    new_value.value = heading;
+    USARTSendBytes(ops_instance, update_j, 4, USART_TRANSFER_DMA);
+    USARTSendBytes(ops_instance, &new_value.data[0], 4, USART_TRANSFER_DMA);
 }
 
 static void OPSRxCallback(UART_HandleTypeDef *huart, uint16_t size)

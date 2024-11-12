@@ -2,10 +2,8 @@
 #include "robot_cmd.h"
 // module
 #include "message_center.h"
-#include "bluetooth.h"
 #include "general_def.h"
 #include "cmsis_os.h"
-#include "mp3.h"
 #include "lcd_test.h"
 #include "lcd_rgb.h"
 // bsp
@@ -21,12 +19,14 @@
 #ifdef ONE_BOARD
 static Publisher_t *chassis_cmd_pub;   // 底盘控制消息发布者
 static Subscriber_t *chassis_feed_sub; // 底盘反馈信息订阅者
-static Publisher_t *arm_cmd_pub;       // 浇水控制消息发布者
-static Subscriber_t *arm_feed_sub;     // 浇水反馈信息订阅者
+// static Publisher_t *object_cmd_pub;       // 物体控制消息发布者
+// static Subscriber_t *object_feedback_sub; // 物体反馈信息订阅者
 #endif
 
 static Chassis_Ctrl_Cmd_s chassis_cmd_send;         // 发送给底盘应用的信息,包括控制信息和UI绘制相关
 static Chassis_Upload_Data_s chassis_feedback_data; // 从底盘应用接收的反馈信息信息,底盘功率枪口热量与底盘运动状态等
+// static Object_Ctrl_Cmd_s object_cmd_send;           // 发送给物体应用的信息,包括控制信息和UI绘制相关
+// static Object_Upload_Data_s object_feedback_data;   // 从物体应用接收的反馈信息信息,物体夹取状态等
 // static Vision_Recv_s *vision_recv_data;             // 视觉接收数据指针,初始化时返回
 // static Vision_Send_s vision_send_data;              // 视觉发送数据
 
@@ -38,21 +38,31 @@ static uint8_t cmd_run_idx = 0;
 /*--------------Coordinate Input------------------*/
 static void SetCoordinate(float x, float y, float heading, uint16_t speed_limit)
 {
+    chassis_cmd_send.chassis_mode = CHASSIS_OPS_MOVE;
     chassis_cmd_send.x = x;
     chassis_cmd_send.y = y;
     chassis_cmd_send.heading = heading;
     chassis_cmd_send.chassis_speed_limit = speed_limit;
 }
 /*--------------QR Code-------------*/
+static int robot_init(void)
+{
+    // OPS_Calibrate(0, 0, 0);
+    return 1;
+}
 /**
  * @brief 机器人到达二维码位置
  */
 static int qr1_1(void)
 {
-    chassis_cmd_send.chassis_mode = CHASSIS_OPS_MOVE;
-    SetCoordinate(-0.18, 0.6, 0, 2000);
+    // SetCoordinate(-0.18, 0.6, 0, 5000);
+    SetCoordinate(0, 2000, 0, 20000);
+
     if (chassis_feedback_data.chassis_vague_arrive)
-        return 1;
+    {
+        chassis_cmd_send.chassis_mode = CHASSIS_ZERO_FORCE;
+        return 0;
+    }
     return 0;
 }
 
@@ -61,9 +71,13 @@ static int qr1_1(void)
  */
 static int qr1_2(void)
 {
+    // SetCoordinate(-2000, 3000, 0, 20000);
+
+    // if (chassis_feedback_data.chassis_vague_arrive)
+    //     return 0;
     // qr code handle
     // 屏幕显示
-    return 1;
+    return 0;
 }
 
 /*------------Get Object--------------*/
@@ -73,7 +87,7 @@ static int qr1_2(void)
 static int obj1_1(void)
 {
     // SetCoordinate(-0.20, 1.25, 0);
-    SetCoordinate(0.1, 0.1, 0, 5000);
+    SetCoordinate(0, 2000, 0, 20000);
     if (chassis_feedback_data.chassis_vague_arrive)
         return 1;
     return 0;
@@ -88,18 +102,23 @@ static int obj1_2(void)
     return 1;
 }
 static int (*operation_sequence[])(void) = {
+    robot_init,
     qr1_1,
     qr1_2,
-    obj1_1, 
+    obj1_1,
 };
 
 void RobotCMDInit()
 {
-    qr_data = QR_Init(&huart2);
+    // qr_data = QR_Init(&huart2);
     chassis_cmd_pub = PubRegister("chassis_cmd", sizeof(Chassis_Ctrl_Cmd_s));
     chassis_feed_sub = SubRegister("chassis_feed", sizeof(Chassis_Upload_Data_s));
+    // object_cmd_pub = PubRegister("object_cmd", sizeof(Object_Ctrl_Cmd_s));
+    // object_feedback_sub = SubRegister("object_feed", sizeof(Object_Upload_Data_s));
     chassis_cmd_send.chassis_mode = CHASSIS_OPS_MOVE;
     chassis_cmd_send.chassis_speed_limit = 2000;
+
+    // OPS_Calibrate(0, 0, 0);
     /*------------------------Can communication Init---------------------
     send:  CANCommSend(CANComm_ins, comm_send_data);
     recv:  (Comm_Recv_Data_s *) comm_recv_data = CANCommGet(&CANComm_ins);
@@ -192,14 +211,15 @@ void RobotCMDInit()
 void RobotCMDTask(void)
 {
     SubGetMessage(chassis_feed_sub, (void *)&chassis_feedback_data);
+    // SubGetMessage(object_feedback_sub, (void *)&object_feedback_data);
 
     if (operation_sequence[cmd_run_idx]())
         cmd_run_idx++;
     if (cmd_run_idx >= max_run_itr)
     {
         chassis_cmd_send.chassis_mode = CHASSIS_ZERO_FORCE;
-        return;
     }
 
     PubPushMessage(chassis_cmd_pub, (void *)&chassis_cmd_send);
+    // PubPushMessage(object_cmd_pub, (void *)&object_cmd_send);
 }

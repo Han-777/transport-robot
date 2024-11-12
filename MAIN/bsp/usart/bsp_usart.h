@@ -75,6 +75,7 @@ void USARTServiceInit(USARTInstance *_instance);
  * @param send_size how many bytes to send
  */
 void USARTSend(USARTInstance *_instance, uint8_t *send_buf, uint16_t send_size, USART_TRANSFER_MODE mode);
+void USARTSendBytes(USARTInstance *_instance, uint8_t *send_buf, uint16_t send_size, USART_TRANSFER_MODE mode);
 
 /**
  * @brief 判断串口是否准备好,用于连续或异步的IT/DMA发送

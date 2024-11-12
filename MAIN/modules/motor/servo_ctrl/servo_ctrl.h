@@ -3,6 +3,7 @@
 
 #include <stdint.h>
 #include "main.h"
+#include "robot_def.h"
 
 typedef struct _lobot_servo_
 { // If LobotServo is not defined elsewhere, add it here.
@@ -20,5 +21,6 @@ void setAllActionGroupSpeed(uint16_t Speed);
 void getBatteryVoltage(void);
 
 void ServoCtrl_Init(USART_TypeDef *usart_handle);
+void servoMove(servoAction actionNum);
 
 #endif // SERVO_CTRL_H_
