@@ -46,8 +46,8 @@ void OSTaskInit()
     osThreadDef(robottask, StartROBOTTASK, osPriorityNormal, 0, 2048);
     robotTaskHandle = osThreadCreate(osThread(robottask), NULL);
 
-    // osThreadDef(objecttask, StartOBJECTTASK, osPriorityNormal, 0, 256);
-    // robotTaskHandle = osThreadCreate(osThread(objecttask), NULL);
+    osThreadDef(objecttask, StartOBJECTTASK, osPriorityNormal, 0, 256);
+    robotTaskHandle = osThreadCreate(osThread(objecttask), NULL);
 
     // osThreadDef(watertask, StartWaterTASK, osPriorityNormal, 0, 1024);
     // waterTaskHandle = osThreadCreate(osThread(watertask), NULL);
@@ -101,7 +101,7 @@ __attribute__((noreturn)) void StartROBOTTASK(void const *argument)
     {
         // robot_start = DWT_GetTimeline_ms();
         // GYRO_buff_to_data();
-        RobotTask();
+        // RobotTask();
         // robot_dt = DWT_GetTimeline_ms() - robot_start;
         // if (robot_dt > 5)
         // {

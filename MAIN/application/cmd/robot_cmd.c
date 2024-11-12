@@ -47,7 +47,7 @@ static void SetCoordinate(float x, float y, float heading, uint16_t speed_limit)
 /*--------------QR Code-------------*/
 static int robot_init(void)
 {
-    OPS_Calibrate(0, 0, 0);
+    // OPS_Calibrate(0, 0, 0);
     return 1;
 }
 /**

@@ -117,9 +117,15 @@ typedef enum
     defaut,   // 2s
     calibObj, // 3s
 
+    putObj, // 2 300ms
+    getObj, // 3 300ms
     getObjRed,
     getObjGreen,
     getObjBlue,
+
+    rotateRed,
+    rotateGreen,
+    rotateBlue,
 
     putRoughRed,
     putRoughGreen,
@@ -134,6 +140,7 @@ typedef enum
 
     idle
 } servoAction;
+
 #pragma pack() // 开启字节对齐,结束前面的#pragma pack(1)
 
 #endif // !ROBOT_DEF_H

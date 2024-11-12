@@ -91,7 +91,8 @@
     "servo.ctrl.h": "c",
     "servo_ctrl.h": "c",
     "qr_code.h": "c",
-    "object.h": "c"
+    "object.h": "c",
+    "vision.h": "c"
   },
   "C_Cpp.errorSquiggles": "disabled"
 }

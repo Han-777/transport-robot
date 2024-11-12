@@ -72,7 +72,7 @@ typedef struct
     uint8_t motor_finish_flag;
 } StepMotorInstance;
 
-void setTargetPulse(StepMotorInstance *step_motor_instance, uint16_t target_pulse, GPIO_PinState motor_direction);
+void setTargetPulse(StepMotorInstance *instance, uint16_t target_pulse, GPIO_PinState motor_direction, Motor_Reverse_Flag_e motor_direction_flag);
 
 void StepMotorControl();
 

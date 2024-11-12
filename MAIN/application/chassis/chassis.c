@@ -84,7 +84,7 @@ void ChassisInit()
                 .Kd = 0,
                 .IntegralLimit = 20000,
                 .Improve = PID_Trapezoid_Intergral | PID_Integral_Limit | PID_Derivative_On_Measurement,
-                .MaxOut = 30000,
+                .MaxOut = 0,
             },
         },
         .controller_setting_init_config = {
