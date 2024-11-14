@@ -21,18 +21,16 @@
 // static Water_Upload_Data_s water_feedback_data;
 /*==============data======================*/
 #ifdef ONE_BOARD
-static Publisher_t *chassis_cmd_pub;   // 底盘控制消息发布者
-static Subscriber_t *chassis_feed_sub; // 底盘反馈信息订阅者
-// static Publisher_t *object_cmd_pub;       // 物体控制消息发布者
-// static Subscriber_t *object_feedback_sub; // 物体反馈信息订阅者
+static Publisher_t *chassis_cmd_pub;      // 底盘控制消息发布者
+static Subscriber_t *chassis_feed_sub;    // 底盘反馈信息订阅者
+static Publisher_t *object_cmd_pub;       // 物体控制消息发布者
+static Subscriber_t *object_feedback_sub; // 物体反馈信息订阅者
 #endif
 
 static Chassis_Ctrl_Cmd_s chassis_cmd_send;         // 发送给底盘应用的信息,包括控制信息和UI绘制相关
 static Chassis_Upload_Data_s chassis_feedback_data; // 从底盘应用接收的反馈信息信息,底盘功率枪口热量与底盘运动状态等
-// static Object_Ctrl_Cmd_s object_cmd_send;           // 发送给物体应用的信息,包括控制信息和UI绘制相关
-// static Object_Upload_Data_s object_feedback_data;   // 从物体应用接收的反馈信息信息,物体夹取状态等
-// static Vision_Recv_s *vision_recv_data;             // 视觉接收数据指针,初始化时返回
-// static Vision_Send_s vision_send_data;              // 视觉发送数据
+static Object_Ctrl_Cmd_s object_cmd_send;           // 发送给物体应用的信息,包括控制信息和UI绘制相关
+static Object_Upload_Data_s object_feedback_data;   // 从物体应用接收的反馈信息信息,物体夹取状态等
 
 static QR_data_t *qr_data;
 static VisionData_t *vision_data;
@@ -52,10 +50,12 @@ static void SetCoordinate(float x, float y, float heading, uint16_t speed_limit)
 /*--------------QR Code-------------*/
 static int robot_init(void)
 {
-    VisionSend(angleMode);
+
+    VisionSend(coordMode);
+
     if (qr_data_verify())
     {
-        LCD_Test_Color();
+        LCD_Display_Number(qr_data);
     }
     // OPS_Calibrate(0, 0, 0);
     return 0;
@@ -130,8 +130,8 @@ void RobotCMDInit()
     vision_data = Vision_Init(&huart4);
     chassis_cmd_pub = PubRegister("chassis_cmd", sizeof(Chassis_Ctrl_Cmd_s));
     chassis_feed_sub = SubRegister("chassis_feed", sizeof(Chassis_Upload_Data_s));
-    // object_cmd_pub = PubRegister("object_cmd", sizeof(Object_Ctrl_Cmd_s));
-    // object_feedback_sub = SubRegister("object_feed", sizeof(Object_Upload_Data_s));
+    object_cmd_pub = PubRegister("object_cmd", sizeof(Object_Ctrl_Cmd_s));
+    object_feedback_sub = SubRegister("object_feed", sizeof(Object_Upload_Data_s));
     chassis_cmd_send.chassis_mode = CHASSIS_OPS_MOVE;
     chassis_cmd_send.chassis_speed_limit = 2000;
 
@@ -228,6 +228,7 @@ void RobotCMDInit()
 void RobotCMDTask(void)
 {
     SubGetMessage(chassis_feed_sub, (void *)&chassis_feedback_data);
+    SubGetMessage(object_feedback_sub, (void *)&object_feedback_data);
     // SubGetMessage(object_feedback_sub, (void *)&object_feedback_data);
 
     if (operation_sequence[cmd_run_idx]())
@@ -237,6 +238,8 @@ void RobotCMDTask(void)
         chassis_cmd_send.chassis_mode = CHASSIS_ZERO_FORCE;
     }
 
+    object_cmd_send.actionNum = defau;
     PubPushMessage(chassis_cmd_pub, (void *)&chassis_cmd_send);
+    PubPushMessage(object_cmd_pub, (void *)&object_cmd_send);
     // PubPushMessage(object_cmd_pub, (void *)&object_cmd_send);
 }

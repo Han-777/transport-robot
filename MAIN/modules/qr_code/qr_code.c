@@ -76,9 +76,10 @@ static void QRRxCallback(UART_HandleTypeDef *huart, uint16_t Size)
 
 int qr_data_verify(void)
 {
-    uint8_t qr_total = 0;
-    qr_total = qr_data.color1 + qr_data.color2 + qr_data.color3 + qr_data.color4 + qr_data.color5 + qr_data.color6;
-    if (qr_total == 0x96)
+    static uint8_t qr_total_1 = 0, qr_total_2 = 0;
+    qr_total_1 = qr_data.color1 + qr_data.color2 + qr_data.color3;
+    qr_total_2 = qr_data.color4 + qr_data.color5 + qr_data.color6;
+    if (qr_total_1 == 0x96 && qr_total_2 == 0x96)
         return 1;
     return 0;
 }

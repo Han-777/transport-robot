@@ -50,7 +50,7 @@ void moveServo(uint8_t servoID, uint16_t Position, uint16_t Time)
 
     if (lobotUsartInstance != NULL)
     {
-        USARTSend(lobotUsartInstance, LobotTxBuf, 10, USART_TRANSFER_DMA);
+        USARTSend(lobotUsartInstance, LobotTxBuf, 10, USART_TRANSFER_IT);
     }
 }
 
@@ -92,7 +92,7 @@ void moveServosByArray(LobotServo servos[], uint8_t Num, uint16_t Time)
 
     if (lobotUsartInstance != NULL)
     {
-        USARTSend(lobotUsartInstance, LobotTxBuf, LobotTxBuf[2] + 2, USART_TRANSFER_DMA); // 发送
+        USARTSend(lobotUsartInstance, LobotTxBuf, LobotTxBuf[2] + 2, USART_TRANSFER_IT); // 发送
     }
 }
 
@@ -140,7 +140,7 @@ void moveServos(uint8_t Num, uint16_t Time, ...)
 
     if (lobotUsartInstance != NULL)
     {
-        USARTSend(lobotUsartInstance, LobotTxBuf, LobotTxBuf[2] + 2, USART_TRANSFER_DMA); // 发送
+        USARTSend(lobotUsartInstance, LobotTxBuf, LobotTxBuf[2] + 2, USART_TRANSFER_IT); // 发送
     }
 }
 
@@ -167,7 +167,7 @@ void runActionGroup(uint8_t numOfAction, uint16_t Times)
 
     if (lobotUsartInstance != NULL)
     {
-        USARTSend(lobotUsartInstance, LobotTxBuf, 7, USART_TRANSFER_DMA); // 发送
+        USARTSend(lobotUsartInstance, LobotTxBuf, 7, USART_TRANSFER_IT); // 发送
     }
 }
 
@@ -192,7 +192,7 @@ void stopActionGroup(void)
 
     if (lobotUsartInstance != NULL)
     {
-        USARTSend(lobotUsartInstance, LobotTxBuf, 4, USART_TRANSFER_DMA); // 发送
+        USARTSend(lobotUsartInstance, LobotTxBuf, 4, USART_TRANSFER_IT); // 发送
     }
 }
 
@@ -219,7 +219,7 @@ void setActionGroupSpeed(uint8_t numOfAction, uint16_t Speed)
 
     if (lobotUsartInstance != NULL)
     {
-        USARTSend(lobotUsartInstance, LobotTxBuf, 7, USART_TRANSFER_DMA); // 发送
+        USARTSend(lobotUsartInstance, LobotTxBuf, 7, USART_TRANSFER_IT); // 发送
     }
 }
 
@@ -261,7 +261,7 @@ void getBatteryVoltage(void)
 
     if (lobotUsartInstance != NULL)
     {
-        USARTSend(lobotUsartInstance, LobotTxBuf, 4, USART_TRANSFER_DMA); // 发送
+        USARTSend(lobotUsartInstance, LobotTxBuf, 4, USART_TRANSFER_IT); // 发送
     }
 }
 

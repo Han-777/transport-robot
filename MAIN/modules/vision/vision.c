@@ -27,7 +27,7 @@ static void VisionRxCallback(UART_HandleTypeDef *huart, uint16_t Size)
 void VisionSend(VisionSendData_e mode)
 {
     // uint8_t send_buff = (uint8_t)mode;q
-    USARTSend(vision_instance, &mode, 1, USART_TRANSFER_DMA);
+    USARTSend(vision_instance, &mode, 1, USART_TRANSFER_IT);
 }
 
 VisionData_t *Vision_Init(UART_HandleTypeDef *vision_usart_handle)

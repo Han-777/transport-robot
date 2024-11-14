@@ -12,7 +12,7 @@
 static Publisher_t *object_pub;
 static Subscriber_t *object_sub;
 
-static Object_Ctrl_Cmd_s object_cmd_send;
+static Object_Ctrl_Cmd_s object_cmd_recv;
 static Object_Upload_Data_s object_feedback_data; // 返回是否夹完
 static StepMotorInstance *step_motor_rotate, *step_motor_front, *step_motor_rise;
 static uint8_t task_cnt = 0;
@@ -37,8 +37,9 @@ static uint8_t checkStepMotorFinish(void)
 /*============================== getObjectFromPlate ================================*/
 static uint8_t getObjectFromPlate1(void)
 {
-    setTargetPulse(step_motor_front, 5000, GPIO_PIN_SET, MOTOR_DIRECTION_NORMAL); // 缩进 + 舵机下
-    servoMove(4);                                                                 // 舵机下
+    setTargetPulse(step_motor_front, 1000, GPIO_PIN_RESET, MOTOR_DIRECTION_NORMAL); // 缩进 + 舵机下
+    servoMove(calibObj);                                                            // 舵机下
+    osDelay(300);
     if (checkStepMotorFinish())
     {
         sub_task_cnt++;
@@ -49,10 +50,10 @@ static uint8_t getObjectFromPlate1(void)
 
 static uint8_t getObjectFromPlate2(void) // 伸出去 + 夹
 {
-    setTargetPulse(step_motor_front, 5000, GPIO_PIN_SET, MOTOR_DIRECTION_NORMAL); // 伸出去
+    setTargetPulse(step_motor_front, 1000, GPIO_PIN_SET, MOTOR_DIRECTION_NORMAL); // 伸出去
     if (checkStepMotorFinish())
     {
-        servoMove(5); // 夹
+        servoMove(getObj); // 夹
         // maybe need to add a delay
         sub_task_cnt++;
         return 1;
@@ -65,13 +66,13 @@ static uint8_t rotatePlane(uint8_t degree) // 提前记录好每一个角度对�
     switch (degree)
     {
     case -90:
-        setTargetPulse(step_motor_rotate, 5000, GPIO_PIN_SET, MOTOR_DIRECTION_REVERSE);
+        setTargetPulse(step_motor_rotate, 1000, GPIO_PIN_SET, MOTOR_DIRECTION_REVERSE);
         break;
     case 0:
-        setTargetPulse(step_motor_rotate, 5000, GPIO_PIN_SET, MOTOR_DIRECTION_NORMAL);
+        setTargetPulse(step_motor_rotate, 1000, GPIO_PIN_SET, MOTOR_DIRECTION_NORMAL);
         break;
     case 90:
-        setTargetPulse(step_motor_rotate, 5000, GPIO_PIN_SET, MOTOR_DIRECTION_NORMAL);
+        setTargetPulse(step_motor_rotate, 1000, GPIO_PIN_SET, MOTOR_DIRECTION_NORMAL);
         break;
     }
     if (checkStepMotorFinish())
@@ -87,10 +88,11 @@ static uint8_t rotatePlane(uint8_t degree) // 提前记录好每一个角度对�
 static uint8_t putObjectFromPlate1(void) // 上 + 翻 + 放
 {
     // servoMove(rotateRed +);                                                      // 翻 (同时转转盘)
-    setTargetPulse(step_motor_rise, 5000, GPIO_PIN_SET, MOTOR_DIRECTION_NORMAL); // 上 (maybe in the same time)
+
+    setTargetPulse(step_motor_rise, 1000, GPIO_PIN_SET, MOTOR_DIRECTION_NORMAL); // 上 (maybe in the same time)
     if (checkStepMotorFinish())
     {
-        servoMove(7); // 放
+        servoMove(putObj); // 放
         // maybe need to add a delay
         sub_task_cnt++;
         return 1;
@@ -172,26 +174,32 @@ void ObjectInit()
     // setTargetPulse(step_motor_rise, 0, GPIO_PIN_RESET, MOTOR_DIRECTION_NORMAL);   // set 降 reset 升
     /*==============ServoCtrl_Init=================*/
     ServoCtrl_Init(&huart6);
-    object_pub = PubRegister("object_cmd", sizeof(Object_Ctrl_Cmd_s));
-    object_sub = SubRegister("object_feed", sizeof(Object_Upload_Data_s));
+    object_pub = PubRegister("object_feed", sizeof(Object_Upload_Data_s));
+    object_sub = SubRegister("object_cmd", sizeof(Object_Ctrl_Cmd_s));
 }
 
 static uint8_t object_init_flag = 0;
 void ObjectTask()
 {
-    SubGetMessage(object_sub, (void *)&object_feedback_data);
+    SubGetMessage(object_sub, (void *)&object_cmd_recv);
     if (!object_init_flag)
     {
         osDelay(200);
         object_init_flag = 1;
     }
     /*------------ test code ---------------*/
-    setTargetPulse(step_motor_rotate, 5000, GPIO_PIN_RESET, MOTOR_DIRECTION_NORMAL); // 底盘电机控制不要放在任务里面，和底盘同时运动
-    setTargetPulse(step_motor_front, 5000, GPIO_PIN_RESET, MOTOR_DIRECTION_NORMAL);  // 前后
-    setTargetPulse(step_motor_rise, 5000, GPIO_PIN_RESET, MOTOR_DIRECTION_NORMAL);   // set 降 reset 升
-    switch (object_cmd_send.actionNum)
+    // setTargetPulse(step_motor_rotate, 5000, GPIO_PIN_RESET, MOTOR_DIRECTION_NORMAL); // 底盘电机控制不要放在任务里面，和底盘同时运动
+    // setTargetPulse(step_motor_front, 5000, GPIO_PIN_RESET, MOTOR_DIRECTION_NORMAL);  // 前后
+    // setTargetPulse(step_motor_rise, 5000, GPIO_PIN_RESET, MOTOR_DIRECTION_NORMAL);   // set 降 reset 升
+
+    switch (object_cmd_recv.actionNum)
     {
     case none:
+        break;
+    case defau:
+        servoMove(1);
+        osDelay(300);
+        servoMove(2);
         break;
     case putObjectFromPlate:
         if (getObjectFromPlate[sub_task_cnt]())
@@ -199,7 +207,7 @@ void ObjectTask()
             sub_task_cnt++;
             if (sub_task_cnt == 4)
             {
-                object_cmd_send.actionNum = none;
+                object_cmd_recv.actionNum = none;
                 sub_task_cnt = 0;
             }
         }
@@ -209,5 +217,5 @@ void ObjectTask()
     case getObect:
         break;
     }
-    PubPushMessage(object_pub, (void *)&object_cmd_send);
+    PubPushMessage(object_pub, (void *)&object_feedback_data);
 }

@@ -49,20 +49,20 @@ void OPS_Calibrate(float x, float y, float heading)
     } new_value;
 
     new_value.value = x;
-    USARTSendBytes(ops_instance, update_x, 4, USART_TRANSFER_BLOCKING);
-    USARTSendBytes(ops_instance, new_value.data, 4, USART_TRANSFER_BLOCKING);
+    USARTSendBytes(ops_instance, update_x, 4, USART_TRANSFER_IT);
+    USARTSendBytes(ops_instance, new_value.data, 4, USART_TRANSFER_IT);
 
     osDelay(20);
 
     new_value.value = y;
-    USARTSendBytes(ops_instance, update_y, 4, USART_TRANSFER_BLOCKING);
-    USARTSendBytes(ops_instance, new_value.data, 4, USART_TRANSFER_BLOCKING);
+    USARTSendBytes(ops_instance, update_y, 4, USART_TRANSFER_IT);
+    USARTSendBytes(ops_instance, new_value.data, 4, USART_TRANSFER_IT);
 
     osDelay(20);
 
     new_value.value = heading;
-    USARTSendBytes(ops_instance, update_j, 4, USART_TRANSFER_BLOCKING);
-    USARTSendBytes(ops_instance, new_value.data, 4, USART_TRANSFER_BLOCKING);
+    USARTSendBytes(ops_instance, update_j, 4, USART_TRANSFER_IT);
+    USARTSendBytes(ops_instance, new_value.data, 4, USART_TRANSFER_IT);
 }
 
 static void OPSRxCallback(UART_HandleTypeDef *huart, uint16_t size)

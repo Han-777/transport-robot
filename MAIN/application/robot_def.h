@@ -70,6 +70,7 @@ typedef struct
 typedef enum
 {
     none,
+    defau,
     putObjectFromPlate,
     getObect,
     putObject,
@@ -122,7 +123,10 @@ typedef enum
     getObj,      // 3 300ms
     rotateRed,   // 4 300ms
     rotateGreen, // 5
-    rotateBlue,
+    rotateBlue,  // 6
+
+    moveBack,  // 7
+    moveFront, // 8
 
     getObjRed,
     getObjGreen,

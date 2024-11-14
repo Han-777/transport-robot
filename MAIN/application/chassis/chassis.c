@@ -232,7 +232,7 @@ void ChassisTask()
     // 后续增加没收到消息的处理(双板的情况)
     // 获取新的控制信息
 #ifdef ONE_BOARD
-    SubGetMessage(chassis_sub, &chassis_cmd_recv);
+    SubGetMessage(chassis_sub, (void *)&chassis_cmd_recv);
 #endif
 #ifdef CHASSIS_BOARD
     chassis_cmd_recv = *(Chassis_Ctrl_Cmd_s *)CANCommGet(chasiss_can_comm);

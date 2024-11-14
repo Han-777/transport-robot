@@ -390,6 +390,26 @@ void Yanzhong(int flower)
 	}
 }
 
+void LCD_Display_Number(uint8_t *arr)
+{
+	int i = 0;
+	// LCD_SetTextFont(&CH_Font20); //
+	// LCD_DisplayNumber(10, 10, arr[0], 1);
+	// LCD_DisplayNumber(100, 100, 5, 1);
+
+	// 设置数字大小为最大
+	LCD_SetTextFont(&CH_Font32);
+
+	for (; i < 3; ++i)
+	{
+		// LCD_DisplayText(100, 10 + 200 * i, 0x31);
+		LCD_DisplayNumber(10 + 200 * i, 10, *(arr + i) - 0x30, 1);
+	}
+	for (; i < 6; ++i)
+	{
+		LCD_DisplayNumber(10 + 200 * (i - 3), 210, *(arr + i) - 0x30, 1);
+	}
+}
 /*************************************************************************************************
  *	函 数 名:	LCD_Test_Text
  *

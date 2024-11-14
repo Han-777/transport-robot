@@ -4,12 +4,19 @@
 #include <stdint.h>
 #include "main.h"
 #include "robot_def.h"
+// typedef struct
+// {
+//     objColor_s object_color;
+//     uint16_t x;
+//     uint16_t y;
+//     int16_t heading;
+// } VisionData_t;
 typedef struct
 {
     objColor_s object_color;
-    uint16_t x;
-    uint16_t y;
-    int16_t heading;
+    double x;
+    double y;
+    double heading;
 } VisionData_t;
 
 typedef enum

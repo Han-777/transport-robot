@@ -49,11 +49,11 @@ void OSTaskInit()
     osThreadDef(daemontask, StartDAEMONTASK, osPriorityNormal, 0, 128);
     daemonTaskHandle = osThreadCreate(osThread(daemontask), NULL);
 
-    osThreadDef(robottask, StartROBOTTASK, osPriorityNormal, 0, 2048);
+    osThreadDef(robottask, StartROBOTTASK, osPriorityAboveNormal, 0, 2048);
     robotTaskHandle = osThreadCreate(osThread(robottask), NULL);
 
-    // osThreadDef(objecttask, StartOBJECTTASK, osPriorityNormal, 0, 256);
-    // robotTaskHandle = osThreadCreate(osThread(objecttask), NULL);
+    osThreadDef(objecttask, StartOBJECTTASK, osPriorityNormal, 0, 1024);
+    robotTaskHandle = osThreadCreate(osThread(objecttask), NULL);
 
     // osThreadDef(opstask, StartOPSTask, osPriorityNormal, 0, 128);
     // opsTaskHandle = osThreadCreate(osThread(opstask), NULL);
