@@ -70,6 +70,8 @@ typedef struct
 typedef enum
 {
     none,
+    defau,
+    putObjectFromPlate,
     getObect,
     putObject,
     Scan,
@@ -77,7 +79,7 @@ typedef enum
 } objectAction;
 typedef struct
 {
-
+    objectAction actionNum;
 } Object_Ctrl_Cmd_s;
 typedef struct
 {
@@ -117,15 +119,18 @@ typedef enum
     defaut,   // 2s
     calibObj, // 3s
 
-    putObj, // 2 300ms
-    getObj, // 3 300ms
+    putObj,      // 2 300ms
+    getObj,      // 3 300ms
+    rotateRed,   // 4 300ms
+    rotateGreen, // 5
+    rotateBlue,  // 6
+
+    moveBack,  // 7
+    moveFront, // 8
+
     getObjRed,
     getObjGreen,
     getObjBlue,
-
-    rotateRed,
-    rotateGreen,
-    rotateBlue,
 
     putRoughRed,
     putRoughGreen,
@@ -140,6 +145,13 @@ typedef enum
 
     idle
 } servoAction;
+
+typedef enum
+{
+    red = 0x31,
+    green = 0x32,
+    blue = 0x33
+} objColor_s;
 
 #pragma pack() // 开启字节对齐,结束前面的#pragma pack(1)
 

@@ -92,7 +92,9 @@
     "servo_ctrl.h": "c",
     "qr_code.h": "c",
     "object.h": "c",
-    "vision.h": "c"
+    "vision.h": "c",
+    "robot_queue.h": "c",
+    "ldcopy": "cpp"
   },
   "C_Cpp.errorSquiggles": "disabled"
 }

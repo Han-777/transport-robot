@@ -4,6 +4,8 @@
 #include <stdint.h>
 #include "main.h"
 
+#define OPS_FRAME_SIZE 28 // 2 + 24 + 2
+
 typedef union
 {
     uint8_t data[24];
@@ -18,6 +20,9 @@ typedef struct
     int OPS_ring; // clockwise negative
     uint8_t OPS_Init_Flag;
 } OPS_data_t;
+
+void OPS_Close(void);
+void OPS_Open(void);
 
 OPS_data_t *Ops_Init(UART_HandleTypeDef *ops_usart_handle);
 

@@ -11,7 +11,8 @@
 #include "daemon.h"
 // #include "buzzer.h"
 #include <memory.h>
-
+#include "robot_queue.h"
+#include "robot_def.h"
 // osThreadId insTaskHandle;
 osThreadId robotTaskHandle;
 osThreadId motorTaskHandle;
@@ -19,7 +20,8 @@ osThreadId daemonTaskHandle;
 osThreadId objectTaskHandle;
 // osThreadId uiTaskHandle;
 /*      中断处理任务       */
-// osThreadId gyroTaskHandle;
+#include "ops.h"
+osThreadId opsTaskHandle;
 // osThreadId isrTaskHandle;
 
 // void StartINSTASK(void const *argument);
@@ -30,6 +32,7 @@ void StartROBOTTASK(void const *argument);
 void StartOBJECTTASK(void const *argument);
 // void StartGyroTask(void const *argument);
 // void StartISRTASK(void const *argument);
+void StartOPSTask(void const *argument);
 
 /**
  * @brief 初始化机器人任务,所有持续运行的任务都在这里初始化
@@ -37,18 +40,23 @@ void StartOBJECTTASK(void const *argument);
  */
 void OSTaskInit()
 {
+    // 创建队列
+    opsQueue = xQueueCreate(10, sizeof(uint8_t) * (OPS_FRAME_SIZE + 1));
+
     osThreadDef(motortask, StartMOTORTASK, osPriorityNormal, 0, 512);
     motorTaskHandle = osThreadCreate(osThread(motortask), NULL);
 
     osThreadDef(daemontask, StartDAEMONTASK, osPriorityNormal, 0, 128);
     daemonTaskHandle = osThreadCreate(osThread(daemontask), NULL);
 
-    osThreadDef(robottask, StartROBOTTASK, osPriorityNormal, 0, 2048);
+    osThreadDef(robottask, StartROBOTTASK, osPriorityAboveNormal, 0, 2048);
     robotTaskHandle = osThreadCreate(osThread(robottask), NULL);
 
-    osThreadDef(objecttask, StartOBJECTTASK, osPriorityNormal, 0, 256);
+    osThreadDef(objecttask, StartOBJECTTASK, osPriorityNormal, 0, 1024);
     robotTaskHandle = osThreadCreate(osThread(objecttask), NULL);
 
+    // osThreadDef(opstask, StartOPSTask, osPriorityNormal, 0, 128);
+    // opsTaskHandle = osThreadCreate(osThread(opstask), NULL);
     // osThreadDef(watertask, StartWaterTASK, osPriorityNormal, 0, 1024);
     // waterTaskHandle = osThreadCreate(osThread(watertask), NULL);
 }
@@ -101,7 +109,7 @@ __attribute__((noreturn)) void StartROBOTTASK(void const *argument)
     {
         // robot_start = DWT_GetTimeline_ms();
         // GYRO_buff_to_data();
-        // RobotTask();
+        RobotTask();
         // robot_dt = DWT_GetTimeline_ms() - robot_start;
         // if (robot_dt > 5)
         // {
@@ -116,6 +124,32 @@ __attribute__((noreturn)) void StartOBJECTTASK(void const *argument)
     for (;;)
     {
         ObjectTask();
-        osDelay(3); // 即使没有任何UI需要刷新,也挂起一次,防止卡在UITask中无法切换
+        osDelay(5);
     }
 }
+
+// __attribute__((noreturn)) void StartOPSTask(void const *argument)
+// {
+//     uint8_t buffer[OPS_FRAME_SIZE];
+//     for (;;)
+//     {
+//         if (xQueueReceive(opsQueue, &buffer, portMAX_DELAY) == pdPASS)
+//         {
+//             // 处理接收到的数据
+//             OPS_data_process(buffer);
+//             osDelay(5);
+//         }
+//     }
+// }
+
+// __attribute__((noreturn)) void StartOPSTask(void const *argument)
+// {
+//     // uint8_t OPS ops_data_buffer;
+//     for (;;)
+//     {
+//         // 处理接收到的数据
+//         // OPS_data_process(ops_data_buffer);
+//         // OPS_data_process();
+//         osDelay(10);
+//     }
+// }

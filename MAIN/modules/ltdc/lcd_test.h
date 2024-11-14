@@ -22,4 +22,5 @@ void Yanzhong(int flower);
 // void LCD_Display_One(Drought_Info_e drought_info, uint8_t flower_Cnt);
 // void LCD_Display_All(Drought_Info_e *drought_info_buff);
 void screenTask();
+void LCD_Display_Number(uint8_t *arr);
 #endif //__LCD_TEST_H

@@ -45,14 +45,6 @@ static void CANAddFilter(CANInstance *_instance)
  *
  * @note 此函数会启动CAN1和CAN2,开启CAN1和CAN2的FIFO0 & FIFO1溢出通知
  *
- *
- *
- *
- *
- *
- *
- *
- *
  */
 static void CANServiceInit()
 {
