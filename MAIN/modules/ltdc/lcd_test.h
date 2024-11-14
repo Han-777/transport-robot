@@ -23,3 +23,4 @@ void Yanzhong(int flower);
 // void LCD_Display_All(Drought_Info_e *drought_info_buff);
 void screenTask();
 #endif //__LCD_TEST_H
+    

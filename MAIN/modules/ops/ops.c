@@ -38,31 +38,31 @@ static void OPS_data_process(void)
 
 void OPS_Calibrate(float x, float y, float heading)
 {
-    uint8_t update_x[4] = "ACTX";
-    uint8_t update_y[4] = "ACTY";
-    uint8_t update_j[4] = "ACTJ";
+    char update_x[4] = "ACTX";
+    char update_y[4] = "ACTY";
+    char update_j[4] = "ACTJ";
 
     static union
     {
         float value;
-        uint8_t data[4];
+        char data[4];
     } new_value;
 
     new_value.value = x;
-    USARTSendBytes(ops_instance, update_x, 4, USART_TRANSFER_DMA);
-    USARTSendBytes(ops_instance, &new_value.data[0], 4, USART_TRANSFER_DMA);
+    USARTSendBytes(ops_instance, update_x, 4, USART_TRANSFER_BLOCKING);
+    USARTSendBytes(ops_instance, new_value.data, 4, USART_TRANSFER_BLOCKING);
 
     osDelay(20);
 
     new_value.value = y;
-    USARTSendBytes(ops_instance, update_y, 4, USART_TRANSFER_DMA);
-    USARTSendBytes(ops_instance, &new_value.data[0], 4, USART_TRANSFER_DMA);
+    USARTSendBytes(ops_instance, update_y, 4, USART_TRANSFER_BLOCKING);
+    USARTSendBytes(ops_instance, new_value.data, 4, USART_TRANSFER_BLOCKING);
 
     osDelay(20);
 
     new_value.value = heading;
-    USARTSendBytes(ops_instance, update_j, 4, USART_TRANSFER_DMA);
-    USARTSendBytes(ops_instance, &new_value.data[0], 4, USART_TRANSFER_DMA);
+    USARTSendBytes(ops_instance, update_j, 4, USART_TRANSFER_BLOCKING);
+    USARTSendBytes(ops_instance, new_value.data, 4, USART_TRANSFER_BLOCKING);
 }
 
 static void OPSRxCallback(UART_HandleTypeDef *huart, uint16_t size)

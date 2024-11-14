@@ -5,6 +5,10 @@
 #include "general_def.h"
 #include "usart.h"
 #include "servo_ctrl.h"
+#include "cmsis_os.h"
+#include "task.h"
+#include "bsp_dwt.h"
+
 static Publisher_t *object_pub;
 static Subscriber_t *object_sub;
 
@@ -163,18 +167,47 @@ void ObjectInit()
     step_motor_rotate = StepMotorInit(&step_motor1_config);
     step_motor_front = StepMotorInit(&step_motor2_config);
     step_motor_rise = StepMotorInit(&step_motor3_config);
+    // setTargetPulse(step_motor_rotate, 0, GPIO_PIN_RESET, MOTOR_DIRECTION_NORMAL); // 底盘电机控制不要放在任务里面，和底盘同时运动
+    // setTargetPulse(step_motor_front, 0, GPIO_PIN_RESET, MOTOR_DIRECTION_NORMAL);  // 前后
+    // setTargetPulse(step_motor_rise, 0, GPIO_PIN_RESET, MOTOR_DIRECTION_NORMAL);   // set 降 reset 升
     /*==============ServoCtrl_Init=================*/
     ServoCtrl_Init(&huart6);
     object_pub = PubRegister("object_cmd", sizeof(Object_Ctrl_Cmd_s));
     object_sub = SubRegister("object_feed", sizeof(Object_Upload_Data_s));
 }
 
+static uint8_t object_init_flag = 0;
 void ObjectTask()
 {
     SubGetMessage(object_sub, (void *)&object_feedback_data);
-
-    // setTargetPulse(step_motor_rotate, 60000, GPIO_PIN_SET, MOTOR_DIRECTION_NORMAL); // 底盘电机控制不要放在任务里面，和底盘同时运动
-    // setTargetPulse(step_motor_front, 60000, GPIO_PIN_SET, MOTOR_DIRECTION_NORMAL); // 前后
-    setTargetPulse(step_motor_rise, 17000, GPIO_PIN_SET, MOTOR_DIRECTION_NORMAL); // 升降
+    if (!object_init_flag)
+    {
+        osDelay(200);
+        object_init_flag = 1;
+    }
+    /*------------ test code ---------------*/
+    setTargetPulse(step_motor_rotate, 5000, GPIO_PIN_RESET, MOTOR_DIRECTION_NORMAL); // 底盘电机控制不要放在任务里面，和底盘同时运动
+    setTargetPulse(step_motor_front, 5000, GPIO_PIN_RESET, MOTOR_DIRECTION_NORMAL);  // 前后
+    setTargetPulse(step_motor_rise, 5000, GPIO_PIN_RESET, MOTOR_DIRECTION_NORMAL);   // set 降 reset 升
+    switch (object_cmd_send.actionNum)
+    {
+    case none:
+        break;
+    case putObjectFromPlate:
+        if (getObjectFromPlate[sub_task_cnt]())
+        {
+            sub_task_cnt++;
+            if (sub_task_cnt == 4)
+            {
+                object_cmd_send.actionNum = none;
+                sub_task_cnt = 0;
+            }
+        }
+        break;
+    case Scan:
+        break;
+    case getObect:
+        break;
+    }
     PubPushMessage(object_pub, (void *)&object_cmd_send);
 }

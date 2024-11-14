@@ -1,17 +1,21 @@
 #include "robot_def.h"
 #include "robot_cmd.h"
+// bsp
+#include "bsp_dwt.h"
+#include "usart.h"
+#include <string.h>
+#include "usart.h"
+
 // module
 #include "message_center.h"
 #include "general_def.h"
 #include "cmsis_os.h"
 #include "lcd_test.h"
 #include "lcd_rgb.h"
-// bsp
-#include "bsp_dwt.h"
-#include "usart.h"
-#include <string.h>
-#include "usart.h"
+#include "ops.h"
 #include "qr_code.h"
+#include "vision.h"
+
 /*------------------------water message----------------------------*/
 // static Water_Ctrl_Cmd_s water_cmd_send;
 // static Water_Upload_Data_s water_feedback_data;
@@ -31,10 +35,11 @@ static Chassis_Upload_Data_s chassis_feedback_data; // 从底盘应用接收的�
 // static Vision_Send_s vision_send_data;              // 视觉发送数据
 
 static QR_data_t *qr_data;
+static VisionData_t *vision_data;
 static int (*operation_sequence[])(void);
-#define max_run_itr 2
+#define max_run_itr 5
 static uint8_t cmd_run_idx = 0;
-
+static uint8_t default_rgb[6] = {0x31, 0x32, 0x33, 0x31, 0x32, 0x33};
 /*--------------Coordinate Input------------------*/
 static void SetCoordinate(float x, float y, float heading, uint16_t speed_limit)
 {
@@ -47,21 +52,25 @@ static void SetCoordinate(float x, float y, float heading, uint16_t speed_limit)
 /*--------------QR Code-------------*/
 static int robot_init(void)
 {
+    VisionSend(angleMode);
+    if (qr_data_verify())
+    {
+        LCD_Test_Color();
+    }
     // OPS_Calibrate(0, 0, 0);
-    return 1;
+    return 0;
 }
 /**
  * @brief 机器人到达二维码位置
  */
 static int qr1_1(void)
 {
-    // SetCoordinate(-0.18, 0.6, 0, 5000);
-    SetCoordinate(0, 2000, 0, 20000);
-
+    SetCoordinate(-0.18, 0.6, 0, 5000);
+    // SetCoordinate(0, 2000, 0, 20000);
+    // chassis_feedback_data.chassis_vague_arrive = 1;
     if (chassis_feedback_data.chassis_vague_arrive)
     {
-        chassis_cmd_send.chassis_mode = CHASSIS_ZERO_FORCE;
-        return 0;
+        return 1;
     }
     return 0;
 }
@@ -71,6 +80,13 @@ static int qr1_1(void)
  */
 static int qr1_2(void)
 {
+    if (qr_data_verify())
+    {
+        // 屏幕显示
+        osDelay(100);
+        chassis_cmd_send.chassis_mode = CHASSIS_OPS_MOVE;
+        return 0;
+    }
     // SetCoordinate(-2000, 3000, 0, 20000);
 
     // if (chassis_feedback_data.chassis_vague_arrive)
@@ -110,7 +126,8 @@ static int (*operation_sequence[])(void) = {
 
 void RobotCMDInit()
 {
-    // qr_data = QR_Init(&huart2);
+    qr_data = QR_Init(&huart2);
+    vision_data = Vision_Init(&huart4);
     chassis_cmd_pub = PubRegister("chassis_cmd", sizeof(Chassis_Ctrl_Cmd_s));
     chassis_feed_sub = SubRegister("chassis_feed", sizeof(Chassis_Upload_Data_s));
     // object_cmd_pub = PubRegister("object_cmd", sizeof(Object_Ctrl_Cmd_s));
