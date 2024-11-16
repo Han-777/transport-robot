@@ -21,13 +21,13 @@ static void OPS_data_process(void)
     // 转弯处理，顺时针
     if (ops_data->OPS_heading > 170 && ops_data_buff.ActVal[0] < -170)
     {
-        ops_data->OPS_ring--;
+        ops_data->OPS_ring++;
     }
     else if (ops_data->OPS_heading < -170 && ops_data_buff.ActVal[0] > 170)
     {
-        ops_data->OPS_ring++;
+        ops_data->OPS_ring--;
     }
-    ops_data->OPS_heading = ops_data_buff.ActVal[0];
+    ops_data->OPS_heading = -ops_data_buff.ActVal[0];
     ops_data->OPS_x = ops_data_buff.ActVal[3];
     ops_data->OPS_y = ops_data_buff.ActVal[4];
     if (ops_data->OPS_x + ops_data->OPS_y + ops_data->OPS_heading != 0 && ops_data->OPS_Init_Flag == 0)

@@ -28,7 +28,7 @@ static Chassis_Ctrl_Cmd_s chassis_cmd_recv;         // 底盘接收到的控制�
 static Chassis_Upload_Data_s chassis_feedback_data; // 底盘回传的反馈数据
 
 static DJIMotorInstance *motor_lf, *motor_rf, *motor_lb, *motor_rb; // left right forward back
-static PIDInstance x_pid_instance, y_pid_instance, heading_pid_instance;
+static PIDInstance x_pid_instance, y_pid_instance, heading_pid_instance, vision_x_pid_instance, vision_y_pid_instance, vision_heading_pid_instance;
 /*-------------------------data--------------------------*/
 static OPS_data_t *ops_data;
 /* 用于自旋变速策略的时间变量 */
@@ -42,28 +42,41 @@ void ChassisInit()
 {
     /*----------------data-------------------*/
     ops_data = Ops_Init(&huart1);
+    /*--------------- vision refine --------------------*/
+    PID_Init_Config_s vision_refine_pid_init_config =
+        {
+            .Kp = 1,
+            .Ki = 0.05,
+            .Kd = 0.6,
+            .IntegralLimit = 5000,
+            .Improve = PID_Trapezoid_Intergral | PID_Integral_Limit | PID_Derivative_On_Measurement,
+            .MaxOut = 10000,
+        };
     /*---------------x, y and heading loop--------------*/
     PID_Init_Config_s xy_pid_init_config =
         {
             .Kp = 1,
-            .Ki = 0.05,
-            .Kd = 1,
+            .Ki = 0.01,
+            .Kd = 0.5,
             .IntegralLimit = 15000,
             .Improve = PID_Trapezoid_Intergral | PID_Integral_Limit | PID_Derivative_On_Measurement,
             .MaxOut = 20000,
         };
     PID_Init_Config_s heading_pid_init_config =
         {
-            .Kp = 50,
+            .Kp = 100,
             .Ki = 0.1,
-            .Kd = 10,
-            .IntegralLimit = 2000,
+            .Kd = 5,
+            .IntegralLimit = 200,
             .Improve = PID_Trapezoid_Intergral | PID_Integral_Limit | PID_Derivative_On_Measurement,
-            .MaxOut = 10000,
+            .MaxOut = 2000,
         };
     PIDInit(&x_pid_instance, &xy_pid_init_config);
     PIDInit(&y_pid_instance, &xy_pid_init_config);
     PIDInit(&heading_pid_instance, &heading_pid_init_config);
+    PIDInit(&vision_x_pid_instance, &vision_refine_pid_init_config);
+    PIDInit(&vision_y_pid_instance, &vision_refine_pid_init_config);
+    PIDInit(&vision_heading_pid_instance, &vision_refine_pid_init_config);
     /*---------------speed and current loops--------------*/
     // 四个轮子的参数一样,改tx_id和反转标志位即可
     Motor_Init_Config_s chassis_motor_config = {
@@ -72,11 +85,11 @@ void ChassisInit()
         .controller_param_init_config = {
             .speed_PID = {
                 .Kp = 1,   // 4.5
-                .Ki = 0.2, // 0
+                .Ki = 0.3, // 0
                 .Kd = 0,   // 0
-                .IntegralLimit = 20000,
+                .IntegralLimit = 30000,
                 .Improve = PID_Trapezoid_Intergral | PID_Integral_Limit | PID_Derivative_On_Measurement, // 梯形积分（accuracy），微分先行 （防止突变）
-                .MaxOut = 30000,
+                .MaxOut = 50000,
             },
             .current_PID = {
                 .Kp = 1,   // 0.4
@@ -84,7 +97,7 @@ void ChassisInit()
                 .Kd = 0,
                 .IntegralLimit = 20000,
                 .Improve = PID_Trapezoid_Intergral | PID_Integral_Limit | PID_Derivative_On_Measurement,
-                .MaxOut = 0,
+                .MaxOut = 30000,
             },
         },
         .controller_setting_init_config = {
@@ -111,7 +124,7 @@ void ChassisInit()
     chassis_motor_config.can_init_config.tx_id = 2;
     chassis_motor_config.controller_setting_init_config.motor_reverse_flag = MOTOR_DIRECTION_REVERSE;
     motor_rb = DJIMotorInit(&chassis_motor_config);
-
+    /*------*/
 #ifdef ONE_BOARD // 单板控制整车,则通过pubsub来传递消息
     chassis_sub = SubRegister("chassis_cmd", sizeof(Chassis_Ctrl_Cmd_s));
     chassis_pub = PubRegister("chassis_feed", sizeof(Chassis_Upload_Data_s));
@@ -123,17 +136,25 @@ void ChassisInit()
  */
 static void speedCalculate(void)
 {
-    PIDCalculate(&x_pid_instance, ops_data->OPS_x, chassis_cmd_recv.x);
-    PIDCalculate(&y_pid_instance, ops_data->OPS_y, chassis_cmd_recv.y);
-    PIDCalculate(&heading_pid_instance, ops_data->OPS_heading + ops_data->OPS_ring * 360, chassis_cmd_recv.heading);
-
+    if (chassis_cmd_recv.chassis_mode == CHASSIS_OPS_MOVE)
+    {
+        PIDCalculate(&x_pid_instance, ops_data->OPS_x, chassis_cmd_recv.x);
+        PIDCalculate(&y_pid_instance, ops_data->OPS_y, chassis_cmd_recv.y);
+        PIDCalculate(&heading_pid_instance, ops_data->OPS_heading + ops_data->OPS_ring * 360, chassis_cmd_recv.heading);
+    }
+    else if (chassis_cmd_recv.chassis_mode == CHASSIS_VISION_REFINE)
+    {
+        PIDCalculate(&vision_x_pid_instance, ops_data->OPS_x, chassis_cmd_recv.x);
+        PIDCalculate(&vision_y_pid_instance, ops_data->OPS_y, chassis_cmd_recv.y);
+        PIDCalculate(&vision_heading_pid_instance, ops_data->OPS_heading + ops_data->OPS_ring * 360, chassis_cmd_recv.heading);
+    }
     // calculate feedforward
     // ff_vx = (x_pid_instance.Err > 0.3 ? (0.1 * chassis_cmd_recv.x) : 0);
     // ff_vy = (y_pid_instance.Err > 0.3 ? (0.1 * chassis_cmd_recv.y) : 0);
     // ff_w = 0.01 * chassis_cmd_recv.heading;
 
-    chassis_vx = x_pid_instance.Output * 20; // 可能需要乘系数
-    chassis_vy = y_pid_instance.Output * 20; //
+    chassis_vx = x_pid_instance.Output * 50; // 可能需要乘系数
+    chassis_vy = y_pid_instance.Output * 50; //
     chassis_w = heading_pid_instance.Output * DEGREE_2_RAD;
 }
 
@@ -170,10 +191,14 @@ static void OmniCalculate()
     // vt_lb = -chassis_vx + chassis_vy + chassis_cmd_recv.wz * LB_CENTER;
     // vt_rb = chassis_vx + chassis_vy - chassis_cmd_recv.wz * RB_CENTER;
     // PIDCalculate(&w_pid_instance, chassis_heading, ops_data->OPS_heading + ops_data->OPS_ring * 360);
-    vt_lf = 0.707 * (chassis_vx + chassis_vy) - chassis_w * LF_CENTER;
-    vt_rf = 0.707 * (-chassis_vx + chassis_vy) + chassis_w * RF_CENTER;
-    vt_lb = 0.707 * (-chassis_vx + chassis_vy) - chassis_w * LB_CENTER;
-    vt_rb = 0.707 * (chassis_vx + chassis_vy) + chassis_w * RB_CENTER;
+    // vt_lf = 0.707 * (chassis_vx + chassis_vy) + chassis_w * LF_CENTER;
+    // vt_rf = 0.707 * (-chassis_vx + chassis_vy) - chassis_w * RF_CENTER;
+    // vt_lb = 0.707 * (-chassis_vx + chassis_vy) + chassis_w * LB_CENTER;
+    // vt_rb = 0.707 * (chassis_vx + chassis_vy) - chassis_w * RB_CENTER;
+    vt_lf = (chassis_vx + chassis_vy) + chassis_w * LF_CENTER;
+    vt_rf = (-chassis_vx + chassis_vy) - chassis_w * RF_CENTER;
+    vt_lb = (-chassis_vx + chassis_vy) + chassis_w * LB_CENTER;
+    vt_rb = (chassis_vx + chassis_vy) - chassis_w * RB_CENTER;
 }
 
 /**
@@ -216,13 +241,13 @@ static void CheckStable(void)
 {
     chassis_feedback_data.chassis_arrive = 0;
     chassis_feedback_data.chassis_vague_arrive = 0;
-    if (fabs(x_pid_instance.Err) < 0.2 && fabs(y_pid_instance.Err) < 0.05 && fabs(heading_pid_instance.Err) < 2)
-        chassis_feedback_data.chassis_arrive = 1;
+    if (fabs(x_pid_instance.Err) < 50 && fabs(y_pid_instance.Err) < 50 && fabs(heading_pid_instance.Err) < 5)
+        chassis_feedback_data.chassis_vague_arrive = 1;
     // else
     //     chassis_feedback_data.chassis_arrive = 0;
 
-    if (fabs(x_pid_instance.Err) < 2 && fabs(y_pid_instance.Err) < 0.2 && fabs(heading_pid_instance.Err) < 1)
-        chassis_feedback_data.chassis_vague_arrive = 1;
+    if (fabs(x_pid_instance.Err) < 5 && fabs(y_pid_instance.Err) < 5 && fabs(heading_pid_instance.Err) < 2)
+        chassis_feedback_data.chassis_arrive = 1;
     // else
     // chassis_feedback_data.chassis_vague_arrive = 0;
 }
@@ -270,6 +295,8 @@ void ChassisTask()
     speedCalculate();
     // PIDCalculate(&heading_pid_instance, ops_data->OPS_heading + ops_data->OPS_ring * 360, chassis_cmd_recv.heading);
     // chassis_w = heading_pid_instance.Output;
+    // chassis_vx = 0;
+    // chassis_vy = 5000;
     CoordinateTransform();
     // 转换坐标系后的位置环pid计算
     // 根据控制模式进行正运动学解算,计算底盘输出

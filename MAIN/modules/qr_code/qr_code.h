@@ -3,18 +3,21 @@
 
 #include <stdint.h>
 #include "main.h"
-typedef struct
-{
-    uint8_t color1;
-    uint8_t color2;
-    uint8_t color3;
-    uint8_t color4;
-    uint8_t color5;
-    uint8_t color6;
-} QR_data_t;
+#include "robot_def.h"
+// typedef struct
+// {
+//     objColor_s color1;
+//     objColor_s color2;
+//     objColor_s color3;
+//     objColor_s color4;
+//     objColor_s color5;
+//     objColor_s color6;
+// } QR_data_t;
 
 int qr_data_verify(void);
 
-QR_data_t *QR_Init(UART_HandleTypeDef *qr_usart_handle);
+objColor_s *QR_Init(UART_HandleTypeDef *qr_usart_handle);
+void QR_Close(void);
+void QR_Open(void);
 
 #endif

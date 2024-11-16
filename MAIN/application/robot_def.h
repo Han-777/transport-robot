@@ -67,10 +67,28 @@ typedef struct
 
 } Chassis_Ctrl_Cmd_s;
 
+/**
+ * @brief 控制整车所有动作
+ */
 typedef enum
 {
     none,
-    defau,
+    defau,      // 上电动作
+    calibCoord, // 坐标矫正
+    plateScan,  // 到达盘子处扫描
+    getObjFromPlate,
+    getObjFromGround,
+    putObjToGround,
+    putObjToObj,
+    putRed2Car,
+    putGreen2Car,
+    putBlue2Car,
+    rotateClock90,
+    rotateAntiClock90,
+    // rotateFront,
+    // rotateRight,
+    // rotateLeft,
+    //   可能没有的部分
     putObjectFromPlate,
     getObect,
     putObject,
@@ -80,12 +98,8 @@ typedef enum
 typedef struct
 {
     objectAction actionNum;
+    uint8_t color;
 } Object_Ctrl_Cmd_s;
-typedef struct
-{
-    uint8_t water_flag;
-    uint8_t set_plantCnt_flag; // 1: 6, 2: 12, 3: 18, 4: 24
-} Water_Ctrl_Cmd_s;
 
 /* ----------------gimbal/shoot/chassis发布的反馈数据----------------*/
 /**
@@ -99,38 +113,35 @@ typedef struct
     uint8_t chassis_vague_arrive;
 } Chassis_Upload_Data_s;
 
-typedef struct
-{
-    uint8_t water_finish_state; // water state (完成为1)
-    uint8_t plant_cnt;          // number of plant
-} Water_Upload_Data_s;
-
 /**
  * @brief object状态
  */
 typedef struct
 {
     uint8_t obj_finish_state; // object state (完成为1)
-    uint8_t obj_color;        // object color
 } Object_Upload_Data_s;
 /*==============舵控板==============*/
 typedef enum
 {
-    defaut,   // 2s
-    calibObj, // 3s
+    defaut, // 2s
+    scanObject,
 
-    putObj,      // 2 300ms
-    getObj,      // 3 300ms
+    putObj,      // 2 100ms
+    getObj,      // 3 100ms
     rotateRed,   // 4 300ms
     rotateGreen, // 5
     rotateBlue,  // 6
 
-    moveBack,  // 7
-    moveFront, // 8
+    movePutBack,  // 7
+    movePutFront, // 8
 
+    moveGetBack,  // 9
+    moveGetFront, // 10 这里需要首先张开才行
+    /*=========*/
     getObjRed,
     getObjGreen,
     getObjBlue,
+    calibObj, // 3s
 
     putRoughRed,
     putRoughGreen,

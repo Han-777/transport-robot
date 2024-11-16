@@ -41,6 +41,8 @@ void setTargetPulse(StepMotorInstance *instance, uint16_t target_pulse, GPIO_Pin
     {
         if (step_motor_instance[i] == instance)
         {
+            // instance->slave_htim->Instance->CNT = 0;
+            step_motor_instance[i]->slave_htim->Instance->CNT = 0;
             target_pulse_value[i] = target_pulse;
             motor_direction_arr[i] = motor_direction;
             instance->motor_reverse_flag = motor_direction_flag;

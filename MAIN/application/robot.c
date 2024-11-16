@@ -23,7 +23,7 @@ void RobotInit()
     RobotCMDInit();
     ChassisInit();
     ObjectInit();
-
+    DWT_Delay(5);
     OSTaskInit(); // 创建基础任务
     // // 初始化完成,开启中断
     __enable_irq();
@@ -32,5 +32,5 @@ void RobotInit()
 void RobotTask()
 {
     RobotCMDTask();
-    // ChassisTask();
+    ChassisTask();
 }

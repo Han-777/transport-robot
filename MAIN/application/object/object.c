@@ -13,10 +13,8 @@ static Publisher_t *object_pub;
 static Subscriber_t *object_sub;
 
 static Object_Ctrl_Cmd_s object_cmd_recv;
-static Object_Upload_Data_s object_feedback_data; // 返回是否夹完
-static StepMotorInstance *step_motor_rotate, *step_motor_front, *step_motor_rise;
-static uint8_t task_cnt = 0;
-static uint8_t sub_task_cnt = 0;
+static Object_Upload_Data_s object_feedback_data;                                 // 返回是否夹完
+static StepMotorInstance *step_motor_rotate, *step_motor_front, *step_motor_rise; // 完全下去16000
 // static StepMotorInstance *step_motor2;
 
 /**
@@ -35,90 +33,93 @@ static uint8_t checkStepMotorFinish(void)
 // 放置的时候从右向左
 
 /*============================== getObjectFromPlate ================================*/
-static uint8_t getObjectFromPlate1(void)
+static void getObjectFromPlate(void)
 {
-    setTargetPulse(step_motor_front, 1000, GPIO_PIN_RESET, MOTOR_DIRECTION_NORMAL); // 缩进 + 舵机下
-    servoMove(calibObj);                                                            // 舵机下
+    setTargetPulse(step_motor_front, 1500, GPIO_PIN_RESET, MOTOR_DIRECTION_NORMAL); // 缩进
+    setTargetPulse(step_motor_rise, 3000, GPIO_PIN_SET, MOTOR_DIRECTION_NORMAL);
+    osDelay(1000);
+    servoMove(moveGetFront);
+    osDelay(500);
+    setTargetPulse(step_motor_front, 1500, GPIO_PIN_SET, MOTOR_DIRECTION_NORMAL);
+    osDelay(1000);
+    servoMove(getObj); // 夹
     osDelay(300);
-    if (checkStepMotorFinish())
-    {
-        sub_task_cnt++;
-        return 1;
-    }
-    return 0;
+    setTargetPulse(step_motor_rise, 3000, GPIO_PIN_RESET, MOTOR_DIRECTION_NORMAL); // 上 (maybe in the same time)
+    servoMove(rotateRed + object_cmd_recv.color - 0x31);                           // 转转盘
+    osDelay(600);
+    servoMove(movePutBack);
+    osDelay(800);
+    servoMove(putObj); // 放
+    osDelay(700);
+    servoMove(scanObject); // 翻
+    osDelay(1500);
+    // setTargetPulse(step_motor_rise, 1000, GPIO_PIN_SET, MOTOR_DIRECTION_REVERSE); // 下
+    osDelay(3000);
 }
 
-static uint8_t getObjectFromPlate2(void) // 伸出去 + 夹
+/*============================== getObjectFromGround ================================*/
+static void getObjectFromGround(void)
 {
-    setTargetPulse(step_motor_front, 1000, GPIO_PIN_SET, MOTOR_DIRECTION_NORMAL); // 伸出去
-    if (checkStepMotorFinish())
-    {
-        servoMove(getObj); // 夹
-        // maybe need to add a delay
-        sub_task_cnt++;
-        return 1;
-    }
-    return 0;
+    setTargetPulse(step_motor_rise, 5000, GPIO_PIN_SET, MOTOR_DIRECTION_NORMAL);
+    osDelay(1000);
+    servoMove(moveGetFront);
+    osDelay(500);
+    setTargetPulse(step_motor_front, 1500, GPIO_PIN_SET, MOTOR_DIRECTION_NORMAL);
+    osDelay(1000);
+    servoMove(getObj); // 夹
+    osDelay(300);
+    setTargetPulse(step_motor_rise, 5000, GPIO_PIN_RESET, MOTOR_DIRECTION_NORMAL); // 上 (maybe in the same time)
+    osDelay(600);
+    servoMove(rotateRed + object_cmd_recv.color - 0x31); // 转转盘
+    osDelay(1400);
+    servoMove(movePutBack);
+    osDelay(800);
+    servoMove(putObj); // 放
+    osDelay(700);
+    servoMove(moveGetFront); // 翻
+    osDelay(1500);
 }
 
-static uint8_t rotatePlane(uint8_t degree) // 提前记录好每一个角度对应的脉冲数
+/*============================ putObjectToGround ==============================*/
+static void putObjectToGround(void)
 {
-    switch (degree)
-    {
-    case -90:
-        setTargetPulse(step_motor_rotate, 1000, GPIO_PIN_SET, MOTOR_DIRECTION_REVERSE);
-        break;
-    case 0:
-        setTargetPulse(step_motor_rotate, 1000, GPIO_PIN_SET, MOTOR_DIRECTION_NORMAL);
-        break;
-    case 90:
-        setTargetPulse(step_motor_rotate, 1000, GPIO_PIN_SET, MOTOR_DIRECTION_NORMAL);
-        break;
-    }
-    if (checkStepMotorFinish())
-    {
-        sub_task_cnt++;
-        return 1;
-    }
-    return 0;
+    setTargetPulse(step_motor_rise, 3000, GPIO_PIN_RESET, MOTOR_DIRECTION_NORMAL);
+    osDelay(500);
+    servoMove(moveGetBack);
+    osDelay(1200);
+    servoMove(getObj);
+    osDelay(300);
+    servoMove(movePutFront);
+    osDelay(300);
+    setTargetPulse(step_motor_rise, 16000, GPIO_PIN_SET, MOTOR_DIRECTION_NORMAL);
+    osDelay(2000);
+    servoMove(putObj);
+    osDelay(300);
+    setTargetPulse(step_motor_rise, 8000, GPIO_PIN_RESET, MOTOR_DIRECTION_NORMAL);
+    osDelay(1500);
+
+    // servoMove(movePutFront);
+    // osDelay(500);
+    // setTargetPulse(step_motor_front, 1500, GPIO_PIN_SET, MOTOR_DIRECTION_NORMAL);
+    // osDelay(1000);
+    // servoMove(putObj); // 夹
+    // osDelay(300);
+    // setTargetPulse(step_motor_rise, 5000, GPIO_PIN_RESET, MOTOR_DIRECTION_NORMAL); // 上 (maybe in the same time)
+    // osDelay(600);
+    // servoMove(rotateRed + object_cmd_recv.color - 0x31); // 转转盘
+    // osDelay(1400);
+    // servoMove(movePutBack);
+    // osDelay(800);
+    // servoMove(putObj); // 放
+    // osDelay(700);
+    // servoMove(scanObject); // 翻
+    // osDelay(1500);
 }
 
-/*============================ putObjectFromPlate =================================*/
-
-static uint8_t putObjectFromPlate1(void) // 上 + 翻 + 放
+/*============================ putObjectToObject ==============================*/
+static void putObjectToObject(void)
 {
-    // servoMove(rotateRed +);                                                      // 翻 (同时转转盘)
-
-    setTargetPulse(step_motor_rise, 1000, GPIO_PIN_SET, MOTOR_DIRECTION_NORMAL); // 上 (maybe in the same time)
-    if (checkStepMotorFinish())
-    {
-        servoMove(putObj); // 放
-        // maybe need to add a delay
-        sub_task_cnt++;
-        return 1;
-    }
-    return 0;
 }
-
-static uint8_t putObjectFromPlate2(void) // 翻 + 下
-{
-    servoMove(8);                                                                 // 翻
-    setTargetPulse(step_motor_rise, 5000, GPIO_PIN_SET, MOTOR_DIRECTION_REVERSE); // 下
-    if (checkStepMotorFinish())
-    {
-        sub_task_cnt = 0;
-        return 1;
-    }
-    return 0;
-}
-
-static uint8_t (*getObjectFromPlate[])(void) = {
-    getObjectFromPlate1, // 缩进 + 舵机下
-    getObjectFromPlate2, // 伸出去 + 夹
-    putObjectFromPlate1, // 上 + 翻 + 放
-    putObjectFromPlate2, // 翻 + 下
-};
-
 /*================================= getObject =================================*/
 static uint8_t getObjectFromCar(void)
 {
@@ -184,7 +185,7 @@ void ObjectTask()
     SubGetMessage(object_sub, (void *)&object_cmd_recv);
     if (!object_init_flag)
     {
-        osDelay(200);
+        osDelay(500);
         object_init_flag = 1;
     }
     /*------------ test code ---------------*/
@@ -197,20 +198,44 @@ void ObjectTask()
     case none:
         break;
     case defau:
-        servoMove(1);
-        osDelay(300);
-        servoMove(2);
+        servoMove(defaut);
         break;
-    case putObjectFromPlate:
-        if (getObjectFromPlate[sub_task_cnt]())
-        {
-            sub_task_cnt++;
-            if (sub_task_cnt == 4)
-            {
-                object_cmd_recv.actionNum = none;
-                sub_task_cnt = 0;
-            }
-        }
+    case calibCoord:
+        setTargetPulse(step_motor_rise, 6000, GPIO_PIN_SET, MOTOR_DIRECTION_NORMAL);
+        break;
+    case plateScan:
+        setTargetPulse(step_motor_front, 3000, GPIO_PIN_SET, MOTOR_DIRECTION_NORMAL);
+        // setTargetPulse(step_motor_rotate, 5000, GPIO_PIN_RESET, MOTOR_DIRECTION_NORMAL);
+        servoMove(scanObject);
+        osDelay(1000);
+        break;
+    case getObjFromPlate:
+        // if (getObjectFromPlate[sub_task_cnt](object_cmd_recv.color))
+        // {
+        //     sub_task_cnt++;
+        //     if (sub_task_cnt == 4)
+        //     {
+        //         object_cmd_recv.actionNum = none;
+        //         sub_task_cnt = 0;
+        //     }
+        // }
+        getObjectFromPlate();
+        break;
+    case getObjFromGround:
+        getObjectFromGround();
+        break;
+    case putObjToGround:
+        putObjectToGround();
+        break;
+    case putObjToObj:
+        break;
+    case rotateClock90:
+        setTargetPulse(step_motor_rotate, 1500, GPIO_PIN_SET, MOTOR_DIRECTION_NORMAL);
+        osDelay(2000);
+        break;
+    case rotateAntiClock90:
+        setTargetPulse(step_motor_rotate, 1500, GPIO_PIN_RESET, MOTOR_DIRECTION_NORMAL);
+        osDelay(2000);
         break;
     case Scan:
         break;

@@ -32,10 +32,10 @@ static Chassis_Upload_Data_s chassis_feedback_data; // 从底盘应用接收的�
 static Object_Ctrl_Cmd_s object_cmd_send;           // 发送给物体应用的信息,包括控制信息和UI绘制相关
 static Object_Upload_Data_s object_feedback_data;   // 从物体应用接收的反馈信息信息,物体夹取状态等
 
-static QR_data_t *qr_data;
+static objColor_s *qr_data;
 static VisionData_t *vision_data;
 static int (*operation_sequence[])(void);
-#define max_run_itr 5
+#define max_run_itr 10
 static uint8_t cmd_run_idx = 0;
 static uint8_t default_rgb[6] = {0x31, 0x32, 0x33, 0x31, 0x32, 0x33};
 /*--------------Coordinate Input------------------*/
@@ -47,29 +47,42 @@ static void SetCoordinate(float x, float y, float heading, uint16_t speed_limit)
     chassis_cmd_send.heading = heading;
     chassis_cmd_send.chassis_speed_limit = speed_limit;
 }
-/*--------------QR Code-------------*/
-static int robot_init(void)
+
+/*-------------------- Object Input ----------------------*/
+static void SetAction(objectAction action, uint8_t color)
 {
-
-    VisionSend(coordMode);
-
-    if (qr_data_verify())
-    {
-        LCD_Display_Number(qr_data);
-    }
-    // OPS_Calibrate(0, 0, 0);
-    return 0;
+    object_cmd_send.actionNum = action;
+    object_cmd_send.color = color;
 }
+/*--------------QR Code-------------*/
+// static int robot_init(void)
+// {
+//     SetAction(defau, none);
+//     // SetCoordinate(0, 0, 0, 10000);
+
+//     // OPS_Calibrate(0, 0, 0);
+//     return 1;
+// }
+// static int robot_init(void)
+// {
+//     SetAction(getObjFromPlate, red);
+
+//     // osDelay(100000);
+//     // OPS_Calibrate(0, 0, 0);
+//     return 0;
+// }
 /**
  * @brief 机器人到达二维码位置
  */
 static int qr1_1(void)
 {
-    SetCoordinate(-0.18, 0.6, 0, 5000);
+    SetAction(defau, none);
+    SetCoordinate(-200, 500, 0, 10000);
     // SetCoordinate(0, 2000, 0, 20000);
     // chassis_feedback_data.chassis_vague_arrive = 1;
     if (chassis_feedback_data.chassis_vague_arrive)
     {
+        VisionSend(coordMode);
         return 1;
     }
     return 0;
@@ -80,19 +93,21 @@ static int qr1_1(void)
  */
 static int qr1_2(void)
 {
+    static uint8_t qr_pre_time = 0;
+    qr_pre_time++;
+    SetCoordinate(-200, 650, 0, 10000);
+    if (qr_pre_time > 1000)
+    {
+        memcpy(qr_data, default_rgb, 6);
+    }
     if (qr_data_verify())
     {
+        QR_Close();
         // 屏幕显示
-        osDelay(100);
-        chassis_cmd_send.chassis_mode = CHASSIS_OPS_MOVE;
-        return 0;
+        LCD_Display_Number(qr_data);
+        SetAction(plateScan, none);
+        return 1;
     }
-    // SetCoordinate(-2000, 3000, 0, 20000);
-
-    // if (chassis_feedback_data.chassis_vague_arrive)
-    //     return 0;
-    // qr code handle
-    // 屏幕显示
     return 0;
 }
 
@@ -102,8 +117,8 @@ static int qr1_2(void)
  */
 static int obj1_1(void)
 {
+    SetCoordinate(-170, 1300, 90, 10000);
     // SetCoordinate(-0.20, 1.25, 0);
-    SetCoordinate(0, 2000, 0, 20000);
     if (chassis_feedback_data.chassis_vague_arrive)
         return 1;
     return 0;
@@ -114,14 +129,84 @@ static int obj1_1(void)
  */
 static int obj1_2(void)
 {
+    SetCoordinate(-200, 1500, 90, 10000);
+    VisionSend(colorMode);
 
+    if (vision_data->object_color == qr_data[0])
+    {
+        SetAction(getObjFromPlate + qr_data[0] - 0x30, qr_data[0] - 0x30);
+        return 1;
+    }
+    return 0;
+}
+
+static int obj1_3(void)
+{
+    osDelay(5000);
+    SetCoordinate(-210, 1450, 90, 10000);
+    VisionSend(colorMode);
+
+    if (vision_data->object_color == qr_data[1])
+    {
+        SetAction(getObjFromPlate + qr_data[1] - 0x30, qr_data[1] - 0x30);
+        return 1;
+    }
+    return 0;
+}
+static int obj1_4(void)
+{
+    osDelay(5000);
+    SetCoordinate(-200, 1400, 90, 10000);
+    VisionSend(colorMode);
+
+    if (vision_data->object_color == qr_data[2])
+    {
+        SetAction(getObjFromPlate + qr_data[2] - 0x30, qr_data[2] - 0x30);
+    }
     return 1;
 }
+
+// 回中
+static int obj1_5(void)
+{
+    SetCoordinate(-190, 700, 90, 10000);
+    if (chassis_feedback_data.chassis_vague_arrive)
+        return 1;
+    return 0;
+}
+
+static int obj2_1(void)
+{
+    SetCoordinate(-1500, 700, 0, 12000);
+    if (chassis_feedback_data.chassis_vague_arrive)
+        return 1;
+    return 0;
+}
+
+static int obj2_2(void)
+{
+    chassis_cmd_send.chassis_mode = CHASSIS_VISION_REFINE;
+    //  这里需要将修正好的视觉坐标传入
+    // chassis_cmd_send.x = vision_data->x;
+    // chassis_cmd_send.y = vision_data->y;
+    // SetCoordinate(-1500, 700, 0, 12000); // 视觉坐标
+    return 0;
+}
+// static int obj1_6(void)
+// {
+//     return 0;
+// }
+
 static int (*operation_sequence[])(void) = {
-    robot_init,
+    // robot_init,
     qr1_1,
     qr1_2,
     obj1_1,
+    obj1_2,
+    obj1_3,
+    obj1_4,
+    obj1_5,
+    obj2_1,
 };
 
 void RobotCMDInit()
@@ -153,78 +238,6 @@ void RobotCMDInit()
     /*-----------------------message center-------------------------*/
 }
 
-// static int drought_info_ready(void)
-// {
-//     // static uint8_t checkCnt = 0;
-//     // if (bluetooth_data->drought_buff[17] == 0)
-//     // {
-//     //     osDelay(2000);
-//     //     checkCnt++;
-//     //     if (checkCnt > 10) // 10s没看到就默认值
-//     //     {
-//     //         memcpy(drought_info, test, sizeof(drought_info));
-//     //         HAL_UART_Abort_IT(&huart6);
-//     //         return 1;
-//     //     }
-//     // }
-//     // else
-//     // {
-//     //     LCD_Display_All(bluetooth_data->drought_buff);
-//     //     memcpy(drought_info, bluetooth_data->drought_buff, sizeof(bluetooth_data->drought_buff));
-//     //     HAL_UART_Abort_IT(&huart6);
-//     //     return 1;
-//     // }
-//     // return 0;
-//     if (bluetooth_data->drought_buff[17] != 0)
-//     {
-//         HAL_UART_Abort_IT(&huart6);
-//         LCD_Display_All(bluetooth_data->drought_buff);
-//         memcpy(comm_send_data->drought_info, bluetooth_data->drought_buff, sizeof(bluetooth_data->drought_buff));
-//         return 1;
-//     }
-
-//     if (comm_recv_data->recv_feedback_flag == 1)
-//     {
-//         if (bluetooth_data->drought_buff[17] == 0)
-//         {
-//             HAL_UART_Abort_IT(&huart6);
-//             memcpy(drought_info, test, sizeof(drought_info));
-//         }
-//         comm_send_data->recv_feedback_flag = 1;
-//         return 1;
-//     }
-//     return 0;
-// }
-
-// static int Display_task(void)
-// {
-//     static uint8_t display_Cnt = 0;
-
-//     if (comm_recv_data->plant_Cnt > display_Cnt)
-//     {
-//         if (comm_recv_data->plant_Cnt == 1)
-//         {
-//             LCD_Clear();
-//         }
-//         // comm_send_data->recv_feedback_flag = 1;
-//         if (comm_recv_data <= 18)
-//         {
-//             MP3_broadcast(drought_info[display_Cnt]);
-//             LCD_Display_One(drought_info[display_Cnt], display_Cnt);
-//             display_Cnt = comm_recv_data->plant_Cnt;
-//         }
-//         else
-//         {
-//             MP3_broadcast(comm_recv_data->D_Drougnt_info);
-//             LCD_Display_One(comm_recv_data->D_Drougnt_info, display_Cnt);
-//             display_Cnt++;
-//         }
-//         memset(comm_recv_data, 0, sizeof(Comm_Recv_Data_s));
-//         return 1;
-//     }
-//     return 0;
-// }
-
 void RobotCMDTask(void)
 {
     SubGetMessage(chassis_feed_sub, (void *)&chassis_feedback_data);
@@ -238,7 +251,7 @@ void RobotCMDTask(void)
         chassis_cmd_send.chassis_mode = CHASSIS_ZERO_FORCE;
     }
 
-    object_cmd_send.actionNum = defau;
+    // object_cmd_send.actionNum = defau;
     PubPushMessage(chassis_cmd_pub, (void *)&chassis_cmd_send);
     PubPushMessage(object_cmd_pub, (void *)&object_cmd_send);
     // PubPushMessage(object_cmd_pub, (void *)&object_cmd_send);
